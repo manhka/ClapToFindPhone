@@ -74,4 +74,13 @@
     <string name="charger_alarm">Charger alarm</string>
     <string name="tap_to_active">Tap to active</string>
     <string name="change_audio_passcode">Change audio passcode</string>
+    <string name="tap_to_deactive">Tap to deactive</string>
+    <string name="found_your_phone">Found your phone</string>
+    <string name="i_found_it">I Found It</string>
+    <string name="find_my_phone">Find my phone</string>
+    <string name="clap">Clap...</string>
+    <string name="voice_passcode_notify"><![CDATA[Voice & Pass...]]></string>
+    <string name="touch_phone_notify">Don\'t touch...</string>
+    <string name="clap_to_find_phone_is_running">Clap to find phone is running</string>
+    <string name="touch_button_power_to_stop_alarm">Touch Button Power to Stop Alarm</string>
 </resources>

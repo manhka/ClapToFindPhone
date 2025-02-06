@@ -65,23 +65,13 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_home"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tab_layout_home" />
 
-            <TextView
-                android:id="@+id/txt_action_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tap_to_active"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_pager_home" />
+
 
             <LinearLayout
                 android:id="@+id/change_audio_passcode_button"
@@ -93,7 +83,7 @@
                 android:layout_marginTop="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_action_status"
+                app:layout_constraintTop_toBottomOf="@id/view_pager_home"
                 android:visibility="gone">
 
                 <ImageView

@@ -101,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
                 R.drawable.bg_sound_passive
             ),
             Sound(Constant.Sound.WHISTLE, R.drawable.whistle_ic, R.drawable.bg_sound_passive),
-            Sound(Constant.Sound.HELLO, R.drawable.cat_meowing_ic, R.drawable.bg_sound_passive),
+            Sound(Constant.Sound.HELLO, R.drawable.hello_ic, R.drawable.bg_sound_passive),
             Sound(Constant.Sound.CAR_HONK, R.drawable.car_horn_ic, R.drawable.bg_sound_passive),
             Sound(Constant.Sound.DOOR_BELL, R.drawable.door_bell_ic, R.drawable.bg_sound_passive),
             Sound(Constant.Sound.PARTY_HORN, R.drawable.party_horn_ic, R.drawable.bg_sound_passive),

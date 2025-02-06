@@ -6,6 +6,15 @@ class Constant {
         const val FIRST_TIME_GET_IN_APP = "first_time_get_in_app"
         const val LANGUAGE_SHARE_PRES = "language"
         const val CURRENT_LANGUAGE = "current_language"
+        const val SERVICE_SHARE_PRES = "service_share_pres"
+    }
+
+    object Service{
+        const val CLAP_TO_FIND_PHONE="clap_to_find_phone"
+        const val VOICE_PASSCODE="voice_passcode"
+        const val DONT_TOUCH_MY_PHONE="dont_touch_my_phone"
+        const val CHARGER_PHONE="charger_phone"
+        const val POCKET_MODE="pocket_mode"
     }
 
     object Country {

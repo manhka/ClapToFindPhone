@@ -7,21 +7,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
-import com.example.claptofindphone.databinding.ActivityStartBinding
+import com.example.claptofindphone.databinding.ActivityFoundPhoneBinding
 
-class StartActivity : AppCompatActivity() {
-    private lateinit var startActivityBinding: ActivityStartBinding
+class FoundPhoneActivity : AppCompatActivity() {
+    private lateinit var foundPhoneBinding: ActivityFoundPhoneBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivityBinding= ActivityStartBinding.inflate(layoutInflater)
-        setContentView(startActivityBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.start_activity)) { v, insets ->
+        foundPhoneBinding=ActivityFoundPhoneBinding.inflate(layoutInflater)
+        setContentView(foundPhoneBinding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_found_phone)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        startActivityBinding.startButton.setOnClickListener {
-            val intent= Intent(this,HomeActivity::class.java)
+        foundPhoneBinding.iFoundItButton.setOnClickListener {
+            val intent= Intent(this,SplashActivity::class.java)
             startActivity(intent)
             finish()
         }

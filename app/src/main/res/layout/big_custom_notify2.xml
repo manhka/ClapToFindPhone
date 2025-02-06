@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:id="@+id/imgView_hand_clap"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/clap_notify2"
+        />
+    <TextView
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clap_to_find_phone_is_running"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_toEndOf="@id/imgView_hand_clap"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        />
+    <Button
+        android:id="@+id/power_button"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/power_ic"
+        android:layout_below="@id/imgView_hand_clap"
+        android:text="@string/touch_button_power_to_stop_alarm"
+        android:background="@drawable/bg_active_btn"
+        app:backgroundTint="@null"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:layout_marginTop="5dp"/>
+</RelativeLayout>
