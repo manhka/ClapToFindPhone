@@ -83,4 +83,22 @@
     <string name="touch_phone_notify">Don\'t touch...</string>
     <string name="clap_to_find_phone_is_running">Clap to find phone is running</string>
     <string name="touch_button_power_to_stop_alarm">Touch Button Power to Stop Alarm</string>
+    <string name="default_theme">Default theme</string>
+    <string name="call_theme">Call theme</string>
+    <string name="name">Name</string>
+    <string name="phone">+123456789x</string>
+    <string name="default_flash">Default</string>
+    <string name="save">Save</string>
+    <string name="edit_theme">Edit theme</string>
+    <string name="apply_theme">Apply Theme</string>
+    <string name="change_flashlight">Change flashlight</string>
+    <string name="ON">ON</string>
+    <string name="OFF">OFF</string>
+    <string name="change_vibrate">Change vibrate</string>
+    <string name="volume">Volume</string>
+    <string name="duration">Duration</string>
+    <string name="voicePasscode">Voice Passcode</string>
+    <string name="dontTouchMyPhone">Don\'t touch my phone</string>
+    <string name="pocketMode">Pocket mode</string>
+    <string name="chargerAlarm">Charger alarm</string>
 </resources>

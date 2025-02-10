@@ -1,5 +1,6 @@
 package com.example.claptofindphone.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -38,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
         val myService= MyService()
         myService.handleBackPress(this)
         getListSound()
-        soundAdapter = SoundAdapter(soundList)
+        soundAdapter = SoundAdapter(this,soundList)
         homeBinding.rcvHomeSound.layoutManager = GridLayoutManager(this, 3)
         homeBinding.rcvHomeSound.adapter = soundAdapter
         // install viewpager and tab layout
@@ -87,6 +88,22 @@ class HomeActivity : AppCompatActivity() {
             }
 
         })
+            homeBinding.cardViewChangeTheme.setOnClickListener{
+            val intent= Intent(this,ChangeThemeActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.cardViewFlashlight.setOnClickListener {
+            val intent= Intent(this,ChangeFlashlightActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.cardViewVibrate.setOnClickListener {
+            val intent= Intent(this,ChangeVibrateActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.cardViewHowToUse.setOnClickListener {
+            val intent =Intent(this,HowToUseActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

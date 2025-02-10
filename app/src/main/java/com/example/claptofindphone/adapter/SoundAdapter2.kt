@@ -1,18 +1,12 @@
 package com.example.claptofindphone.adapter
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.claptofindphone.activity.ChangeSoundActivity
 import com.example.claptofindphone.databinding.SoundItemBinding
 import com.example.claptofindphone.model.Sound
-// sound adapter in home
-class SoundAdapter(
-    private val context: Context,
-    private val soundList: List<Sound>) :
-    RecyclerView.Adapter<SoundAdapter.SoundHolder>() {
+
+class SoundAdapter2(val soundList: List<Sound>):RecyclerView.Adapter<SoundAdapter2.SoundHolder>() {
     class SoundHolder(soundItemBinding: SoundItemBinding) :
         RecyclerView.ViewHolder(soundItemBinding.root) {
         val soundItemBinding: SoundItemBinding = soundItemBinding
@@ -33,9 +27,5 @@ class SoundAdapter(
         holder.soundItemBinding.customSoundBtn.setImageResource(sound.soundIcon)
         holder.soundItemBinding.customSoundBtn.setBackgroundResource(sound.soundBg)
         holder.soundItemBinding.txtSoundName.text=sound.soundName
-        holder.itemView.setOnClickListener{
-            val intent= Intent(context,ChangeSoundActivity::class.java)
-            context.startActivity(intent)
-        }
     }
 }
