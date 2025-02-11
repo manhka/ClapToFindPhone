@@ -15,6 +15,17 @@ class Constant {
         const val VIBRATE_SHARE_PRES="vibrate_share_pres"
         const val VIBRATE_STATUS="vibrate_status"
         const val ACTIVE_VIBRATE_NAME="active_vibrate_name"
+        // sound
+        const val SOUND_SHARE_PRES="sound_share_pres"
+        const val SOUND_STATUS="sound_status"
+        const val ACTIVE_SOUND_NAME="active_sound_name"
+        const val TIME_SOUND_PLAY="time_sound_play"
+        const val SOUND_VOLUME="sound_volume"
+        // theme
+        const val THEME_SHARE_PRES="theme_share_pres"
+        const val ACTIVE_THEME_NAME="active_theme_name"
+        const val NAME="name"
+        const val PHONE="phone"
     }
 
     object Service{
@@ -80,6 +91,24 @@ class Constant {
         const val vibrate10="Vibrate 10"
         const val vibrate11="Vibrate 11"
 
+    }
+    object CallTheme{
+        const val CallTheme1="call theme 1"
+        const val CallTheme2="call theme 2"
+        const val CallTheme3="call theme 3"
+        const val CallTheme4="call theme 4"
+        const val CallTheme5="call theme 5"
+        const val CallTheme6="call theme 6"
+        const val CallTheme7="call theme 7"
+        const val CallTheme8="call theme 8"
+        const val CallTheme9="call theme 9"
+        const val CallTheme10="call theme 10"
+    }
+    object DefaultTheme{
+        const val DefaultTheme1="default theme 1"
+        const val DefaultTheme2="default theme 2"
+        const val DefaultTheme3="default theme 3"
+        const val DefaultTheme4="default theme 4"
     }
 
 }

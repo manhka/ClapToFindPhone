@@ -5,7 +5,7 @@
     android:id="@+id/activity_edit_theme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_call_theme2"
+    android:background="@color/bg_df_theme1"
     android:padding="10dp"
     tools:context=".activity.EditThemeActivity">
 
@@ -52,18 +52,20 @@
 
         <ImageView
             android:id="@+id/imgView_round4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:src="@drawable/round4_df_theme1"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/imgView_round3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="242dp"
+            android:layout_height="242dp"
             android:src="@drawable/round3_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,8 +74,8 @@
 
         <ImageView
             android:id="@+id/imgView_round2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="205dp"
+            android:layout_height="205dp"
             android:src="@drawable/round2_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,8 +84,8 @@
 
         <ImageView
             android:id="@+id/imgView_round_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="142dp"
+            android:layout_height="142dp"
             android:src="@drawable/round_center_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,8 +94,8 @@
 
         <ImageView
             android:id="@+id/imgView_bell"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="67dp"
+            android:layout_height="77dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/bell_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -103,9 +105,9 @@
 
         <ImageView
             android:id="@+id/imgView_small_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="33dp"
+            android:layout_width="12dp"
+            android:layout_height="33dp"
+            android:layout_marginEnd="80dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/small_left_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -115,9 +117,9 @@
 
         <ImageView
             android:id="@+id/imgView_big_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_width="14dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="100dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/big_left_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -127,9 +129,9 @@
 
         <ImageView
             android:id="@+id/imgView_small_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="33dp"
+            android:layout_width="11dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="80dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/small_right_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,9 +141,9 @@
 
         <ImageView
             android:id="@+id/imgView_big_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_width="14dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="100dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/big_right_theme_df1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +158,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imgView_call_theme_round2"
@@ -222,18 +225,18 @@
 
         <ImageView
             android:id="@+id/reject_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_width="83dp"
+            android:layout_height="83dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/call_end_ic"
             app:layout_constraintEnd_toStartOf="@id/txt_phone"
             app:layout_constraintTop_toBottomOf="@id/txt_phone" />
 
         <ImageView
             android:id="@+id/response_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_width="83dp"
+            android:layout_height="83dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/call_ic"
             app:layout_constraintStart_toEndOf="@id/txt_phone"
             app:layout_constraintTop_toBottomOf="@id/txt_phone" />

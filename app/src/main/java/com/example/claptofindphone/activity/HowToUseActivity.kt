@@ -45,6 +45,8 @@ class HowToUseActivity : AppCompatActivity() {
             tabView.layoutParams = layoutParams
         }
 
-
+        howToUseBinding.backButton.setOnClickListener {
+            finish()
+        }
     }
 }

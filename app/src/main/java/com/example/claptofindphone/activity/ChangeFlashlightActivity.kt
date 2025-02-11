@@ -27,7 +27,7 @@ class ChangeFlashlightActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         changeFlashlightBinding = ActivityChangeFlashlightBinding.inflate(layoutInflater)
         setContentView(changeFlashlightBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.change_flashlight_activity)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

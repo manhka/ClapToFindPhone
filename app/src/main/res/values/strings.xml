@@ -101,4 +101,21 @@
     <string name="dontTouchMyPhone">Don\'t touch my phone</string>
     <string name="pocketMode">Pocket mode</string>
     <string name="chargerAlarm">Charger alarm</string>
+    <string name="how_to_use_clap1">" Click the activate button"</string>
+    <string name="how_to_use_clap2">Double clap when you can’t find your phone</string>
+    <string name="how_to_use_clap3">The app will detect the clapping sound and start ringing</string>
+    <string name="how_to_use_clap4">Before activating, you can set the flashlight, adjust the volume and select alarm sound...</string>
+    <string name="how_to_use_voice_passcode1">Create an audio passcode and save it</string>
+    <string name="how_to_use_voice_passcode2">Double clap when you can’t find your phone</string>
+    <string name="how_to_use_voice_passcode3">The app will detect the clapping sound and start ringing</string>
+    <string name="how_to_use_voice_passcode4">The app will detect the sound passcode and start ringing</string>
+    <string name="how_to_use_voice_passcode5">Before activating, you can set the flashlight, adjust the volume and select alarm sound...</string>
+    <string name="how_to_use_touch_phone2">Wait about 5 seconds to set the alarm</string>
+    <string name="how_to_use_touch_phone3">When someone touches your phone, the app detects and rings an alert</string>
+    <string name="how_to_use_pocket_mode3">Put your phone in your pocket and make sure it is covered in your pocket</string>
+    <string name="how_to_use_pocket_mode4">When someone pulls the phone out of your pocket, the app will detect and ring an alert</string>
+    <string name="how_to_use_charger_phone3">Make sure your phone is charging</string>
+    <string name="how_to_use_charger_phone4">When someone pulls the charger out of your phone, the app will detect it and ring an alert</string>
+    <string name="edit">Edit</string>
+    <string name="txt_phone">Phone</string>
 </resources>

@@ -1,6 +1,9 @@
 package com.example.claptofindphone.model
 
+import java.io.Serializable
+
 class CallTheme(
+    val themeName:String,
     val callThemeBg:Int,
     val callThemeRound2:Int,
     val callThemeRound1:Int,
@@ -10,4 +13,4 @@ class CallTheme(
     val callThemeName:String,
     val callThemePhone:String,
     val callThemePremium:Int
-)
+): Serializable

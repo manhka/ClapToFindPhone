@@ -3,12 +3,197 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.how_to_use.HowToUseDontTouchPhoneFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            >
+
+            <ImageView
+                android:id="@+id/power_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_power_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="40dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. "
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/power_button"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="40dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/how_to_use_clap1"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/power_button"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="40dp"
+                />
+            <ImageView
+                android:id="@+id/tap_to_active"
+                android:layout_width="104dp"
+                android:layout_height="106dp"
+                android:src="@drawable/tap_to_active3"
+                app:layout_constraintTop_toBottomOf="@id/power_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp"
+                />
+            <ImageView
+                android:id="@+id/clap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tap_to_active"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. "
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/clap"
+                app:layout_constraintTop_toBottomOf="@id/tap_to_active"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/how_to_use_touch_phone2"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/tap_to_active"
+                app:layout_constraintStart_toEndOf="@id/clap"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+
+                />
+            <ImageView
+                android:id="@+id/hand_clap"
+                android:layout_width="144dp"
+                android:layout_height="106dp"
+                android:src="@drawable/wait"
+                app:layout_constraintTop_toBottomOf="@id/clap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp"
+                />
+            <ImageView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_touch_phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hand_clap"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. "
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/phone"
+                app:layout_constraintTop_toBottomOf="@id/hand_clap"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/how_to_use_touch_phone3"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hand_clap"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:singleLine="false"
+                />
+            <ImageView
+                android:id="@+id/phone_detect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detect_touch_phone"
+                app:layout_constraintTop_toBottomOf="@id/phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp"
+                />
+            <ImageView
+                android:id="@+id/setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/setting_ic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone_detect"
+                android:layout_marginTop="30dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. "
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/setting"
+                app:layout_constraintTop_toBottomOf="@id/phone_detect"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/how_to_use_clap4"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/setting"
+                app:layout_constraintTop_toBottomOf="@id/phone_detect"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+
+                />
+            <ImageView
+                android:id="@+id/detect_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detect_setting"
+                app:layout_constraintTop_toBottomOf="@id/setting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="50dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@null"
+                app:layout_constraintTop_toBottomOf="@id/detect_setting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="100dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
 
 </FrameLayout>
