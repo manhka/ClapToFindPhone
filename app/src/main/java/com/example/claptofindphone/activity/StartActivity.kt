@@ -21,9 +21,12 @@ class StartActivity : AppCompatActivity() {
             insets
         }
         startActivityBinding.startButton.setOnClickListener {
-            val intent= Intent(this,HomeActivity::class.java)
+            val intent= Intent(this,VipActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
+
+    override fun onBackPressed() {
     }
 }

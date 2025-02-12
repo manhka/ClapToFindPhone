@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -119,7 +120,7 @@ class LanguageActivity : AppCompatActivity() {
             rcvLanguage.layoutManager = LinearLayoutManager(this@LanguageActivity)
             rcvLanguage.adapter = languageAdapter
         }
-
+        val isNavigateFromHome=intent.getBooleanExtra("navigate_from_home",false)
         // apply btn
         binding.btnApplyLanguage.setOnClickListener {
             val selectedLanguage = languageAdapter.getSelectedLanguage()
@@ -130,10 +131,27 @@ class LanguageActivity : AppCompatActivity() {
                     languageSharePres.getString(Constant.SharePres.CURRENT_LANGUAGE, "en") ?: "en"
                 setAppLocale(curLanguage)
             }
-            val intent = Intent(this, IntroductionActivity::class.java)
-            startActivity(intent)
+            if (isNavigateFromHome){
+                    val intent = Intent(this,HomeActivity::class.java)
+                    startActivity(intent)
+            }else{
+                val intent = Intent(this, IntroductionActivity::class.java)
+                startActivity(intent)
+            }
             finish()
         }
+
+        if (isNavigateFromHome){
+            binding.imgViewBack.visibility= View.VISIBLE
+            binding.imgViewBack.setOnClickListener {
+                finish()
+            }
+
+        }else{
+            binding.imgViewBack.visibility= View.GONE
+        }
+
+
     }
 
     // set up language for app

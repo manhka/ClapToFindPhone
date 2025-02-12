@@ -1,16 +1,18 @@
 package com.example.claptofindphone.fragment.home
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.claptofindphone.R
+import com.example.claptofindphone.databinding.DialogClapAndWhistleBinding
 import com.example.claptofindphone.databinding.FragmentClapToFindInHomeBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.MyService
@@ -78,4 +80,27 @@ class ClapToFindFragment : Fragment() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        val firstTimeSharedPreferences= this.requireActivity().getSharedPreferences(Constant.SharePres.FIRST_TIME_JOIN_SHARE_PRES,MODE_PRIVATE)
+        val isFirstTimeGetInClap=firstTimeSharedPreferences.getBoolean(Constant.SharePres.FIRST_TIME_GET_IN_CLAP_AND_WHISTLE,true)
+        if (isFirstTimeGetInClap){
+            val dialogBinding = DialogClapAndWhistleBinding.inflate(layoutInflater)
+            // Create an AlertDialog with the inflated ViewBinding root
+            val customDialog = AlertDialog.Builder(this.requireActivity())
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .create()
+            customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            // Show the dialog
+            customDialog.show()
+            firstTimeSharedPreferences.edit().putBoolean(Constant.SharePres.FIRST_TIME_GET_IN_CLAP_AND_WHISTLE,false).apply()
+            dialogBinding.yesButton.setOnClickListener {
+                customDialog.dismiss()
+            }
+        }
+
+    }
+
 }

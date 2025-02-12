@@ -24,6 +24,8 @@ class CallThemeAdapter(val context: Context,
         Constant.SharePres.ACTIVE_THEME_NAME,
         Constant.DefaultTheme.DefaultTheme1
     )
+    val name=callThemeSharedPreferences.getString(Constant.SharePres.NAME,context.getString(R.string.name))
+    val phone=callThemeSharedPreferences.getString(Constant.SharePres.PHONE,context.getString(R.string.txt_phone))
     val selectedPosition = callThemeList.indexOfFirst { it.themeName == callThemeName }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CallThemeViewHolder {
         val callThemeItemBinding= CallThemeItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -42,8 +44,8 @@ class CallThemeAdapter(val context: Context,
         holder.callThemeItemBinding.profileCallTheme.setImageResource(callThemeItem.callThemeProfile)
         holder.callThemeItemBinding.rejectCallThemeButton.setImageResource(callThemeItem.callThemeReject)
         holder.callThemeItemBinding.responseCallThemeButton.setImageResource(callThemeItem.callThemeResponse)
-        holder.callThemeItemBinding.txtName.text=callThemeItem.callThemeName
-        holder.callThemeItemBinding.txtPhone.text=callThemeItem.callThemePhone
+        holder.callThemeItemBinding.txtName.text=name
+        holder.callThemeItemBinding.txtPhone.text=phone
         holder.callThemeItemBinding.premiumButton.setImageResource(callThemeItem.callThemePremium)
         if (position == selectedPosition) {
             holder.callThemeItemBinding.premiumButton.setImageResource(R.drawable.active_theme_ic)

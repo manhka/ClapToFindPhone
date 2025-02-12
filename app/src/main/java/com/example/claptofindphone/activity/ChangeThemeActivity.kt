@@ -1,5 +1,6 @@
 package com.example.claptofindphone.activity
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,18 +29,21 @@ class ChangeThemeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         getDefaultThemeList()
 
         //default theme
-        defaultThemeAdapter = DefaultThemeAdapter(this,defaultThemeList)
+        defaultThemeAdapter = DefaultThemeAdapter(this, defaultThemeList)
         changeThemeBinding.rcvDefaultTheme.adapter = defaultThemeAdapter
         changeThemeBinding.rcvDefaultTheme.layoutManager = GridLayoutManager(this, 2)
         // call theme
         getCallThemeList()
-        callThemeAdapter = CallThemeAdapter(this,callThemeList)
+        callThemeAdapter = CallThemeAdapter(this, callThemeList)
         changeThemeBinding.rcvCallTheme.adapter = callThemeAdapter
         changeThemeBinding.rcvCallTheme.layoutManager = GridLayoutManager(this, 2)
-
+        changeThemeBinding.backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun getDefaultThemeList() {

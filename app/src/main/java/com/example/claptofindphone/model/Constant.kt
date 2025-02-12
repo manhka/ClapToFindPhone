@@ -4,9 +4,15 @@ class Constant {
     object SharePres {
         const val FIRST_TIME_JOIN_SHARE_PRES = "first_time_join"
         const val FIRST_TIME_GET_IN_APP = "first_time_get_in_app"
+        const val FIRST_TIME_GET_IN_CLAP_AND_WHISTLE="first_time_get_in_clap_and_whistle"
+        const val FIRST_TIME_GET_IN_VOICE_PASSCODE="first_time_get_in_voice_passcode"
+        const val FIRST_TIME_GET_IN_POCKET_MODE="first_time_get_in_pocket_mode"
+        const val FIRST_TIME_GET_IN_CHARGER_ALARM="first_time_get_in_charger_alarm"
+        const val FIRST_TIME_GET_IN_TOUCH_PHONE="first_time_get_in_touch_phone"
         const val LANGUAGE_SHARE_PRES = "language"
         const val CURRENT_LANGUAGE = "current_language"
         const val SERVICE_SHARE_PRES = "service_share_pres"
+
         // flashlight
         const val FLASHLIGHT_SHARE_PRES="flashlight_share_pres"
         const val FLASHLIGHT_STATUS="flashlight_status"
@@ -109,6 +115,14 @@ class Constant {
         const val DefaultTheme2="default theme 2"
         const val DefaultTheme3="default theme 3"
         const val DefaultTheme4="default theme 4"
+    }
+
+
+
+    companion object {
+        val URL_PRIVACY = "https://sites.google.com/view/nksoftpolicy/home"
+        val URL_APP =
+            "https://play.google.com/store/apps/details?id=1"
     }
 
 }

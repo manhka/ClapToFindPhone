@@ -10,6 +10,7 @@
     <color name="blue">#03A9F4</color>
     <color name="grey">#7C7C7C</color>
     <color name="start_grey">#F6F6F6</color>
+    <color name="end_grey">#CFCFCF</color>
     <color name="bg_df_theme1">#E7F9FF</color>
     <color name="bg_df_theme2">#F4E7FF</color>
     <color name="bg_df_theme3">#F7FFE7</color>

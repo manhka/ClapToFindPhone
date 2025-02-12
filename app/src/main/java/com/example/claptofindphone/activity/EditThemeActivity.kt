@@ -1,16 +1,19 @@
 package com.example.claptofindphone.activity
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityEditThemeBinding
+import com.example.claptofindphone.databinding.DialogEditThemeBinding
 import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.DefaultTheme
@@ -19,6 +22,8 @@ class EditThemeActivity : AppCompatActivity() {
     private lateinit var editThemeBinding: ActivityEditThemeBinding
     private lateinit var themeSharedPreferences: SharedPreferences
     private lateinit var selectedThemeName:String
+    private lateinit var name:String
+    private lateinit var phone:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         editThemeBinding = ActivityEditThemeBinding.inflate(layoutInflater)
@@ -30,7 +35,8 @@ class EditThemeActivity : AppCompatActivity() {
         }
         themeSharedPreferences= getSharedPreferences(Constant.SharePres.THEME_SHARE_PRES,
             MODE_PRIVATE)
-
+        name=themeSharedPreferences.getString(Constant.SharePres.NAME,getString(R.string.name)).toString()
+        phone=themeSharedPreferences.getString(Constant.SharePres.PHONE,getString(R.string.phone)).toString()
 // default theme
         val defaultTheme = intent.getSerializableExtra("default_theme") as? DefaultTheme
         if (defaultTheme != null) {
@@ -63,8 +69,8 @@ class EditThemeActivity : AppCompatActivity() {
             editThemeBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
             editThemeBinding.imgViewCallThemeRound2.setImageResource(callTheme.callThemeRound2)
             editThemeBinding.imgViewCallThemeProfile.setImageResource(callTheme.callThemeProfile)
-            editThemeBinding.txtName.text=callTheme.callThemeName
-            editThemeBinding.txtPhone.text=callTheme.callThemePhone
+            editThemeBinding.txtName.text=name
+            editThemeBinding.txtPhone.text=phone
             selectedThemeName=callTheme.themeName
         }
         editThemeBinding.applyButton.setOnClickListener {
@@ -75,7 +81,90 @@ class EditThemeActivity : AppCompatActivity() {
         }
 
         editThemeBinding.backButton.setOnClickListener {
+            val intent=Intent(this,ChangeThemeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
             finish()
         }
+        editThemeBinding.editButton.setOnClickListener {
+            showEditDialog()
+        }
+
+    }
+
+    private fun showEditDialog() {
+
+        // Inflate the custom layout for the dialog using DialogCustomBinding
+        val dialogBinding = DialogEditThemeBinding.inflate(layoutInflater)
+        // Create an AlertDialog with the inflated ViewBinding root
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+
+        customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        // Show the dialog
+        customDialog.show()
+        dialogBinding.deleteNameButton.setOnClickListener {
+            dialogBinding.etxName.setText("")
+        }
+        name=themeSharedPreferences.getString(Constant.SharePres.NAME,getString(R.string.name)).toString()
+        phone=themeSharedPreferences.getString(Constant.SharePres.PHONE,getString(R.string.phone)).toString()
+        dialogBinding.etxPhone.setText(phone)
+        dialogBinding.etxName.setText(name)
+        val nameFilter = InputFilter { source, start, end, dest, dstart, dend ->
+            // Kiểm tra nếu ký tự nhập vào không phải là chữ cái hoặc chữ số
+            if (source.matches("[^a-zA-Z0-9 ]".toRegex())) {
+                return@InputFilter ""
+            }
+
+            // Kiểm tra nếu tổng số ký tự trong EditText vượt quá 30
+            if ((dest.length + source.length) > 30) {
+                return@InputFilter ""
+            }
+
+            // Nếu không vi phạm điều kiện nào, trả về null (cho phép nhập)
+            return@InputFilter null
+        }
+
+
+        val phoneFilter = InputFilter { source, start, end, dest, dstart, dend ->
+            // Kiểm tra nếu ký tự nhập vào không phải là chữ số
+            if (source.matches("[^0-9]".toRegex())) {
+                return@InputFilter ""
+            }
+
+            // Kiểm tra nếu tổng số ký tự trong EditText vượt quá 12
+            if ((dest.length + source.length) > 12) {
+                return@InputFilter ""
+            }
+            // Nếu không vi phạm điều kiện nào, trả về null (cho phép nhập)
+            null
+        }
+
+        dialogBinding.etxPhone.filters= arrayOf(phoneFilter)
+        dialogBinding.etxName.filters= arrayOf(nameFilter)
+
+        dialogBinding.deletePhoneButton.setOnClickListener {
+            dialogBinding.etxPhone.setText("")
+        }
+        dialogBinding.cancelButton.setOnClickListener {
+            customDialog.dismiss()
+        }
+        dialogBinding.saveButton.setOnClickListener {
+            if (dialogBinding.etxName.text.toString().isEmpty() || dialogBinding.etxPhone.text.toString().isEmpty()){
+                Toast.makeText(this,getString(R.string.empty),Toast.LENGTH_SHORT).show()
+            }else{
+                themeSharedPreferences.edit().putString(Constant.SharePres.NAME,dialogBinding.etxName.text.trim().toString()).apply()
+                themeSharedPreferences.edit().putString(Constant.SharePres.PHONE,dialogBinding.etxPhone.text.trim().toString()).apply()
+                customDialog.dismiss()
+                editThemeBinding.txtName.text=dialogBinding.etxName.text.trim().toString()
+                editThemeBinding.txtPhone.text=dialogBinding.etxPhone.text.trim().toString()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 }

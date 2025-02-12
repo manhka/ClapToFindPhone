@@ -29,6 +29,12 @@
         android:theme="@style/Theme.ClapToFindPhone"
         tools:targetApi="31">
         <activity
+            android:name=".activity.VipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.HowToUseActivity"
             android:exported="false" />
         <activity

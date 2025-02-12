@@ -1,12 +1,16 @@
 package com.example.claptofindphone.fragment.home
 
+import android.app.AlertDialog
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.claptofindphone.R
-
+import com.example.claptofindphone.databinding.DialogClapAndWhistleBinding
+import com.example.claptofindphone.databinding.DialogPocketModeBinding
+import com.example.claptofindphone.model.Constant
 
 
 class VoicePasscodeFragment : Fragment() {
@@ -25,4 +29,28 @@ class VoicePasscodeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_voice_passcode_in_home, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val firstTimeSharedPreferences= this.requireActivity().getSharedPreferences(
+            Constant.SharePres.FIRST_TIME_JOIN_SHARE_PRES,
+            MODE_PRIVATE
+        )
+        val isFirstTimeGetInVoicePasscode=firstTimeSharedPreferences.getBoolean(Constant.SharePres.FIRST_TIME_GET_IN_VOICE_PASSCODE,true)
+        if (isFirstTimeGetInVoicePasscode){
+            val dialogBinding = DialogPocketModeBinding.inflate(layoutInflater)
+            // Create an AlertDialog with the inflated ViewBinding root
+            val customDialog = AlertDialog.Builder(this.requireActivity())
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .setCancelable(false)
+                .create()
+            customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            // Show the dialog
+            customDialog.show()
+            firstTimeSharedPreferences.edit().putBoolean(Constant.SharePres.FIRST_TIME_GET_IN_VOICE_PASSCODE,false).apply()
+            dialogBinding.yesButton.setOnClickListener {
+                customDialog.dismiss()
+            }
+        }
+    }
 }
