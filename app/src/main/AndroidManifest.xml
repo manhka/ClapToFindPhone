@@ -29,6 +29,21 @@
         android:theme="@style/Theme.ClapToFindPhone"
         tools:targetApi="31">
         <activity
+            android:name=".activity.SetupPasscodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.VoicePasscodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.GrantPermissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.WaitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.BecomeVipMemberActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.VipActivity"
             android:exported="false" />
         <activity

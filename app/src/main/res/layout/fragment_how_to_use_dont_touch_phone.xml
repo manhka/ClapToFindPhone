@@ -94,7 +94,7 @@
                 android:id="@+id/hand_clap"
                 android:layout_width="144dp"
                 android:layout_height="106dp"
-                android:src="@drawable/wait"
+                android:src="@drawable/wait2"
                 app:layout_constraintTop_toBottomOf="@id/clap"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

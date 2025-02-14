@@ -6,13 +6,25 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.media.AudioRecord
+import android.os.BatteryManager
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.RemoteViews
 import android.window.OnBackInvokedCallback
@@ -20,16 +32,31 @@ import android.window.OnBackInvokedDispatcher
 import androidx.core.app.NotificationCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.FoundPhoneActivity
+import com.example.claptofindphone.model.Constant
 import org.tensorflow.lite.task.audio.classifier.AudioClassifier
 
-class MyService : Service() {
+class MyService : Service(), SensorEventListener {
     private var backInvokedCallback: OnBackInvokedCallback? = null
     private lateinit var notificationManager: NotificationManager
     private var handlerClap: Handler? = null
     private var audioClassifier: AudioClassifier? = null
     private var audioRecord: AudioRecord? = null
     private var channel: NotificationChannel? = null
+    private lateinit var speechRecognizer: SpeechRecognizer
+    private lateinit var recognizerIntent: Intent
+    private lateinit var voicePasscodeSharePres: SharedPreferences
+    private lateinit var mSensorManager: SensorManager
+    private lateinit var mAccelerometer: Sensor
+    private lateinit var lightSensor: Sensor
+    private var isListening = false
+    private var mLastShakeTime: Long = 0
+    private val SHAKE_THRESHOLD = 1000L
+    private var batteryReceiver: BroadcastReceiver? = null
 
+    private lateinit var proximitySensor: Sensor
+    private var isProximityTriggered = false
+    private var isPhoneInPocket = false
+    private var isLightTriggered = false
     companion object {
         private const val CHANNEL_ID = "clap_service_channel"
         private const val CHANNEL_NAME = "Clap Detection Service"
@@ -39,6 +66,10 @@ class MyService : Service() {
         super.onCreate()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         handlerClap = Handler()
+        mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
+        lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
+        proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
     }
 
     fun handleBackPress(activity: Activity) {
@@ -58,7 +89,27 @@ class MyService : Service() {
         createNotificationChannel()
         val notification = createNotifyOn()
         startForeground(1, notification)
-        startListening()
+        val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
+        Log.d("manh", runningService.toString())
+        if (runningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+            clapAndWhistleDetect()
+        } else if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
+            voicePasswordDetect()
+        } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
+            mSensorManager.unregisterListener(this, lightSensor)
+            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+        } else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
+            chargerPhoneDetect()
+        }
+       else if (runningService == Constant.Service.POCKET_MODE_RUNNING) {
+            mSensorManager.unregisterListener(this, mAccelerometer)
+            mSensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+            mSensorManager.registerListener(
+                this,
+                proximitySensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        }
         return START_STICKY
     }
 
@@ -93,6 +144,7 @@ class MyService : Service() {
             .setOngoing(true)
             .build()
     }
+
     @SuppressLint("RemoteViewLayout")
     private fun createNotifyOn(): Notification {
         // Inflate the custom layout using RemoteViews
@@ -112,8 +164,8 @@ class MyService : Service() {
             .build()
     }
 
-
-    private fun startListening() {
+    // clap and whistle
+    private fun clapAndWhistleDetect() {
         // If the audio classifier is initialized and running, do nothing.
         if (audioClassifier != null) return
         // Initialize the audio classifier
@@ -155,6 +207,120 @@ class MyService : Service() {
         audioRecord = record
     }
 
+    // voice passcode
+    private fun voicePasswordDetect() {
+        voicePasscodeSharePres = getSharedPreferences(
+            Constant.SharePres.VOICE_PASSCODE_SHARE_PRES,
+            MODE_PRIVATE
+        )
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Log.e("manh", "Speech recognizer not available on this device.")
+            return
+        }
+
+        recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US")
+            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+        }
+
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {
+                Log.d("manh", "Speech recognizer ready.")
+            }
+
+            override fun onBeginningOfSpeech() {
+                Log.d("manh", "Listening for passcode...")
+            }
+
+            override fun onRmsChanged(rmsdB: Float) {}
+
+            override fun onBufferReceived(buffer: ByteArray?) {}
+
+            override fun onEndOfSpeech() {
+                Log.d("manh", "End of speech detected.")
+            }
+
+            override fun onError(error: Int) {
+                when (error) {
+                    SpeechRecognizer.ERROR_NETWORK -> Log.e("manh", "Network error.")
+                    SpeechRecognizer.ERROR_AUDIO -> Log.e("manh", "Audio recording error.")
+                    SpeechRecognizer.ERROR_NO_MATCH -> Log.e("manh", "No match found.")
+                }
+                restartListening()
+            }
+
+            override fun onResults(results: Bundle?) {
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                val passcode =
+                    voicePasscodeSharePres.getString(Constant.SharePres.PASSCODE, "Hello")
+                Log.d("manh", results.toString())
+                matches?.let {
+                    for (result in it) {
+                        if (result.equals(passcode, ignoreCase = true)) {
+                            foundPhone()
+                            return
+                        }
+                    }
+                }
+                restartListening()
+            }
+
+            override fun onPartialResults(partialResults: Bundle?) {}
+
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+
+        speechRecognizer.startListening(recognizerIntent)
+    }
+
+    private fun startListening() {
+        if (!isListening) {
+            isListening = true
+            speechRecognizer.startListening(recognizerIntent)
+        }
+    }
+
+    private fun restartListening() {
+        if (isListening) {
+            speechRecognizer.stopListening()
+            isListening = false
+        }
+        startListening()
+    }
+// charger phone
+
+    private fun chargerPhoneDetect() {
+         batteryReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == Intent.ACTION_BATTERY_CHANGED) {
+                    val status =
+                        intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1) // Lấy trạng thái pin
+                    when (status) {
+                        BatteryManager.BATTERY_STATUS_CHARGING -> {
+                            // Điện thoại đang sạc
+                        }
+
+                        BatteryManager.BATTERY_STATUS_DISCHARGING -> {
+                            // Rút sạc
+                            foundPhone()
+                        }
+                    }
+                }
+            }
+        }
+
+        // Đăng ký Receiver cho sự kiện pin
+        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        registerReceiver(batteryReceiver, intentFilter)
+    }
+
     private fun foundPhone() {
         stopSelf()
         val intent = Intent(this, FoundPhoneActivity::class.java)
@@ -163,6 +329,60 @@ class MyService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        // don't touch phone
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            // Xử lý cảm biến gia tốc (phát hiện rung lắc)
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val acceleration = Math.sqrt(
+                Math.pow(x.toDouble(), 2.0) +
+                        Math.pow(y.toDouble(), 2.0) +
+                        Math.pow(z.toDouble(), 2.0)
+            )
+            val currentTime = System.currentTimeMillis()
+            if (acceleration > 10 && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
+                mLastShakeTime = currentTime
+                foundPhone()
+                return
+            }
+        }
+
+            // pocket mode
+        when (event?.sensor?.type) {
+            Sensor.TYPE_PROXIMITY -> {
+                // Xử lý cảm biến tiệm cận
+                val proximityValue = event.values[0]
+                isProximityTriggered = proximityValue < proximitySensor.maximumRange
+            }
+            Sensor.TYPE_LIGHT -> {
+                // Xử lý cảm biến ánh sáng
+                val lightValue = event.values[0]
+                isLightTriggered = lightValue < 50
+            }
+        }
+        checkPocketMode()
+    }
+    private fun checkPocketMode() {
+        if (isProximityTriggered && isLightTriggered) {
+            // phone is in the pocket
+            if (!isPhoneInPocket) {
+                isPhoneInPocket = true
+            }
+        } else {
+            // phone is not in the pocket
+            if (isPhoneInPocket) {
+                isPhoneInPocket = false
+                foundPhone()
+            }
+        }
+    }
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+    }
     override fun onDestroy() {
         super.onDestroy()
         handlerClap?.removeCallbacksAndMessages(null)
@@ -170,9 +390,16 @@ class MyService : Service() {
             audioRecord?.stop()
             audioRecord?.release()
             audioClassifier?.close()
+            speechRecognizer.destroy()
         } catch (e: Exception) {
             Log.e(TAG, "Error releasing resources: ${e.message}")
         }
+        mSensorManager.unregisterListener(this, mAccelerometer)
+        mSensorManager.unregisterListener(this, lightSensor)
+        if (batteryReceiver!=null){
+            unregisterReceiver(batteryReceiver)
+        }
+
         // Hiển thị lại notification khi kết thúc (nếu cần)
         val notification = createNotifyOff()
         // Tạo notification với layout ban đầu

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.home.ChargerAlarmFragment">
+    tools:context=".fragment.home.ChargerAlarmFragment"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/round2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/round2_passive"
@@ -47,6 +49,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/hand_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/hand"
@@ -57,5 +60,15 @@
 
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+    <TextView
+        android:id="@+id/txt_action_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/tap_to_active"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        />
+</LinearLayout>

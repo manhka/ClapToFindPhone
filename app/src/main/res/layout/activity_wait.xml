@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.WaitActivity"
+    android:background="#E7FFFE"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
+<TextView
+    android:id="@+id/txt_title_wait"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/dont_touch_my_phone"
+    android:textStyle="bold"
+    android:textSize="24sp"
+    android:layout_marginTop="40dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wait2"
+        android:layout_marginTop="100dp"/>
+    <TextView
+        android:id="@+id/txt_wait_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="70sp"
+        android:text="5"
+        android:textColor="#42A3E9"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/wait_content"
+        android:gravity="center"
+        android:layout_marginTop="60dp"/>
+</LinearLayout>
