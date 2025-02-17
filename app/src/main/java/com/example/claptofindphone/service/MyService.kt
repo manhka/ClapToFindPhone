@@ -42,7 +42,7 @@ class MyService : Service(), SensorEventListener {
     private var audioClassifier: AudioClassifier? = null
     private var audioRecord: AudioRecord? = null
     private var channel: NotificationChannel? = null
-    private lateinit var speechRecognizer: SpeechRecognizer
+    private  var speechRecognizer: SpeechRecognizer?=null
     private lateinit var recognizerIntent: Intent
     private lateinit var voicePasscodeSharePres: SharedPreferences
     private lateinit var mSensorManager: SensorManager
@@ -90,7 +90,6 @@ class MyService : Service(), SensorEventListener {
         val notification = createNotifyOn()
         startForeground(1, notification)
         val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
-        Log.d("manh", runningService.toString())
         if (runningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
             clapAndWhistleDetect()
         } else if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
@@ -230,7 +229,7 @@ class MyService : Service(), SensorEventListener {
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
         }
 
-        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+        speechRecognizer?.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) {
                 Log.d("manh", "Speech recognizer ready.")
             }
@@ -277,19 +276,19 @@ class MyService : Service(), SensorEventListener {
             override fun onEvent(eventType: Int, params: Bundle?) {}
         })
 
-        speechRecognizer.startListening(recognizerIntent)
+        speechRecognizer?.startListening(recognizerIntent)
     }
 
     private fun startListening() {
         if (!isListening) {
             isListening = true
-            speechRecognizer.startListening(recognizerIntent)
+            speechRecognizer?.startListening(recognizerIntent)
         }
     }
 
     private fun restartListening() {
         if (isListening) {
-            speechRecognizer.stopListening()
+            speechRecognizer?.stopListening()
             isListening = false
         }
         startListening()
@@ -298,6 +297,7 @@ class MyService : Service(), SensorEventListener {
 
     private fun chargerPhoneDetect() {
          batteryReceiver = object : BroadcastReceiver() {
+             var isChargerPhone=false
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == Intent.ACTION_BATTERY_CHANGED) {
                     val status =
@@ -305,11 +305,16 @@ class MyService : Service(), SensorEventListener {
                     when (status) {
                         BatteryManager.BATTERY_STATUS_CHARGING -> {
                             // Điện thoại đang sạc
+                            isChargerPhone=true
+
                         }
 
                         BatteryManager.BATTERY_STATUS_DISCHARGING -> {
                             // Rút sạc
-                            foundPhone()
+                            if (isChargerPhone){
+                                isChargerPhone=false
+                                foundPhone()
+                            }
                         }
                     }
                 }
@@ -389,8 +394,11 @@ class MyService : Service(), SensorEventListener {
         try {
             audioRecord?.stop()
             audioRecord?.release()
+            if (speechRecognizer!=null){
+                speechRecognizer?.destroy()
+            }
             audioClassifier?.close()
-            speechRecognizer.destroy()
+
         } catch (e: Exception) {
             Log.e(TAG, "Error releasing resources: ${e.message}")
         }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -48,6 +49,7 @@ class ChangeFlashlightActivity : AppCompatActivity() {
         flashlightStatus =
             flashlightSharedPreferences.getBoolean(Constant.SharePres.FLASHLIGHT_STATUS, true)
         // on off toggle
+
         updateOnOffToggle(flashlightStatus)
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
@@ -177,7 +179,7 @@ class ChangeFlashlightActivity : AppCompatActivity() {
 
     private fun updateOnOffToggle(flashlightStatus:Boolean) {
 
-        if (flashlightStatus) {
+        if (!flashlightStatus) {
             changeFlashlightBinding.offButton.visibility = View.VISIBLE
             changeFlashlightBinding.onButton.visibility = View.GONE
             changeFlashlightBinding.txtOn.visibility = View.GONE

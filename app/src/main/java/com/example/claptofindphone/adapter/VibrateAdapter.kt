@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
-import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.databinding.VibrateItemBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Vibrate

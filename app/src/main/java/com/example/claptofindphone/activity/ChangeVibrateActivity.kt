@@ -1,9 +1,12 @@
 package com.example.claptofindphone.activity
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,6 +27,7 @@ class ChangeVibrateActivity : AppCompatActivity() {
     private lateinit var vibrateSharedPreferences: SharedPreferences
     private lateinit var vibrateController: VibrateController
     private var vibrateStatus: Boolean = true
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         changeVibrateItemBinding=ActivityChangeVibrateBinding.inflate(layoutInflater)
@@ -98,9 +102,9 @@ class ChangeVibrateActivity : AppCompatActivity() {
             Vibrate(R.drawable.bg_passive_item,Constant.Vibrate.vibrate11,R.drawable.ic_premium,R.drawable.active_theme_ic,listOf(0L, 600L, 200L, 400L, 200L, 300L)),
         )
     }
-    private fun updateOnOffToggle(flashlightStatus:Boolean) {
+    private fun updateOnOffToggle(vibrateStatus:Boolean) {
 
-        if (flashlightStatus) {
+        if (!vibrateStatus) {
             changeVibrateItemBinding.offButton.visibility = View.VISIBLE
             changeVibrateItemBinding.onButton.visibility = View.GONE
             changeVibrateItemBinding.txtOn.visibility = View.GONE

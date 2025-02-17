@@ -7,6 +7,7 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
@@ -114,7 +115,6 @@ class ChangeSoundActivity : AppCompatActivity() {
             soundStatus = !soundStatus
             updateOnOffToggle(soundStatus)
         }
-
         changeSoundBinding.saveButton.setOnClickListener {
             soundSharedPreferences.edit()
                 .putString(Constant.SharePres.ACTIVE_SOUND_NAME, selectedSoundName)
@@ -340,9 +340,9 @@ class ChangeSoundActivity : AppCompatActivity() {
         )
     }
 
-    private fun updateOnOffToggle(flashlightStatus: Boolean) {
+    private fun updateOnOffToggle(soundStatus: Boolean) {
 
-        if (flashlightStatus) {
+        if (!soundStatus) {
             changeSoundBinding.offButton.visibility = View.VISIBLE
             changeSoundBinding.onButton.visibility = View.GONE
             changeSoundBinding.txtOn.visibility = View.GONE

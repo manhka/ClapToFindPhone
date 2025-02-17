@@ -68,6 +68,9 @@ class VoicePasscodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         voicePasscodeInHomeBinding.voicePasscodeButton.setOnClickListener {
+            serviceSharedPreferences.edit()
+                .putString(Constant.Service.RUNNING_SERVICE, Constant.Service.VOICE_PASSCODE_RUNNING)
+                .apply()
             val isOnVoicePasscodeService =
                 serviceSharedPreferences.getBoolean(Constant.Service.VOICE_PASSCODE, false)
             val isOnDontTouchMyPhoneService =

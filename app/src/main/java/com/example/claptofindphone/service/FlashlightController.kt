@@ -28,7 +28,7 @@ class FlashlightController(private val cameraManager: CameraManager, private val
     }
 
 
-    private fun stopFlashing() {
+     fun stopFlashing() {
         isFlashing = false
         toggleFlash(false)
     }

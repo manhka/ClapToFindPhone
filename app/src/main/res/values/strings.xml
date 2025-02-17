@@ -202,4 +202,6 @@
     <string name="content_warning">This function is under development, the English passcode will work better. Please speak/write passcode in English for best quality.\nThank you for trusting and using the application!</string>
     <string name="listen">Listen</string>
     <string name="write_something_to_speed">Write something to speed...</string>
+    <string name="repeat">Repeat</string>
+    <string name="plug_phone">Please plug in your phone .</string>
 </resources>
