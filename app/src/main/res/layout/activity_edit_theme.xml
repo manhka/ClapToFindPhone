@@ -5,7 +5,7 @@
     android:id="@+id/activity_edit_theme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_df_theme1"
+    android:background="@drawable/bg_call_theme1"
     android:padding="10dp"
     tools:context=".activity.EditThemeActivity">
 

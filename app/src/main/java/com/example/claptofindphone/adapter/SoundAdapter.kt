@@ -3,6 +3,7 @@ package com.example.claptofindphone.adapter
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class SoundAdapter(
     }
 
     override fun onBindViewHolder(holder: SoundHolder, position: Int) {
+        Log.d("seleeccdcdcd",selectedSound.toString())
         val sound = soundList[position]
         holder.soundItemBinding.customSoundBtn.setImageResource(sound.soundIcon)
         holder.soundItemBinding.customSoundBtn.setBackgroundResource(sound.soundBg)

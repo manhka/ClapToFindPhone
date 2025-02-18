@@ -125,6 +125,7 @@ class LanguageActivity : AppCompatActivity() {
         binding.btnApplyLanguage.setOnClickListener {
             val selectedLanguage = languageAdapter.getSelectedLanguage()
             if (selectedLanguage != null) {
+                languageSharePres.edit().putString(Constant.SharePres.CURRENT_LANGUAGE,selectedLanguage.languageCode).apply()
                 setAppLocale(selectedLanguage.languageCode)
             } else {
                 val curLanguage =

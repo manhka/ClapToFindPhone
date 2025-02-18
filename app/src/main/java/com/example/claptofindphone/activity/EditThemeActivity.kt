@@ -17,6 +17,7 @@ import com.example.claptofindphone.databinding.DialogEditThemeBinding
 import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.DefaultTheme
+import com.example.claptofindphone.service.AnimationUtils
 
 class EditThemeActivity : AppCompatActivity() {
     private lateinit var editThemeBinding: ActivityEditThemeBinding
@@ -56,6 +57,12 @@ class EditThemeActivity : AppCompatActivity() {
             editThemeBinding.imgViewSmallRight.setImageResource(defaultTheme.defaultThemeSmallRight)
             editThemeBinding.imgViewBigRight.setImageResource(defaultTheme.defaultThemeBigRight)
             selectedThemeName=defaultTheme.themeName
+
+            AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewRound3)
+            editThemeBinding.imgViewRound3.postDelayed({
+                AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewRound4)
+            }, 500)
+
         }
         // call theme
         val callTheme= intent.getSerializableExtra("call_theme") as? CallTheme
@@ -72,8 +79,17 @@ class EditThemeActivity : AppCompatActivity() {
             editThemeBinding.txtName.text=name
             editThemeBinding.txtPhone.text=phone
             selectedThemeName=callTheme.themeName
+
+            AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewCallThemeRound1)
+            editThemeBinding.imgViewCallThemeRound1.postDelayed({
+                AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewCallThemeRound2)
+            }, 500)
         }
         editThemeBinding.applyButton.setOnClickListener {
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound1)
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound2)
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
             themeSharedPreferences.edit().putString(Constant.SharePres.ACTIVE_THEME_NAME,selectedThemeName).apply()
             val intent = Intent(this, ChangeThemeActivity::class.java)
             startActivity(intent)
@@ -81,6 +97,10 @@ class EditThemeActivity : AppCompatActivity() {
         }
 
         editThemeBinding.backButton.setOnClickListener {
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound1)
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound2)
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
+            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
             val intent=Intent(this,ChangeThemeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)

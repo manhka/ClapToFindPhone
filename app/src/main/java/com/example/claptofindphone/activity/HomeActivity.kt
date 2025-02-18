@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -30,6 +31,7 @@ import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
 import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.service.PermissionController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.reflect.typeOf
@@ -40,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var soundList: List<Sound>
     private lateinit var notificationSharedPreferences: SharedPreferences
     private val REQUEST_CODE_POST_NOTIFICATION = 101
+    private lateinit var permissionController: PermissionController
     private lateinit var serviceSharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        permissionController=PermissionController()
         notificationSharedPreferences = getSharedPreferences(
             Constant.SharePres.NOTIFICATION_SHARE_PRES,
             MODE_PRIVATE
@@ -113,9 +117,9 @@ class HomeActivity : AppCompatActivity() {
         )
         val typeOfService = serviceSharedPreferences.getString(
             Constant.Service.RUNNING_SERVICE,
-            Constant.Service.CLAP_AND_WHISTLE_RUNNING
+           null
         )
-        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING || typeOfService==null) {
             homeViewPager.currentItem = 0
         } else if (typeOfService == Constant.Service.VOICE_PASSCODE_RUNNING) {
             homeViewPager.currentItem = 1
@@ -147,9 +151,34 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
+
+
         homeBinding.changeAudioPasscodeButton.setOnClickListener {
-            val intent = Intent(this, VoicePasscodeActivity::class.java)
-            startActivity(intent)
+            if (permissionController.hasAudioPermission(this)){
+                if(permissionController.isInternetAvailable(this)){
+                    val isOnVoicePasscodeService =
+                        serviceSharedPreferences.getBoolean(Constant.Service.VOICE_PASSCODE, false)
+                    val isOnDontTouchMyPhoneService =
+                        serviceSharedPreferences.getBoolean(Constant.Service.DONT_TOUCH_MY_PHONE, false)
+                    val isOnPocketModeService =
+                        serviceSharedPreferences.getBoolean(Constant.Service.POCKET_MODE, false)
+                    val isOnChargerAlarmService =
+                        serviceSharedPreferences.getBoolean(Constant.Service.CHARGER_PHONE, false)
+                    val isOnClapService =
+                        serviceSharedPreferences.getBoolean(Constant.Service.CLAP_TO_FIND_PHONE, false)
+                    if (isOnVoicePasscodeService || isOnDontTouchMyPhoneService || isOnPocketModeService || isOnChargerAlarmService || isOnClapService){
+                        Toast.makeText(this,getString(R.string.deactive_all_feature_before_run),Toast.LENGTH_SHORT).show()
+                    }else{
+                        val intent = Intent(this, VoicePasscodeActivity::class.java)
+                        startActivity(intent)
+                    }
+                }else{
+                    Toast.makeText(this,R.string.connect_internet_to_use_this_feature,Toast.LENGTH_SHORT).show()
+                }
+            }else{
+                Toast.makeText(this,R.string.active_audio_to_use_this_feature,Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 

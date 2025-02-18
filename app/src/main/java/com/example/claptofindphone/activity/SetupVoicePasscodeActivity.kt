@@ -110,7 +110,7 @@ class SetupVoicePasscodeActivity : AppCompatActivity() {
                 }
 
                 override fun onError(error: Int) {
-                    Log.e("SpeechRecognizer", "Error: $error")
+//                    Log.e("SpeechRecognizer", "Error: $error")
                     setupPasscodeBinding.txtPasscodeResult.visibility=View.GONE
                     setupPasscodeBinding.dotLine.visibility=View.VISIBLE
                     setupPasscodeBinding.animationSoundPlay.visibility=View.GONE

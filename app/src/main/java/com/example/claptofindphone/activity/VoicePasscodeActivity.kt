@@ -27,5 +27,8 @@ class VoicePasscodeActivity : AppCompatActivity() {
             val intent = Intent(this, SetupTextPasscodeActivity::class.java)
             startActivity(intent)
         }
+        voicePasscodeBinding.backButton.setOnClickListener {
+            finish()
+        }
     }
 }

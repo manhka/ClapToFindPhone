@@ -3,6 +3,7 @@ package com.example.claptofindphone.adapter
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import com.example.claptofindphone.activity.EditThemeActivity
 import com.example.claptofindphone.databinding.CallThemeItemBinding
 import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.AnimationUtils
 
 class CallThemeAdapter(val context: Context,
     val callThemeList: List<CallTheme>): RecyclerView.Adapter<CallThemeAdapter.CallThemeViewHolder>() {
@@ -25,7 +27,7 @@ class CallThemeAdapter(val context: Context,
         Constant.DefaultTheme.DefaultTheme1
     )
     val name=callThemeSharedPreferences.getString(Constant.SharePres.NAME,context.getString(R.string.name))
-    val phone=callThemeSharedPreferences.getString(Constant.SharePres.PHONE,context.getString(R.string.txt_phone))
+    val phone=callThemeSharedPreferences.getString(Constant.SharePres.PHONE,context.getString(R.string.phone))
     val selectedPosition = callThemeList.indexOfFirst { it.themeName == callThemeName }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CallThemeViewHolder {
         val callThemeItemBinding= CallThemeItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)

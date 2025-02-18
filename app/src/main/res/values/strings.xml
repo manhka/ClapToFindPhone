@@ -204,4 +204,7 @@
     <string name="write_something_to_speed">Write something to speed...</string>
     <string name="repeat">Repeat</string>
     <string name="plug_phone">Please plug in your phone .</string>
+    <string name="connect_internet_to_use_this_feature">Please, Connect the internet to use this feature.</string>
+    <string name="deactive_all_feature_before_run">Please, deactive feature before changing passcode.</string>
+    <string name="active_audio_to_use_this_feature">Please turn on audio permission to change passcode.</string>
 </resources>

@@ -1,13 +1,11 @@
 package com.example.claptofindphone.adapter
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.SoundItemBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
 
 class SoundAdapter2(

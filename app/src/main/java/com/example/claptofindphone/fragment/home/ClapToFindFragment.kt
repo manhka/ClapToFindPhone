@@ -1,10 +1,13 @@
 package com.example.claptofindphone.fragment.home
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +17,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogClapAndWhistleBinding
 import com.example.claptofindphone.databinding.FragmentClapToFindInHomeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
 
@@ -45,7 +49,10 @@ class ClapToFindFragment : Fragment() {
                     requireActivity()
                 )
             ) {
-                serviceSharedPreferences.edit().putString(Constant.Service.RUNNING_SERVICE,Constant.Service.CLAP_AND_WHISTLE_RUNNING).apply()
+                serviceSharedPreferences.edit().putString(
+                    Constant.Service.RUNNING_SERVICE,
+                    Constant.Service.CLAP_AND_WHISTLE_RUNNING
+                ).apply()
                 val isOnVoicePasscodeService =
                     serviceSharedPreferences.getBoolean(Constant.Service.VOICE_PASSCODE, false)
                 val isOnDontTouchMyPhoneService =
@@ -79,6 +86,8 @@ class ClapToFindFragment : Fragment() {
                     clapToFindInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     serviceSharedPreferences.edit()
                         .putBoolean(Constant.Service.CLAP_TO_FIND_PHONE, false).apply()
+                    AnimationUtils.applyAnimations(clapToFindInHomeBinding.handIc)
+                    AnimationUtils.stopAnimations(clapToFindInHomeBinding.round3)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                 }
@@ -100,6 +109,12 @@ class ClapToFindFragment : Fragment() {
                 Constant.Service.CLAP_TO_FIND_PHONE,
                 Constant.Service.CLAP_AND_WHISTLE_RUNNING
             )
+            AnimationUtils.stopAnimations(clapToFindInHomeBinding.handIc)
+            AnimationUtils.applyWaveAnimation(clapToFindInHomeBinding.round3)
+
+        } else {
+            AnimationUtils.applyAnimations(clapToFindInHomeBinding.handIc)
+            AnimationUtils.stopAnimations(clapToFindInHomeBinding.round3)
         }
 
         val firstTimeSharedPreferences = this.requireActivity()
@@ -128,6 +143,8 @@ class ClapToFindFragment : Fragment() {
     }
 
     private fun onService(typeOfService: String, typeOfServiceIntent: String) {
+        AnimationUtils.stopAnimations(clapToFindInHomeBinding.handIc)
+        AnimationUtils.applyWaveAnimation(clapToFindInHomeBinding.round3)
         clapToFindInHomeBinding.txtActionStatus.text =
             getString(R.string.tap_to_deactive)
         clapToFindInHomeBinding.handIc.visibility = View.GONE

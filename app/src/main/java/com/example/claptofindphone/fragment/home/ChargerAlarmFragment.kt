@@ -21,6 +21,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogChargerAlarmDialogBinding
 import com.example.claptofindphone.databinding.FragmentChargerAlarmInHomeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
 
@@ -126,6 +127,8 @@ class ChargerAlarmFragment : Fragment() {
                     chargerAlarmInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     serviceSharedPreferences.edit()
                         .putBoolean(Constant.Service.CHARGER_PHONE, false).apply()
+                    AnimationUtils.applyAnimations(chargerAlarmInHomeBinding.handIc)
+                    AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.round3)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                     if (batteryReceiver!=null){
@@ -153,6 +156,11 @@ class ChargerAlarmFragment : Fragment() {
                 Constant.Service.CHARGER_PHONE,
                 Constant.Service.CHARGER_ALARM_RUNNING
             )
+            AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.handIc)
+            AnimationUtils.applyWaveAnimation(chargerAlarmInHomeBinding.round3)
+        }else{
+            AnimationUtils.applyAnimations(chargerAlarmInHomeBinding.handIc)
+            AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.round3)
         }
 
         val firstTimeSharedPreferences = this.requireActivity().getSharedPreferences(
@@ -182,6 +190,8 @@ class ChargerAlarmFragment : Fragment() {
     }
 
     private fun onService(typeOfService: String, typeOfServiceIntent: String) {
+        AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.handIc)
+        AnimationUtils.applyWaveAnimation(chargerAlarmInHomeBinding.round3)
         chargerAlarmInHomeBinding.txtActionStatus.text =
             getString(R.string.tap_to_deactive)
         chargerAlarmInHomeBinding.handIc.visibility = View.GONE

@@ -52,11 +52,6 @@ class ChangeSoundActivity : AppCompatActivity() {
             Constant.SharePres.SOUND_SHARE_PRES,
             MODE_PRIVATE
         )
-        selectedSoundName =
-            soundSharedPreferences.getString(
-                Constant.SharePres.ACTIVE_SOUND_NAME,
-                Constant.Sound.CAT
-            ).toString()
         soundStatus =
             soundSharedPreferences.getBoolean(Constant.SharePres.SOUND_STATUS, true)
         timeSoundPlay =
@@ -100,6 +95,9 @@ class ChangeSoundActivity : AppCompatActivity() {
         // sound from home
         val soundType = intent.getIntExtra("sound_type", R.raw.cat_meowing)
         val soundName = intent.getStringExtra("sound_name")
+        if (soundName != null) {
+            selectedSoundName=soundName
+        }
         soundController.playSound(soundType, 30f, 3000)
         changeSoundAdapter = SoundAdapter2(this, soundList, soundName.toString()) { sound ->
             selectedSoundName = sound.soundName

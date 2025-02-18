@@ -14,6 +14,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogPocketModeBinding
 import com.example.claptofindphone.databinding.FragmentPocketModeInHomeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
 
@@ -77,6 +78,8 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
                     pocketModeInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     serviceSharedPreferences.edit()
                         .putBoolean(Constant.Service.POCKET_MODE, false).apply()
+                    AnimationUtils.applyAnimations(pocketModeInHomeBinding.handIc)
+                    AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                 }
@@ -97,6 +100,12 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
                 Constant.Service.POCKET_MODE,
                 Constant.Service.POCKET_MODE_RUNNING
             )
+            AnimationUtils.stopAnimations(pocketModeInHomeBinding.handIc)
+            AnimationUtils.applyWaveAnimation(pocketModeInHomeBinding.round3)
+
+        } else {
+            AnimationUtils.applyAnimations(pocketModeInHomeBinding.handIc)
+            AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
         }
 
         val firstTimeSharedPreferences= this.requireActivity().getSharedPreferences(
@@ -121,6 +130,8 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
         }
     }
     private fun onService(typeOfService: String, typeOfServiceIntent: String) {
+        AnimationUtils.stopAnimations(pocketModeInHomeBinding.handIc)
+        AnimationUtils.applyWaveAnimation(pocketModeInHomeBinding.round3)
         pocketModeInHomeBinding.txtActionStatus.text =
             getString(R.string.tap_to_deactive)
         pocketModeInHomeBinding.handIc.visibility = View.GONE

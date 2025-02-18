@@ -14,6 +14,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogTouchPhoneBinding
 import com.example.claptofindphone.databinding.FragmentDontTouchMyPhoneInHomeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
 
 
@@ -73,6 +74,8 @@ class DontTouchMyPhoneFragment : Fragment() {
                 touchPhoneInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                 serviceSharedPreferences.edit()
                     .putBoolean(Constant.Service.DONT_TOUCH_MY_PHONE, false).apply()
+                AnimationUtils.applyAnimations(touchPhoneInHomeBinding.handIc)
+                AnimationUtils.stopAnimations(touchPhoneInHomeBinding.round3)
                 val intent = Intent(requireContext(), MyService::class.java)
                 requireContext().stopService(intent)
             }
@@ -88,6 +91,12 @@ class DontTouchMyPhoneFragment : Fragment() {
                 Constant.Service.DONT_TOUCH_MY_PHONE,
                 Constant.Service.TOUCH_PHONE_RUNNING
             )
+            AnimationUtils.stopAnimations(touchPhoneInHomeBinding.handIc)
+            AnimationUtils.applyWaveAnimation(touchPhoneInHomeBinding.round3)
+
+        } else {
+            AnimationUtils.applyAnimations(touchPhoneInHomeBinding.handIc)
+            AnimationUtils.stopAnimations(touchPhoneInHomeBinding.round3)
         }
 
         val firstTimeSharedPreferences= this.requireActivity().getSharedPreferences(
@@ -112,6 +121,8 @@ class DontTouchMyPhoneFragment : Fragment() {
         }
     }
     private fun onService(typeOfService: String, typeOfServiceIntent: String) {
+        AnimationUtils.stopAnimations(touchPhoneInHomeBinding.handIc)
+        AnimationUtils.applyWaveAnimation(touchPhoneInHomeBinding.round3)
         touchPhoneInHomeBinding.txtActionStatus.text =
             getString(R.string.tap_to_deactive)
         touchPhoneInHomeBinding.handIc.visibility = View.GONE
