@@ -1,5 +1,10 @@
 package com.example.claptofindphone.model
 
+import android.content.Context
+import android.content.res.Resources
+import androidx.core.content.ContextCompat.getString
+import com.example.claptofindphone.R
+
 class Constant {
     object SharePres {
         const val FIRST_TIME_JOIN_SHARE_PRES = "first_time_join"
@@ -80,19 +85,21 @@ class Constant {
     }
 
     object Sound {
-        const val CAT = "Cat meowing"
-        const val DOG = "Dog barking"
-        const val HEY_STAY_HERE = "Hey stay here"
-        const val WHISTLE = "Whistle"
-        const val HELLO = "Hello"
-        const val CAR_HONK = "Car horn"
-        const val DOOR_BELL = "Door bell"
-        const val PARTY_HORN = "Party horn"
-        const val POLICE_WHISTLE = "Police whistle"
-        const val CAVARLY = "Cavarly"
-        const val ARMY_TRUMPET = "Army trumpet"
-        const val RIFLE = "Rifle"
+        // Make sure context is passed in or accessed
+        val CAT = R.string.cat_meowing
+        val DOG = R.string.dog_barking
+        val HEY_STAY_HERE = R.string.hey_stay_here
+        val WHISTLE = R.string.whistle
+        val HELLO = R.string.hello
+        val CAR_HONK = R.string.car_horn
+        val DOOR_BELL = R.string.door_bell
+        val PARTY_HORN = R.string.party_horn
+        val POLICE_WHISTLE = R.string.police_whistle
+        val CAVALRY = R.string.cavarly
+        val ARMY_TRUMPET = R.string.army_trumpet
+        val RIFLE = R.string.rifle
     }
+
 
     object Flashlight {
         const val default = "Default"

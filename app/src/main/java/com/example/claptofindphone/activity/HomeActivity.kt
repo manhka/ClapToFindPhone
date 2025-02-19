@@ -186,70 +186,70 @@ class HomeActivity : AppCompatActivity() {
     fun getListSound() {
         soundList = listOf(
             Sound(
-                Constant.Sound.CAT,
+                getString(Constant.Sound.CAT),
                 R.drawable.cat_meowing_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.cat_meowing
             ),
             Sound(
-                Constant.Sound.DOG,
+                getString(Constant.Sound.DOG),
                 R.drawable.dog_barking_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.dog_barking
             ),
             Sound(
-                Constant.Sound.HEY_STAY_HERE,
+                getString(Constant.Sound.HEY_STAY_HERE),
                 R.drawable.hey_stay_here_ic,
                 R.drawable.bg_sound_passive, R.raw.stay_here
             ),
             Sound(
-                Constant.Sound.WHISTLE,
+                getString(Constant.Sound.WHISTLE),
                 R.drawable.whistle_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.whistle
             ),
             Sound(
-                Constant.Sound.HELLO,
+                getString(Constant.Sound.HELLO),
                 R.drawable.hello_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.hello
             ),
             Sound(
-                Constant.Sound.CAR_HONK,
+                getString(Constant.Sound.CAR_HONK),
                 R.drawable.car_horn_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.car_honk
             ),
             Sound(
-                Constant.Sound.DOOR_BELL,
+                getString(Constant.Sound.DOOR_BELL),
                 R.drawable.door_bell_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.door_bell
             ),
             Sound(
-                Constant.Sound.PARTY_HORN,
+                getString(Constant.Sound.PARTY_HORN),
                 R.drawable.party_horn_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.party_horn
             ),
             Sound(
-                Constant.Sound.POLICE_WHISTLE,
+                getString(Constant.Sound.POLICE_WHISTLE),
                 R.drawable.police_whistle_ic,
                 R.drawable.bg_sound_passive, R.raw.police_whistle
             ),
             Sound(
-                Constant.Sound.CAVARLY,
+                getString(Constant.Sound.CAVALRY),
                 R.drawable.cavalry_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.cavalry
             ),
             Sound(
-                Constant.Sound.ARMY_TRUMPET,
+                getString(Constant.Sound.ARMY_TRUMPET),
                 R.drawable.army_trumpet_ic,
                 R.drawable.bg_sound_passive, R.raw.army_trumpet
             ),
             Sound(
-                Constant.Sound.RIFLE,
+                getString(Constant.Sound.RIFLE),
                 R.drawable.rifle_ic,
                 R.drawable.bg_sound_passive,
                 R.raw.rifle

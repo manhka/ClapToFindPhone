@@ -21,7 +21,7 @@ class SoundAdapter(
         context.getSharedPreferences(Constant.SharePres.SOUND_SHARE_PRES, MODE_PRIVATE)
     val selectedSound = soundSharedPreferences.getString(
         Constant.SharePres.ACTIVE_SOUND_NAME,
-        Constant.Sound.CAT
+        context.getString(Constant.Sound.CAT)
     )
     var selectedPosition = soundList.indexOfFirst { it.soundName == selectedSound }
     class SoundHolder(soundItemBinding: SoundItemBinding) :
