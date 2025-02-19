@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.claptofindphone.R
+import com.example.claptofindphone.activity.WaitActivity
 import com.example.claptofindphone.databinding.DialogPocketModeBinding
 import com.example.claptofindphone.databinding.FragmentPocketModeInHomeBinding
 import com.example.claptofindphone.model.Constant
@@ -22,6 +23,8 @@ class PocketModeFragment : Fragment() {
 private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
     private lateinit var serviceSharedPreferences: SharedPreferences
     private lateinit var permissionController: PermissionController
+    private lateinit var waitActivitySharedPreferences: SharedPreferences
+    private var isOnWaitActivity: Boolean= false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         serviceSharedPreferences = requireActivity().getSharedPreferences(
@@ -29,6 +32,9 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
             MODE_PRIVATE
         )
         permissionController = PermissionController()
+        waitActivitySharedPreferences=requireActivity().getSharedPreferences(Constant.SharePres.WAIT_SHARE_PRES,
+            MODE_PRIVATE)
+        isOnWaitActivity= waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
     }
 
     override fun onCreateView(
@@ -40,9 +46,7 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         pocketModeInHomeBinding.pocketModeButton.setOnClickListener {
-            if (permissionController.hasAudioPermission(requireActivity()) && permissionController.isOverlayPermissionGranted(
-                    requireActivity()
-                )
+            if ( permissionController.isOverlayPermissionGranted(requireActivity())
             ) {
                 serviceSharedPreferences.edit().putString(Constant.Service.RUNNING_SERVICE,Constant.Service.POCKET_MODE_RUNNING).apply()
                 val isOnVoicePasscodeService =
@@ -80,6 +84,7 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
                         .putBoolean(Constant.Service.POCKET_MODE, false).apply()
                     AnimationUtils.applyAnimations(pocketModeInHomeBinding.handIc)
                     AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
+                    waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false).apply()
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                 }
@@ -138,11 +143,12 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
         pocketModeInHomeBinding.round2.setImageResource(R.drawable.round2_active)
         serviceSharedPreferences.edit()
             .putBoolean(typeOfService, true).apply()
-        val intent = Intent(requireContext(), MyService::class.java)
-        intent.putExtra(
-            Constant.Service.RUNNING_SERVICE,
-            typeOfServiceIntent
-        )
-        requireContext().startService(intent)
+        isOnWaitActivity=waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
+        if (!isOnWaitActivity){
+            val intent = Intent(requireContext(), WaitActivity::class.java)
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, typeOfServiceIntent)
+            startActivity(intent)
+            waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,true).apply()
+        }
     }
 }

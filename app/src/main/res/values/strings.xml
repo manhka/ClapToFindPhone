@@ -190,4 +190,10 @@
     <string name="anti_theft">Anti theft!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">Alerts when phone is taken out of pocket</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">Create an anti-theft alarm when charging in public</string>
+    <string name="charger_alert">Charger Alert</string>
+    <string name="wait_touch_phone_content">The alarm will start after 5 seconds\nput the phone in your place</string>
+    <string name="wait_pocket_mode_title">Lock and put your phone\nin your pocket</string>
+    <string name="wait_pocket_mode_content">Your phone will start ringing if someone\ntakes it out of your pocket</string>
+    <string name="wait_charger_alarm_title">Plug the battery charger\nback in</string>
+    <string name="wait_charger_alarm_content">Your phone will start ringing if someone\nunplugs your charger</string>
 </resources>

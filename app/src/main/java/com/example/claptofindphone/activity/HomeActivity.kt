@@ -33,6 +33,7 @@ import com.example.claptofindphone.model.Sound
 import com.example.claptofindphone.noti.NotificationScheduler
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
+import com.example.claptofindphone.utils.InstallData
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.reflect.typeOf
@@ -70,7 +71,7 @@ class HomeActivity : AppCompatActivity() {
         handleNotificationPermission()
         val myService = MyService()
         myService.handleBackPress(this)
-        getListSound()
+        soundList=InstallData.getListSound(this)
         soundAdapter = SoundAdapter(this, soundList)
         homeBinding.rcvHomeSound.layoutManager = GridLayoutManager(this, 3)
         homeBinding.rcvHomeSound.adapter = soundAdapter
@@ -192,79 +193,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // create list of sound
-    fun getListSound() {
-        soundList = listOf(
-            Sound(
-                getString(Constant.Sound.CAT),
-                R.drawable.cat_meowing_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.cat_meowing
-            ),
-            Sound(
-                getString(Constant.Sound.DOG),
-                R.drawable.dog_barking_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.dog_barking
-            ),
-            Sound(
-                getString(Constant.Sound.HEY_STAY_HERE),
-                R.drawable.hey_stay_here_ic,
-                R.drawable.bg_sound_passive, R.raw.stay_here
-            ),
-            Sound(
-                getString(Constant.Sound.WHISTLE),
-                R.drawable.whistle_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.whistle
-            ),
-            Sound(
-                getString(Constant.Sound.HELLO),
-                R.drawable.hello_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.hello
-            ),
-            Sound(
-                getString(Constant.Sound.CAR_HONK),
-                R.drawable.car_horn_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.car_honk
-            ),
-            Sound(
-                getString(Constant.Sound.DOOR_BELL),
-                R.drawable.door_bell_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.door_bell
-            ),
-            Sound(
-                getString(Constant.Sound.PARTY_HORN),
-                R.drawable.party_horn_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.party_horn
-            ),
-            Sound(
-                getString(Constant.Sound.POLICE_WHISTLE),
-                R.drawable.police_whistle_ic,
-                R.drawable.bg_sound_passive, R.raw.police_whistle
-            ),
-            Sound(
-                getString(Constant.Sound.CAVALRY),
-                R.drawable.cavalry_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.cavalry
-            ),
-            Sound(
-                getString(Constant.Sound.ARMY_TRUMPET),
-                R.drawable.army_trumpet_ic,
-                R.drawable.bg_sound_passive, R.raw.army_trumpet
-            ),
-            Sound(
-                getString(Constant.Sound.RIFLE),
-                R.drawable.rifle_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.rifle
-            ),
-        )
-    }
+
 
     override fun onBackPressed() {
         val dialogBinding = ExitDialogBinding.inflate(layoutInflater)

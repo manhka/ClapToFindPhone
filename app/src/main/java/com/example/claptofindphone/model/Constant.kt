@@ -31,7 +31,7 @@ class Constant {
         // sound
         const val SOUND_SHARE_PRES = "sound_share_pres"
         const val SOUND_STATUS = "sound_status"
-        const val ACTIVE_SOUND_NAME = "active_sound_name"
+        const val ACTIVE_SOUND_ID = "active_sound_id"
         const val TIME_SOUND_PLAY = "time_sound_play"
         const val SOUND_VOLUME = "sound_volume"
 
@@ -47,6 +47,10 @@ class Constant {
         // notification
         const val NOTIFICATION_SHARE_PRES ="notification_share_pres"
         const val DENY_COUNT="deny_count"
+
+        // wait activity
+        const val WAIT_SHARE_PRES="wait_share_pres"
+        const val IS_ACTIVE_WAIT_ACTIVITY="is_active_wait_activity"
     }
 
     object Permission {

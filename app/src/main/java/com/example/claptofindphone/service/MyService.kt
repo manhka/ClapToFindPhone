@@ -19,12 +19,8 @@ import android.hardware.SensorManager
 import android.media.AudioRecord
 import android.os.BatteryManager
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.RemoteViews
 import android.window.OnBackInvokedCallback
@@ -33,6 +29,10 @@ import androidx.core.app.NotificationCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.FoundPhoneActivity
 import com.example.claptofindphone.model.Constant
+import net.gotev.speech.GoogleVoiceTypingDisabledException
+import net.gotev.speech.Speech
+import net.gotev.speech.SpeechDelegate
+import net.gotev.speech.SpeechRecognitionNotAvailable
 import org.tensorflow.lite.task.audio.classifier.AudioClassifier
 
 
@@ -43,23 +43,22 @@ class MyService : Service(), SensorEventListener {
     private var audioClassifier: AudioClassifier? = null
     private var audioRecord: AudioRecord? = null
     private var channel: NotificationChannel? = null
-    private var speechRecognizer: SpeechRecognizer? = null
-    private lateinit var recognizerIntent: Intent
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
     private lateinit var voicePasscodeSharePres: SharedPreferences
     private lateinit var mSensorManager: SensorManager
     private lateinit var mAccelerometer: Sensor
     private lateinit var lightSensor: Sensor
-    private var isListening = false
     private var mLastShakeTime: Long = 0
     private val SHAKE_THRESHOLD = 1000L
     private var batteryReceiver: BroadcastReceiver? = null
-
+    private var isVoiceDetectListening = false
+    private var isClapDetectListening = false
     private lateinit var proximitySensor: Sensor
     private var isProximityTriggered = false
     private var isPhoneInPocket = false
     private var isLightTriggered = false
-    private var handler: Handler? = null
-    private var runnable: Runnable? = null
+    private lateinit var passcode: String
 
     companion object {
         private const val CHANNEL_ID = "clap_service_channel"
@@ -68,16 +67,19 @@ class MyService : Service(), SensorEventListener {
 
     override fun onCreate() {
         super.onCreate()
-        handler = Handler()
-        runnable = Runnable {
-            restartListening()
-        }
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         handlerClap = Handler()
         mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
         lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
         proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
+        voicePasscodeSharePres = getSharedPreferences(
+            Constant.SharePres.VOICE_PASSCODE_SHARE_PRES, MODE_PRIVATE
+        )
+        handler = Handler()
+        runnable = Runnable { voicePasswordDetect() }
+        passcode = voicePasscodeSharePres.getString(Constant.SharePres.PASSCODE, "Hello").toString()
+
     }
 
     fun handleBackPress(activity: Activity) {
@@ -93,6 +95,7 @@ class MyService : Service(), SensorEventListener {
     @SuppressLint("ForegroundServiceType")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
+
         val notification = createNotifyOn()
         startForeground(1, notification)
         val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
@@ -158,6 +161,9 @@ class MyService : Service(), SensorEventListener {
 
     // clap and whistle
     private fun clapAndWhistleDetect() {
+        if(!isClapDetectListening){
+            isClapDetectListening=true
+        }
         // If the audio classifier is initialized and running, do nothing.
         if (audioClassifier != null) return
         // Initialize the audio classifier
@@ -201,97 +207,48 @@ class MyService : Service(), SensorEventListener {
 
     // voice passcode
     private fun voicePasswordDetect() {
-        voicePasscodeSharePres = getSharedPreferences(
-            Constant.SharePres.VOICE_PASSCODE_SHARE_PRES, MODE_PRIVATE
-        )
-
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-
-        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
-            Log.e("manh", "Speech recognizer not available on this device.")
-            return
+        if (!isVoiceDetectListening) {
+            isVoiceDetectListening = true
         }
+        try {
+            Speech.init(this, packageName);
+            // you must have android.permission.RECORD_AUDIO granted at this point
+            Speech.getInstance().startListening(object : SpeechDelegate {
+                override fun onStartOfSpeech() {
+                    Log.i("speech", "speech recognition is now active")
+                }
 
-        recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US")
-            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-        }
+                override fun onSpeechRmsChanged(value: Float) {
+                    Log.d("speech", "rms is now: $value")
+                }
 
-        speechRecognizer?.setRecognitionListener(object : RecognitionListener {
-            override fun onReadyForSpeech(params: Bundle?) {
-                Log.d("manh", "Speech recognizer ready.")
-            }
-
-            override fun onBeginningOfSpeech() {
-                Log.d("manh", "Listening for passcode...")
-            }
-
-            override fun onRmsChanged(rmsdB: Float) {}
-
-            override fun onBufferReceived(buffer: ByteArray?) {}
-
-            override fun onEndOfSpeech() {
-                Log.d("manh", "End of speech detected.")
-            }
-
-            override fun onError(error: Int) {
-                when (error) {
-                    SpeechRecognizer.ERROR_NETWORK -> Log.e("manh", "Network error.")
-                    SpeechRecognizer.ERROR_AUDIO -> Log.e("manh", "Audio recording error.")
-                    SpeechRecognizer.ERROR_NO_MATCH -> Log.e("manh", "No match found.")
-                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> {
-                        restartListening()
-                        return
+                override fun onSpeechPartialResults(results: List<String?>) {
+                    val str = StringBuilder()
+                    for (res in results) {
+                        str.append(res).append(" ")
                     }
-                    SpeechRecognizer.ERROR_CLIENT-> {
-                        Log.e("manh", "client error")
+
+                    Log.i("speech", "partial result: " + str.toString().trim { it <= ' ' })
+                }
+
+                override fun onSpeechResult(result: String) {
+                    Log.i("speech", "result: $result")
+                    if (result == passcode) {
+                        Speech.getInstance().stopListening()
+                        foundPhone()
+                        runnable?.let { handler?.removeCallbacks(it) }
+                    } else {
+                        runnable?.let { handler?.postDelayed(it, 1000) }
                     }
                 }
-                Log.e("manh", error.toString())
-                restartListening()
-            }
-
-            override fun onResults(results: Bundle?) {
-                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                val passcode =
-                    voicePasscodeSharePres.getString(Constant.SharePres.PASSCODE, "Hello")
-                Log.d("manh", results.toString())
-                matches?.let {
-                    for (result in it) {
-                        if (result.equals(passcode, ignoreCase = true)) {
-                            foundPhone()
-                            return
-                        }
-                    }
-                }
-                restartListening()
-            }
-
-            override fun onPartialResults(partialResults: Bundle?) {}
-
-            override fun onEvent(eventType: Int, params: Bundle?) {}
-        })
-
-        speechRecognizer?.startListening(recognizerIntent)
-    }
-
-    private fun startListening() {
-        if (!isListening) {
-            isListening = true
-            speechRecognizer?.startListening(recognizerIntent)
+            })
+        } catch (exc: SpeechRecognitionNotAvailable) {
+            Log.e("speech", "Speech recognition is not available on this device!")
+        } catch (exc: GoogleVoiceTypingDisabledException) {
+            Log.e("speech", "Google voice typing must be enabled!")
         }
     }
 
-    private fun restartListening() {
-        if (isListening) {
-            speechRecognizer?.stopListening()
-            isListening = false
-        }
-        startListening()
-    }
 
     // charger phone
     private fun chargerPhoneDetect() {
@@ -391,12 +348,6 @@ class MyService : Service(), SensorEventListener {
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
 
-    private fun stopVoiceRecognition() {
-        speechRecognizer?.stopListening()
-        speechRecognizer?.destroy()
-        speechRecognizer = null
-    }
-
     private fun stopAudioRecording() {
         audioRecord?.stop()
         audioRecord?.release()
@@ -405,17 +356,21 @@ class MyService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (isVoiceDetectListening) {
+            isVoiceDetectListening = false
+            Speech.getInstance().stopListening()
+            Speech.getInstance().shutdown()
+            runnable?.let { handler?.removeCallbacks(it) }
+        }
+        if (isClapDetectListening){
+            handlerClap?.removeCallbacksAndMessages(null)
+            try {
+                stopAudioRecording()
+                audioClassifier?.close()
 
-        handlerClap?.removeCallbacksAndMessages(null)
-        try {
-            stopAudioRecording()
-            if (speechRecognizer != null) {
-                stopVoiceRecognition()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error releasing resources: ${e.message}")
             }
-            audioClassifier?.close()
-
-        } catch (e: Exception) {
-            Log.e(TAG, "Error releasing resources: ${e.message}")
         }
         mSensorManager.unregisterListener(this, mAccelerometer)
         mSensorManager.unregisterListener(this, lightSensor)

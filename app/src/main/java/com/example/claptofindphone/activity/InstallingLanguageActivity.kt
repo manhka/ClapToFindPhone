@@ -28,15 +28,15 @@ class InstallingLanguageActivity : AppCompatActivity() {
         }
         // list of language
         val languageList = listOf(
-            "English",
-            "Vietnamese",
-            "French",
-            "Hindi",
-            "Indonesian",
-            "Japanese",
-            "Portuguese",
-            "Korean",
-            "Turkish"
+            Constant.Country.ENGLISH,
+            Constant.Country.VIETNAM,
+            Constant.Country.FRENCH,
+            Constant.Country.INDIA,
+            Constant.Country.INDONESIA,
+            Constant.Country.JAPAN,
+            Constant.Country.BRAZILIAN,
+            Constant.Country.KOREAN,
+            Constant.Country.TURKEY
         )
         // load language
         val handler = Handler(Looper.getMainLooper())

@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat.registerReceiver
 import com.example.claptofindphone.R
+import com.example.claptofindphone.activity.WaitActivity
 
 import com.example.claptofindphone.databinding.DialogChargerAlarmDialogBinding
 import com.example.claptofindphone.databinding.FragmentChargerAlarmInHomeBinding
@@ -31,6 +32,8 @@ class ChargerAlarmFragment : Fragment() {
     private lateinit var serviceSharedPreferences: SharedPreferences
     private lateinit var permissionController: PermissionController
     private var batteryReceiver: BroadcastReceiver? = null
+    private lateinit var waitActivitySharedPreferences: SharedPreferences
+    private var isOnWaitActivity: Boolean= false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         serviceSharedPreferences = requireActivity().getSharedPreferences(
@@ -38,6 +41,9 @@ class ChargerAlarmFragment : Fragment() {
             MODE_PRIVATE
         )
         permissionController = PermissionController()
+        waitActivitySharedPreferences=requireActivity().getSharedPreferences(Constant.SharePres.WAIT_SHARE_PRES,
+            MODE_PRIVATE)
+        isOnWaitActivity= waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
     }
 
     override fun onCreateView(
@@ -51,9 +57,8 @@ class ChargerAlarmFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         chargerAlarmInHomeBinding.chargerAlarmButton.setOnClickListener {
+
             serviceSharedPreferences.edit()
                 .putString(Constant.Service.RUNNING_SERVICE, Constant.Service.CHARGER_ALARM_RUNNING)
                 .apply()
@@ -101,6 +106,7 @@ class ChargerAlarmFragment : Fragment() {
                                             if (isChargerPhone){
                                                 isChargerPhone=false
                                                 requireActivity().unregisterReceiver(batteryReceiver)
+
                                             }else{
                                                 Toast.makeText(
                                                     getContext(),
@@ -108,6 +114,8 @@ class ChargerAlarmFragment : Fragment() {
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                             }
+                                            val intent = Intent(requireContext(), MyService::class.java)
+                                            requireContext().stopService(intent)
                                         }
                                     }
                                 }
@@ -129,6 +137,7 @@ class ChargerAlarmFragment : Fragment() {
                         .putBoolean(Constant.Service.CHARGER_PHONE, false).apply()
                     AnimationUtils.applyAnimations(chargerAlarmInHomeBinding.handIc)
                     AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.round3)
+                    waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false).apply()
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                     if (batteryReceiver!=null){
@@ -190,6 +199,7 @@ class ChargerAlarmFragment : Fragment() {
     }
 
     private fun onService(typeOfService: String, typeOfServiceIntent: String) {
+
         AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.handIc)
         AnimationUtils.applyWaveAnimation(chargerAlarmInHomeBinding.round3)
         chargerAlarmInHomeBinding.txtActionStatus.text =
@@ -198,12 +208,13 @@ class ChargerAlarmFragment : Fragment() {
         chargerAlarmInHomeBinding.round2.setImageResource(R.drawable.round2_active)
         serviceSharedPreferences.edit()
             .putBoolean(typeOfService, true).apply()
-        val intent = Intent(requireContext(), MyService::class.java)
-        intent.putExtra(
-            Constant.Service.RUNNING_SERVICE,
-            typeOfServiceIntent
-        )
-        requireContext().startService(intent)
+        isOnWaitActivity=waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
+        if (!isOnWaitActivity){
+            val intent = Intent(requireContext(), WaitActivity::class.java)
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, typeOfServiceIntent)
+            startActivity(intent)
+            waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,true).apply()
+        }
     }
 
     override fun onDestroy() {

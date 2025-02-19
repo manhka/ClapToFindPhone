@@ -23,6 +23,7 @@ class VoicePasscodeFragment : Fragment() {
     private lateinit var serviceSharedPreferences: SharedPreferences
     private lateinit var voicePasscodeInHomeBinding: FragmentVoicePasscodeInHomeBinding
     private lateinit var permissionController: PermissionController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         serviceSharedPreferences = requireActivity().getSharedPreferences(

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.claptofindphone.R
+import com.example.claptofindphone.activity.WaitActivity
 import com.example.claptofindphone.databinding.DialogTouchPhoneBinding
 import com.example.claptofindphone.databinding.FragmentDontTouchMyPhoneInHomeBinding
 import com.example.claptofindphone.model.Constant
@@ -21,13 +22,17 @@ import com.example.claptofindphone.service.MyService
 class DontTouchMyPhoneFragment : Fragment() {
     private lateinit var serviceSharedPreferences: SharedPreferences
     private lateinit var touchPhoneInHomeBinding: FragmentDontTouchMyPhoneInHomeBinding
-
+    private lateinit var waitActivitySharedPreferences: SharedPreferences
+    private var isOnWaitActivity: Boolean= false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         serviceSharedPreferences = requireActivity().getSharedPreferences(
             Constant.SharePres.SERVICE_SHARE_PRES,
             MODE_PRIVATE
         )
+        waitActivitySharedPreferences=requireActivity().getSharedPreferences(Constant.SharePres.WAIT_SHARE_PRES,
+            MODE_PRIVATE)
+        isOnWaitActivity= waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
     }
 
     override fun onCreateView(
@@ -43,7 +48,9 @@ class DontTouchMyPhoneFragment : Fragment() {
 
 
         touchPhoneInHomeBinding.touchPhoneButton.setOnClickListener {
-            serviceSharedPreferences.edit().putString(Constant.Service.RUNNING_SERVICE,Constant.Service.TOUCH_PHONE_RUNNING).apply()
+            serviceSharedPreferences.edit()
+                .putString(Constant.Service.RUNNING_SERVICE, Constant.Service.TOUCH_PHONE_RUNNING)
+                .apply()
             val isOnVoicePasscodeService =
                 serviceSharedPreferences.getBoolean(Constant.Service.VOICE_PASSCODE, false)
             val isOnDontTouchMyPhoneService =
@@ -65,7 +72,8 @@ class DontTouchMyPhoneFragment : Fragment() {
                 } else {
                     onService(
                         Constant.Service.DONT_TOUCH_MY_PHONE,
-                        Constant.Service.TOUCH_PHONE_RUNNING)
+                        Constant.Service.TOUCH_PHONE_RUNNING
+                    )
                 }
 
             } else {
@@ -76,6 +84,7 @@ class DontTouchMyPhoneFragment : Fragment() {
                     .putBoolean(Constant.Service.DONT_TOUCH_MY_PHONE, false).apply()
                 AnimationUtils.applyAnimations(touchPhoneInHomeBinding.handIc)
                 AnimationUtils.stopAnimations(touchPhoneInHomeBinding.round3)
+                waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false).apply()
                 val intent = Intent(requireContext(), MyService::class.java)
                 requireContext().stopService(intent)
             }
@@ -99,12 +108,15 @@ class DontTouchMyPhoneFragment : Fragment() {
             AnimationUtils.stopAnimations(touchPhoneInHomeBinding.round3)
         }
 
-        val firstTimeSharedPreferences= this.requireActivity().getSharedPreferences(
+        val firstTimeSharedPreferences = this.requireActivity().getSharedPreferences(
             Constant.SharePres.FIRST_TIME_JOIN_SHARE_PRES,
             MODE_PRIVATE
         )
-        val isFirstTimeGetInVoicePasscode=firstTimeSharedPreferences.getBoolean(Constant.SharePres.FIRST_TIME_GET_IN_TOUCH_PHONE,true)
-        if (isFirstTimeGetInVoicePasscode){
+        val isFirstTimeGetInVoicePasscode = firstTimeSharedPreferences.getBoolean(
+            Constant.SharePres.FIRST_TIME_GET_IN_TOUCH_PHONE,
+            true
+        )
+        if (isFirstTimeGetInVoicePasscode) {
             val dialogBinding = DialogTouchPhoneBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog = AlertDialog.Builder(this.requireActivity())
@@ -114,12 +126,14 @@ class DontTouchMyPhoneFragment : Fragment() {
             customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             // Show the dialog
             customDialog.show()
-            firstTimeSharedPreferences.edit().putBoolean(Constant.SharePres.FIRST_TIME_GET_IN_TOUCH_PHONE,false).apply()
+            firstTimeSharedPreferences.edit()
+                .putBoolean(Constant.SharePres.FIRST_TIME_GET_IN_TOUCH_PHONE, false).apply()
             dialogBinding.yesButton.setOnClickListener {
                 customDialog.dismiss()
             }
         }
     }
+
     private fun onService(typeOfService: String, typeOfServiceIntent: String) {
         AnimationUtils.stopAnimations(touchPhoneInHomeBinding.handIc)
         AnimationUtils.applyWaveAnimation(touchPhoneInHomeBinding.round3)
@@ -129,11 +143,13 @@ class DontTouchMyPhoneFragment : Fragment() {
         touchPhoneInHomeBinding.round2.setImageResource(R.drawable.round2_active)
         serviceSharedPreferences.edit()
             .putBoolean(typeOfService, true).apply()
-        val intent = Intent(requireContext(), MyService::class.java)
-        intent.putExtra(
-            Constant.Service.RUNNING_SERVICE,
-            typeOfServiceIntent
-        )
-        requireContext().startService(intent)
+        isOnWaitActivity=waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
+        if (!isOnWaitActivity){
+            val intent = Intent(requireContext(), WaitActivity::class.java)
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, typeOfServiceIntent)
+            startActivity(intent)
+            waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,true).apply()
+        }
+
     }
 }

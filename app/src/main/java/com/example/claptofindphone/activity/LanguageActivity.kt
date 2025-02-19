@@ -15,6 +15,7 @@ import com.example.claptofindphone.databinding.ActivityLanguageBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Language
 import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.utils.InstallData
 import java.util.Locale
 
 class LanguageActivity : AppCompatActivity() {
@@ -36,71 +37,7 @@ class LanguageActivity : AppCompatActivity() {
         val myService = MyService()
         myService.handleBackPress(this)
         // list of language
-        languageList = mutableListOf(
-            Language(
-                Constant.Country.ENGLISH,
-                "en",
-                R.drawable.bg_btn_grey,
-                R.drawable.english,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.VIETNAM,
-                "vi",
-                R.drawable.bg_btn_grey,
-                R.drawable.vietnam,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.FRENCH,
-                "fr",
-                R.drawable.bg_btn_grey,
-                R.drawable.france,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.INDIA,
-                "hi",
-                R.drawable.bg_btn_grey,
-                R.drawable.india,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.INDONESIA,
-                "id",
-                R.drawable.bg_btn_grey,
-                R.drawable.indonesia,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.JAPAN,
-                "ja",
-                R.drawable.bg_btn_grey,
-                R.drawable.japan,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.BRAZILIAN,
-                "pt",
-                R.drawable.bg_btn_grey,
-                R.drawable.brazil,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.KOREAN,
-                "ko",
-                R.drawable.bg_btn_grey,
-                R.drawable.south_korea,
-                R.drawable.passive_radio
-            ),
-            Language(
-                Constant.Country.TURKEY,
-                "tr",
-                R.drawable.bg_btn_grey,
-                R.drawable.turkey,
-                R.drawable.passive_radio
-            )
-        )
+        languageList =InstallData.getLanguageList()
         // language sharePres
         languageSharePres =
             getSharedPreferences(Constant.SharePres.LANGUAGE_SHARE_PRES, MODE_PRIVATE)

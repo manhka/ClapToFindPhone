@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,6 +15,7 @@ import com.example.claptofindphone.databinding.ActivityChangeFlashlightBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Flashlight
 import com.example.claptofindphone.service.FlashlightController
+import com.example.claptofindphone.utils.InstallData
 
 class ChangeFlashlightActivity : AppCompatActivity() {
     private lateinit var changeFlashlightBinding: ActivityChangeFlashlightBinding
@@ -34,8 +34,7 @@ class ChangeFlashlightActivity : AppCompatActivity() {
             insets
         }
         // flashlight list
-        getFlashlightList()
-
+       flashlightList = InstallData.getFlashlightList()
         // flashlight share pres
         flashlightSharedPreferences = getSharedPreferences(
             Constant.SharePres.FLASHLIGHT_SHARE_PRES,
@@ -88,94 +87,7 @@ class ChangeFlashlightActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFlashlightList() {
-        flashlightList = listOf(
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.default,
-                0,
-                R.drawable.active_theme_ic,
-                listOf(0L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight1,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(300L, 300L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight2,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(500L, 500L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight3,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(200L, 100L, 200L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight4,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(1000L, 500L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight5,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(300L, 300L, 600L, 300L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight6,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(150L, 150L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight7,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(700L, 300L, 100L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight8,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(500L, 100L, 200L, 300L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight9,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(1000L, 1000L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight10,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(100L, 100L, 100L)
-            ),
-            Flashlight(
-                R.drawable.bg_passive_item,
-                Constant.Flashlight.flashlight11,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(400L, 200L, 600L)
-            ),
-        )
-    }
+
 
     private fun updateOnOffToggle(flashlightStatus:Boolean) {
 

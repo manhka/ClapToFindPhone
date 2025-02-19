@@ -3,7 +3,6 @@ package com.example.claptofindphone.adapter
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,11 +18,10 @@ class SoundAdapter(
     RecyclerView.Adapter<SoundAdapter.SoundHolder>() {
     val soundSharedPreferences =
         context.getSharedPreferences(Constant.SharePres.SOUND_SHARE_PRES, MODE_PRIVATE)
-    val selectedSound = soundSharedPreferences.getString(
-        Constant.SharePres.ACTIVE_SOUND_NAME,
-        context.getString(Constant.Sound.CAT)
-    )
-    var selectedPosition = soundList.indexOfFirst { it.soundName == selectedSound }
+    val selectedSoundId = soundSharedPreferences.getInt(
+        Constant.SharePres.ACTIVE_SOUND_ID,
+        1    )
+    var selectedPosition = soundList.indexOfFirst { it.id == selectedSoundId }
     class SoundHolder(soundItemBinding: SoundItemBinding) :
         RecyclerView.ViewHolder(soundItemBinding.root) {
         val soundItemBinding: SoundItemBinding = soundItemBinding
@@ -40,7 +38,6 @@ class SoundAdapter(
     }
 
     override fun onBindViewHolder(holder: SoundHolder, position: Int) {
-        Log.d("seleeccdcdcd",selectedSound.toString())
         val sound = soundList[position]
         holder.soundItemBinding.customSoundBtn.setImageResource(sound.soundIcon)
         holder.soundItemBinding.customSoundBtn.setBackgroundResource(sound.soundBg)
@@ -53,7 +50,7 @@ class SoundAdapter(
         holder.itemView.setOnClickListener{
             val intent= Intent(context,ChangeSoundActivity::class.java)
             intent.putExtra("sound_type",sound.soundType)
-            intent.putExtra("sound_name",sound.soundName)
+            intent.putExtra("sound_id",sound.id)
             context.startActivity(intent)
         }
     }

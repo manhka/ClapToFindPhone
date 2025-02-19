@@ -11,10 +11,10 @@ import com.example.claptofindphone.model.Sound
 class SoundAdapter2(
     val context: Context,
     val soundList: List<Sound>,
-    val selectedSoundName:String,
+    val selectedSoundId:Int,
     val onItemSelected: (Sound) -> Unit):RecyclerView.Adapter<SoundAdapter2.SoundHolder>() {
 
-    var selectedPosition = soundList.indexOfFirst { it.soundName == selectedSoundName }
+    var selectedPosition = soundList.indexOfFirst { it.id == selectedSoundId }
     class SoundHolder(soundItemBinding: SoundItemBinding) :
         RecyclerView.ViewHolder(soundItemBinding.root) {
         val soundItemBinding: SoundItemBinding = soundItemBinding

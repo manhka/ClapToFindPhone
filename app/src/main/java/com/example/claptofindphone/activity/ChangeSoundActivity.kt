@@ -7,7 +7,6 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +20,7 @@ import com.example.claptofindphone.databinding.ActivityChangeSoundBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
 import com.example.claptofindphone.service.SoundController
+import com.example.claptofindphone.utils.InstallData
 
 class ChangeSoundActivity : AppCompatActivity() {
     private lateinit var changeSoundBinding: ActivityChangeSoundBinding
@@ -29,7 +29,7 @@ class ChangeSoundActivity : AppCompatActivity() {
     private lateinit var soundController: SoundController
     private lateinit var audioManager: AudioManager
     private lateinit var soundSharedPreferences: SharedPreferences
-    private lateinit var selectedSoundName: String
+    private  var selectedSoundId: Int=1
     private var timeSoundPlay: Long = 15000
     private var soundStatus: Boolean = true
     private  var soundVolume:Int=50
@@ -45,7 +45,7 @@ class ChangeSoundActivity : AppCompatActivity() {
         }
 
 
-        getListSound()
+        soundList=InstallData.getListSound(this)
         audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         soundController = SoundController(this)
         soundSharedPreferences = getSharedPreferences(
@@ -94,13 +94,13 @@ class ChangeSoundActivity : AppCompatActivity() {
         updateOnOffToggle(soundStatus)
         // sound from home
         val soundType = intent.getIntExtra("sound_type", R.raw.cat_meowing)
-        val soundName = intent.getStringExtra("sound_name")
-        if (soundName != null) {
-            selectedSoundName=soundName
+        val soundId = intent.getIntExtra("sound_id",1)
+        if (soundId != 1) {
+            selectedSoundId=soundId
         }
         soundController.playSound(soundType, 30f, 3000)
-        changeSoundAdapter = SoundAdapter2(this, soundList, soundName.toString()) { sound ->
-            selectedSoundName = sound.soundName
+        changeSoundAdapter = SoundAdapter2(this, soundList, soundId) { sound ->
+            selectedSoundId = sound.id
             soundController.playSound(sound.soundType, 30f, 3000)
         }
         changeSoundBinding.rcvCustomSoundLayout.layoutManager = GridLayoutManager(this, 3)
@@ -115,7 +115,7 @@ class ChangeSoundActivity : AppCompatActivity() {
         }
         changeSoundBinding.saveButton.setOnClickListener {
             soundSharedPreferences.edit()
-                .putString(Constant.SharePres.ACTIVE_SOUND_NAME, selectedSoundName)
+                .putInt(Constant.SharePres.ACTIVE_SOUND_ID, selectedSoundId)
                 .apply()
             soundSharedPreferences.edit()
                 .putBoolean(Constant.SharePres.SOUND_STATUS, soundStatus)
@@ -264,79 +264,6 @@ class ChangeSoundActivity : AppCompatActivity() {
         }
     }
 
-    fun getListSound() {
-        soundList = listOf(
-            Sound(
-                getString(Constant.Sound.CAT),
-                R.drawable.cat_meowing_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.cat_meowing
-            ),
-            Sound(
-                getString(Constant.Sound.DOG),
-                R.drawable.dog_barking_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.dog_barking
-            ),
-            Sound(
-                getString(Constant.Sound.HEY_STAY_HERE),
-                R.drawable.hey_stay_here_ic,
-                R.drawable.bg_sound_passive, R.raw.stay_here
-            ),
-            Sound(
-                getString(Constant.Sound.WHISTLE),
-                R.drawable.whistle_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.whistle
-            ),
-            Sound(
-                getString(Constant.Sound.HELLO),
-                R.drawable.hello_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.hello
-            ),
-            Sound(
-                getString(Constant.Sound.CAR_HONK),
-                R.drawable.car_horn_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.car_honk
-            ),
-            Sound(
-                getString(Constant.Sound.DOOR_BELL),
-                R.drawable.door_bell_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.door_bell
-            ),
-            Sound(
-                getString(Constant.Sound.PARTY_HORN),
-                R.drawable.party_horn_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.party_horn
-            ),
-            Sound(
-                getString(Constant.Sound.POLICE_WHISTLE),
-                R.drawable.police_whistle_ic,
-                R.drawable.bg_sound_passive, R.raw.police_whistle
-            ),
-            Sound(
-                getString(Constant.Sound.CAVALRY),
-                R.drawable.cavalry_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.cavalry
-            ),
-            Sound(
-                getString(Constant.Sound.ARMY_TRUMPET),
-                R.drawable.army_trumpet_ic,
-                R.drawable.bg_sound_passive, R.raw.army_trumpet
-            ),
-            Sound(
-                getString(Constant.Sound.RIFLE),
-                R.drawable.rifle_ic,
-                R.drawable.bg_sound_passive,
-                R.raw.rifle
-            ),
-        )
-    }
 
     private fun updateOnOffToggle(soundStatus: Boolean) {
 

@@ -69,5 +69,8 @@ dependencies {
     implementation(libs.tensorflow.lite.task.audio)
     implementation(libs.androidx.work.runtime.ktx)//lotties
     implementation(libs.lottie)
+    // speech
+    implementation(libs.speech)
+
 
 }
