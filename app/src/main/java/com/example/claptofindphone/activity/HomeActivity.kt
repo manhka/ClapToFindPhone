@@ -30,6 +30,7 @@ import com.example.claptofindphone.databinding.DialogEditThemeBinding
 import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
+import com.example.claptofindphone.noti.NotificationScheduler
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
 import com.google.android.material.tabs.TabLayout
@@ -53,6 +54,14 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        if (ContextCompat.checkSelfPermission(
+                this,
+                "android.permission.POST_NOTIFICATIONS"
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            NotificationScheduler().scheduleDailyNotifications(this)
+        }
+
         permissionController=PermissionController()
         notificationSharedPreferences = getSharedPreferences(
             Constant.SharePres.NOTIFICATION_SHARE_PRES,

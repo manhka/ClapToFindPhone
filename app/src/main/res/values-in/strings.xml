@@ -181,5 +181,15 @@
     <string name="cavarly">Kavaleri</string>
     <string name="army_trumpet">Terompet tentara</string>
     <string name="rifle">Senapan</string>
+    <string name="where_is_your_phone">Di mana ponsel Anda?</string>
+    <string name="clap_tool_will_help_you_find">Alat tepuk tangan akan membantu Anda menemukan ponsel</string>
+    <string name="do_you_often_forget_your_phone">Apakah Anda sering lupa ponsel Anda?</string>
+    <string name="activate_clapping_for_quick_search">Aktifkan tepuk tangan untuk pencarian cepat</string>
+    <string name="find_phone_by_nickname">Cari ponsel dengan nama panggilan</string>
+    <string name="audio_passcode_for_secare_your_phone_search">Kode akses audio untuk pencarian ponsel yang aman</string>
+    <string name="create_an_alert_to_protect_your_phone">Buat pemberitahuan untuk melindungi ponsel Anda sekarang</string>
+    <string name="anti_theft">Anti pencurian!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">Pemberitahuan saat ponsel diambil dari saku</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">Buat alarm anti-pencurian saat mengisi daya di tempat umum</string>
 
 </resources>

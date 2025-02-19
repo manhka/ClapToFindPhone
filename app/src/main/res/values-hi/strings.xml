@@ -181,5 +181,15 @@
     <string name="cavarly">सवार सेना</string>
     <string name="army_trumpet">सेना की तुरही</string>
     <string name="rifle">राइफल</string>
+    <string name="where_is_your_phone">आपका फ़ोन कहां है?</string>
+    <string name="clap_tool_will_help_you_find">ताली उपकरण आपको अपना फोन खोजने में मदद करेगा</string>
+    <string name="do_you_often_forget_your_phone">क्या आप अक्सर अपना फ़ोन भूल जाते हैं?</string>
+    <string name="activate_clapping_for_quick_search">त्वरित खोज के लिए ताली सक्रिय करें</string>
+    <string name="find_phone_by_nickname">निकनेम से फोन ढूंढें</string>
+    <string name="audio_passcode_for_secare_your_phone_search">आपके फोन की खोज को सुरक्षित करने के लिए ऑडियो पासकोड</string>
+    <string name="create_an_alert_to_protect_your_phone">अब अपने फोन की सुरक्षा के लिए एक अलर्ट बनाएं</string>
+    <string name="anti_theft">एंटी-चोरी!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">जब फोन जेब से निकाला जाए तो अलर्ट</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">सार्वजनिक स्थान पर चार्ज करते समय एंटी-चोरी अलार्म बनाएं</string>
 
 </resources>

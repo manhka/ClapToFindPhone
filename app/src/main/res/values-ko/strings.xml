@@ -181,5 +181,15 @@
     <string name="cavarly">기병대</string>
     <string name="army_trumpet">군대 트럼펫</string>
     <string name="rifle">소총</string>
+    <string name="where_is_your_phone">당신의 전화는 어디에 있나요?</string>
+    <string name="clap_tool_will_help_you_find">박수 도구가 전화를 찾는 데 도움이 됩니다</string>
+    <string name="do_you_often_forget_your_phone">당신은 자주 전화기를 잊어버리나요?</string>
+    <string name="activate_clapping_for_quick_search">빠른 검색을 위해 박수를 활성화하세요</string>
+    <string name="find_phone_by_nickname">별명으로 전화 찾기</string>
+    <string name="audio_passcode_for_secare_your_phone_search">전화 검색을 위한 오디오 비밀번호</string>
+    <string name="create_an_alert_to_protect_your_phone">지금 전화 보호를 위한 경고를 설정하세요</string>
+    <string name="anti_theft">도난 방지!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">전화가 주머니에서 꺼낼 때 알림</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">공공장소에서 충전 중일 때 도난 방지 알람 설정</string>
 
 </resources>

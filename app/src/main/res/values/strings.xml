@@ -180,4 +180,14 @@
     <string name="cavarly">Cavarly</string>
     <string name="army_trumpet">Army trumpet</string>
     <string name="rifle">Rifle</string>
+    <string name="where_is_your_phone">Where is your phone?</string>
+    <string name="clap_tool_will_help_you_find">Clap tool will help you find</string>
+    <string name="do_you_often_forget_your_phone">Do you often forget your phone?</string>
+    <string name="activate_clapping_for_quick_search">Activate clapping for quick search</string>
+    <string name="find_phone_by_nickname">Find phone by nickname</string>
+    <string name="audio_passcode_for_secare_your_phone_search">Audio passcode for secure phone search</string>
+    <string name="create_an_alert_to_protect_your_phone">Create an alert to protect your phone now</string>
+    <string name="anti_theft">Anti theft!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">Alerts when phone is taken out of pocket</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">Create an anti-theft alarm when charging in public</string>
 </resources>

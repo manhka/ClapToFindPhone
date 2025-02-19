@@ -181,5 +181,15 @@
     <string name="cavarly">Kỵ binh</string>
     <string name="army_trumpet">Kèn quân đội</string>
     <string name="rifle">Súng trường</string>
+    <string name="where_is_your_phone">Điện thoại của bạn đâu?</string>
+    <string name="clap_tool_will_help_you_find">Công cụ vỗ tay sẽ giúp bạn tìm điện thoại</string>
+    <string name="do_you_often_forget_your_phone">Bạn có thường xuyên quên điện thoại không?</string>
+    <string name="activate_clapping_for_quick_search">Kích hoạt vỗ tay để tìm kiếm nhanh</string>
+    <string name="find_phone_by_nickname">Tìm điện thoại bằng biệt danh</string>
+    <string name="audio_passcode_for_secare_your_phone_search">Mã khóa âm thanh để bảo mật tìm kiếm điện thoại</string>
+    <string name="create_an_alert_to_protect_your_phone">Tạo một cảnh báo để bảo vệ điện thoại của bạn ngay bây giờ</string>
+    <string name="anti_theft">Chống trộm!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">Cảnh báo khi điện thoại bị lấy ra khỏi túi</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">Tạo cảnh báo chống trộm khi sạc điện thoại ở nơi công cộng</string>
 
 </resources>

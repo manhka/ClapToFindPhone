@@ -181,4 +181,15 @@
     <string name="cavarly">Cavalaria</string>
     <string name="army_trumpet">Trompete militar</string>
     <string name="rifle">Rifle</string>
+    <string name="where_is_your_phone">Onde está o seu telefone?</string>
+    <string name="clap_tool_will_help_you_find">A ferramenta de aplausos vai ajudar você a encontrar</string>
+    <string name="do_you_often_forget_your_phone">Você costuma esquecer o seu telefone?</string>
+    <string name="activate_clapping_for_quick_search">Ative os aplausos para uma busca rápida</string>
+    <string name="find_phone_by_nickname">Encontrar telefone pelo apelido</string>
+    <string name="audio_passcode_for_secare_your_phone_search">Código de áudio para pesquisa segura do telefone</string>
+    <string name="create_an_alert_to_protect_your_phone">Crie um alerta para proteger seu telefone agora</string>
+    <string name="anti_theft">Antifurto!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">Alertas quando o telefone for retirado do bolso</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">Crie um alarme antifurto ao carregar em público</string>
+
 </resources>

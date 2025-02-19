@@ -181,5 +181,14 @@
     <string name="cavarly">騎兵隊</string>
     <string name="army_trumpet">軍のトランペット</string>
     <string name="rifle">ライフル</string>
-
+    <string name="where_is_your_phone">あなたの電話はどこですか？</string>
+    <string name="clap_tool_will_help_you_find">拍手ツールが電話を見つけるのを手伝います</string>
+    <string name="do_you_often_forget_your_phone">よく電話を忘れますか？</string>
+    <string name="activate_clapping_for_quick_search">素早く検索するために拍手を有効にする</string>
+    <string name="find_phone_by_nickname">ニックネームで電話を探す</string>
+    <string name="audio_passcode_for_secare_your_phone_search">安全な電話検索のためのオーディオパスコード</string>
+    <string name="create_an_alert_to_protect_your_phone">電話を守るためのアラートを作成する</string>
+    <string name="anti_theft">盗難防止！</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">電話がポケットから取り出されるとアラートを表示</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">公共の場で充電中に盗難防止アラームを作成</string>
 </resources>

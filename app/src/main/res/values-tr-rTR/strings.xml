@@ -181,4 +181,15 @@
     <string name="cavarly">Süvari</string>
     <string name="army_trumpet">Ordu trompeti</string>
     <string name="rifle">Tüfek</string>
+    <string name="where_is_your_phone">Telefonunuz nerede?</string>
+    <string name="clap_tool_will_help_you_find">El çırpma aracı, telefonunuzu bulmanıza yardımcı olacaktır</string>
+    <string name="do_you_often_forget_your_phone">Telefonunuzu sık sık unutur musunuz?</string>
+    <string name="activate_clapping_for_quick_search">Hızlı arama için el çırpmayı etkinleştirin</string>
+    <string name="find_phone_by_nickname">Telefonu takma adıyla bulun</string>
+    <string name="audio_passcode_for_secare_your_phone_search">Telefon aramanız için sesli şifre</string>
+    <string name="create_an_alert_to_protect_your_phone">Telefonunuzu korumak için bir uyarı oluşturun</string>
+    <string name="anti_theft">Hırsızlık karşıtı!</string>
+    <string name="alert_when_phone_is_taken_out_of_pocket">Telefon cebinizden çıkarıldığında uyarı</string>
+    <string name="create_an_anti_theft_alarm_when_charging_in_public">Halka açık alanda şarj edilirken hırsızlık alarmı oluşturun</string>
+
 </resources>
