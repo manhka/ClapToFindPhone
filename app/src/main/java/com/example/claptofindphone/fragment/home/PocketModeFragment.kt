@@ -12,29 +12,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.WaitActivity
-import com.example.claptofindphone.databinding.DialogPocketModeBinding
+import com.example.claptofindphone.databinding.DialogTouchPhoneBinding
 import com.example.claptofindphone.databinding.FragmentPocketModeInHomeBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class PocketModeFragment : Fragment() {
 private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
-    private lateinit var serviceSharedPreferences: SharedPreferences
     private lateinit var permissionController: PermissionController
-    private lateinit var waitActivitySharedPreferences: SharedPreferences
     private var isOnWaitActivity: Boolean= false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        serviceSharedPreferences = requireActivity().getSharedPreferences(
-            Constant.SharePres.SERVICE_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        permissionController = PermissionController()
-        waitActivitySharedPreferences=requireActivity().getSharedPreferences(Constant.SharePres.WAIT_SHARE_PRES,
-            MODE_PRIVATE)
-        isOnWaitActivity= waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
+        permissionController=PermissionController()
     }
 
     override fun onCreateView(
@@ -46,65 +38,43 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         pocketModeInHomeBinding.pocketModeButton.setOnClickListener {
-            if ( permissionController.isOverlayPermissionGranted(requireActivity())
-            ) {
-                serviceSharedPreferences.edit().putString(Constant.Service.RUNNING_SERVICE,Constant.Service.POCKET_MODE_RUNNING).apply()
-                val isOnVoicePasscodeService =
-                    serviceSharedPreferences.getBoolean(Constant.Service.VOICE_PASSCODE, false)
-                val isOnDontTouchMyPhoneService =
-                    serviceSharedPreferences.getBoolean(Constant.Service.DONT_TOUCH_MY_PHONE, false)
-                val isOnPocketModeService =
-                    serviceSharedPreferences.getBoolean(Constant.Service.POCKET_MODE, false)
-                val isOnChargerAlarmService =
-                    serviceSharedPreferences.getBoolean(Constant.Service.CHARGER_PHONE, false)
-                val isOnClapService =
-                    serviceSharedPreferences.getBoolean(Constant.Service.CLAP_TO_FIND_PHONE, false)
-                if (!isOnPocketModeService) {
-                    // check if other service running
-                    if (isOnVoicePasscodeService || isOnClapService || isOnDontTouchMyPhoneService || isOnChargerAlarmService) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Another service is running",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-
-                        onService(
-                            Constant.Service.POCKET_MODE,
-                            Constant.Service.POCKET_MODE_RUNNING
-                        )
-
-                    }
-
+            if (permissionController.isOverlayPermissionGranted(requireActivity())) {
+                val runningService = SharePreferenceUtils.getRunningService()
+                if (runningService == "") {
+                    SharePreferenceUtils.setOpenHomeFragment(Constant.Service.POCKET_MODE)
+                    onService(Constant.Service.POCKET_MODE_RUNNING)
+                } else if (runningService != Constant.Service.POCKET_MODE_RUNNING) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Another service is running",
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     pocketModeInHomeBinding.txtActionStatus.text = getString(R.string.tap_to_active)
                     pocketModeInHomeBinding.handIc.visibility = View.VISIBLE
                     pocketModeInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
-                    serviceSharedPreferences.edit()
-                        .putBoolean(Constant.Service.POCKET_MODE, false).apply()
+                    SharePreferenceUtils.setRunningService("")
                     AnimationUtils.applyAnimations(pocketModeInHomeBinding.handIc)
                     AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
-                    waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false).apply()
+                    SharePreferenceUtils.setIsWaited(false)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                 }
             } else {
                 permissionController.showInitialDialog(
-                    requireActivity(),
-                    Constant.Permission.BOTH_PERMISSION
+                    requireActivity(), Constant.Permission.OVERLAY_PERMISSION
                 )
             }
+
         }
+
     }
+
     override fun onResume() {
         super.onResume()
-        val isOnPocketModeService =
-            serviceSharedPreferences.getBoolean(Constant.Service.POCKET_MODE, false)
-        if (isOnPocketModeService) {
-            onService(
-                Constant.Service.POCKET_MODE,
-                Constant.Service.POCKET_MODE_RUNNING
-            )
+        val isOnPocketModeService =SharePreferenceUtils.getRunningService()
+        if (isOnPocketModeService==Constant.Service.POCKET_MODE_RUNNING) {
+            onService(Constant.Service.POCKET_MODE_RUNNING)
             AnimationUtils.stopAnimations(pocketModeInHomeBinding.handIc)
             AnimationUtils.applyWaveAnimation(pocketModeInHomeBinding.round3)
 
@@ -113,13 +83,9 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
             AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
         }
 
-        val firstTimeSharedPreferences= this.requireActivity().getSharedPreferences(
-            Constant.SharePres.FIRST_TIME_JOIN_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        val isFirstTimeGetInPocketMode=firstTimeSharedPreferences.getBoolean(Constant.SharePres.FIRST_TIME_GET_IN_POCKET_MODE,true)
-        if (isFirstTimeGetInPocketMode){
-            val dialogBinding = DialogPocketModeBinding.inflate(layoutInflater)
+        val isFirstTimeGetInPocketMode = SharePreferenceUtils.isShowPocketModeDialog()
+        if (isFirstTimeGetInPocketMode) {
+            val dialogBinding = DialogTouchPhoneBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog = AlertDialog.Builder(this.requireActivity())
                 .setView(dialogBinding.root)
@@ -128,27 +94,27 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
             customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             // Show the dialog
             customDialog.show()
-            firstTimeSharedPreferences.edit().putBoolean(Constant.SharePres.FIRST_TIME_GET_IN_POCKET_MODE,false).apply()
+            SharePreferenceUtils.setIsShowPocketModeDialog(false)
             dialogBinding.yesButton.setOnClickListener {
                 customDialog.dismiss()
             }
         }
     }
-    private fun onService(typeOfService: String, typeOfServiceIntent: String) {
+    private fun onService(runningService: String) {
         AnimationUtils.stopAnimations(pocketModeInHomeBinding.handIc)
         AnimationUtils.applyWaveAnimation(pocketModeInHomeBinding.round3)
         pocketModeInHomeBinding.txtActionStatus.text =
             getString(R.string.tap_to_deactive)
         pocketModeInHomeBinding.handIc.visibility = View.GONE
         pocketModeInHomeBinding.round2.setImageResource(R.drawable.round2_active)
-        serviceSharedPreferences.edit()
-            .putBoolean(typeOfService, true).apply()
-        isOnWaitActivity=waitActivitySharedPreferences.getBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,false)
-        if (!isOnWaitActivity){
+        SharePreferenceUtils.setRunningService(runningService)
+        isOnWaitActivity = SharePreferenceUtils.isWaited()
+        if (!isOnWaitActivity) {
             val intent = Intent(requireContext(), WaitActivity::class.java)
-            intent.putExtra(Constant.Service.RUNNING_SERVICE, typeOfServiceIntent)
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             startActivity(intent)
-            waitActivitySharedPreferences.edit().putBoolean(Constant.SharePres.IS_ACTIVE_WAIT_ACTIVITY,true).apply()
+            SharePreferenceUtils.setIsWaited(true)
         }
+
     }
 }

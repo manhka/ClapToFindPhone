@@ -12,12 +12,12 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityInstallingLanguageBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class InstallingLanguageActivity : AppCompatActivity() {
     private lateinit var installingLanguageBinding: ActivityInstallingLanguageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         installingLanguageBinding = ActivityInstallingLanguageBinding.inflate(layoutInflater)
         val view = installingLanguageBinding.root
         setContentView(view)
@@ -56,12 +56,11 @@ class InstallingLanguageActivity : AppCompatActivity() {
     }
 
     private fun navigate() {
-        val firstTimeJoinSharePres= getSharedPreferences(Constant.SharePres.FIRST_TIME_JOIN_SHARE_PRES,
-            MODE_PRIVATE)
-        val isFirstTimeGetInApp= firstTimeJoinSharePres.getBoolean(Constant.SharePres.FIRST_TIME_GET_IN_APP,true)
+
+        val isFirstTimeGetInApp= SharePreferenceUtils.isFirstTimeGetInApp()
 
         if(isFirstTimeGetInApp){
-            firstTimeJoinSharePres.edit().putBoolean(Constant.SharePres.FIRST_TIME_GET_IN_APP,false).apply()
+            SharePreferenceUtils.setIsFirstTimeGetInApp(false)
             val intent= Intent(this,LanguageActivity::class.java)
             startActivity(intent)
             finish()

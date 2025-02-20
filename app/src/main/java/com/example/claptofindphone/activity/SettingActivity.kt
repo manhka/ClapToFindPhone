@@ -61,7 +61,6 @@ class SettingActivity : AppCompatActivity() {
 
 
     }
-
     private fun shareApp() {
         try {
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -72,7 +71,6 @@ class SettingActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-
     fun policy() {
         try {
             val uri = Uri.parse(Constant.URL_PRIVACY)

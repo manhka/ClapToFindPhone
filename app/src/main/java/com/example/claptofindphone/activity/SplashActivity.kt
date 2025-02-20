@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 @SuppressLint("CustomSplashScreen")
@@ -27,9 +28,7 @@ class SplashActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val languageSharePres = getSharedPreferences(Constant.SharePres.LANGUAGE_SHARE_PRES, MODE_PRIVATE)
-        val curLanguage = languageSharePres.getString(Constant.SharePres.CURRENT_LANGUAGE, "en") ?: "en"
-        setAppLocale(curLanguage)
+
         val myService= MyService()
         myService.handleBackPress(this)
         Handler(Looper.getMainLooper()).postDelayed({
@@ -38,13 +37,7 @@ class SplashActivity : AppCompatActivity() {
             finish()
         }, 2000)
     }
-    private fun setAppLocale(languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
-    }
+
     override fun onBackPressed() {
         // prevent back press
     }

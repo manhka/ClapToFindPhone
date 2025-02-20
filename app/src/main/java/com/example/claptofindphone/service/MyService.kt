@@ -5,13 +5,13 @@ import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -28,7 +28,9 @@ import android.window.OnBackInvokedDispatcher
 import androidx.core.app.NotificationCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.FoundPhoneActivity
+import com.example.claptofindphone.activity.HomeActivity
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import net.gotev.speech.GoogleVoiceTypingDisabledException
 import net.gotev.speech.Speech
 import net.gotev.speech.SpeechDelegate
@@ -45,7 +47,6 @@ class MyService : Service(), SensorEventListener {
     private var channel: NotificationChannel? = null
     private var handler: Handler? = null
     private var runnable: Runnable? = null
-    private lateinit var voicePasscodeSharePres: SharedPreferences
     private lateinit var mSensorManager: SensorManager
     private lateinit var mAccelerometer: Sensor
     private lateinit var lightSensor: Sensor
@@ -73,12 +74,10 @@ class MyService : Service(), SensorEventListener {
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
         lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
         proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
-        voicePasscodeSharePres = getSharedPreferences(
-            Constant.SharePres.VOICE_PASSCODE_SHARE_PRES, MODE_PRIVATE
-        )
+
         handler = Handler()
         runnable = Runnable { voicePasswordDetect() }
-        passcode = voicePasscodeSharePres.getString(Constant.SharePres.PASSCODE, "Hello").toString()
+        passcode = SharePreferenceUtils.getVoicePasscode()
 
     }
 
@@ -150,6 +149,21 @@ class MyService : Service(), SensorEventListener {
         // Inflate the custom layout using RemoteViews
         val customView = RemoteViews(packageName, R.layout.big_custom_notify2)
         val customView2 = RemoteViews(packageName, R.layout.custom_notifiy2)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            customView.setOnClickPendingIntent(
+                R.id.power_button, PendingIntent.getActivity(
+                    this, 5000,
+                    Intent(this, HomeActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+        }else{
+            customView.setOnClickPendingIntent(
+                R.id.power_button, PendingIntent.getActivity(
+                    this, 5000,
+                    Intent(this, HomeActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+        }
 
         // Build and return the notification
         return NotificationCompat.Builder(this, CHANNEL_ID)
@@ -161,8 +175,8 @@ class MyService : Service(), SensorEventListener {
 
     // clap and whistle
     private fun clapAndWhistleDetect() {
-        if(!isClapDetectListening){
-            isClapDetectListening=true
+        if (!isClapDetectListening) {
+            isClapDetectListening = true
         }
         // If the audio classifier is initialized and running, do nothing.
         if (audioClassifier != null) return
@@ -234,7 +248,7 @@ class MyService : Service(), SensorEventListener {
                 override fun onSpeechResult(result: String) {
                     Log.i("speech", "result: $result")
                     if (result == passcode) {
-                        Speech.getInstance().stopListening()
+                        SharePreferenceUtils.setRunningService("")
                         foundPhone()
                         runnable?.let { handler?.removeCallbacks(it) }
                     } else {
@@ -268,6 +282,7 @@ class MyService : Service(), SensorEventListener {
                         BatteryManager.BATTERY_STATUS_DISCHARGING -> {
                             // Rút sạc
                             if (isChargerPhone) {
+                                SharePreferenceUtils.setRunningService("")
                                 isChargerPhone = false
                                 foundPhone()
                             }
@@ -308,6 +323,7 @@ class MyService : Service(), SensorEventListener {
             val currentTime = System.currentTimeMillis()
             if (acceleration > 10 && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
                 mLastShakeTime = currentTime
+                SharePreferenceUtils.setRunningService("")
                 foundPhone()
                 return
             }
@@ -339,6 +355,7 @@ class MyService : Service(), SensorEventListener {
         } else {
             // phone is not in the pocket
             if (isPhoneInPocket) {
+                SharePreferenceUtils.setRunningService("")
                 isPhoneInPocket = false
                 foundPhone()
             }
@@ -362,7 +379,7 @@ class MyService : Service(), SensorEventListener {
             Speech.getInstance().shutdown()
             runnable?.let { handler?.removeCallbacks(it) }
         }
-        if (isClapDetectListening){
+        if (isClapDetectListening) {
             handlerClap?.removeCallbacksAndMessages(null)
             try {
                 stopAudioRecording()
@@ -372,6 +389,7 @@ class MyService : Service(), SensorEventListener {
                 Log.e(TAG, "Error releasing resources: ${e.message}")
             }
         }
+
         mSensorManager.unregisterListener(this, mAccelerometer)
         mSensorManager.unregisterListener(this, lightSensor)
         if (batteryReceiver != null) {

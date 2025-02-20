@@ -2,7 +2,6 @@ package com.example.claptofindphone.activity
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
@@ -15,13 +14,12 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityEditThemeBinding
 import com.example.claptofindphone.databinding.DialogEditThemeBinding
 import com.example.claptofindphone.model.CallTheme
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.DefaultTheme
 import com.example.claptofindphone.service.AnimationUtils
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class EditThemeActivity : AppCompatActivity() {
     private lateinit var editThemeBinding: ActivityEditThemeBinding
-    private lateinit var themeSharedPreferences: SharedPreferences
     private lateinit var selectedThemeName:String
     private lateinit var name:String
     private lateinit var phone:String
@@ -34,11 +32,9 @@ class EditThemeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        themeSharedPreferences= getSharedPreferences(Constant.SharePres.THEME_SHARE_PRES,
-            MODE_PRIVATE)
-        name=themeSharedPreferences.getString(Constant.SharePres.NAME,getString(R.string.name)).toString()
-        phone=themeSharedPreferences.getString(Constant.SharePres.PHONE,getString(R.string.phone)).toString()
-// default theme
+
+        name=SharePreferenceUtils.getName()
+        phone=SharePreferenceUtils.getPhone()
         val defaultTheme = intent.getSerializableExtra("default_theme") as? DefaultTheme
         if (defaultTheme != null) {
             editThemeBinding.callThemeLayout.visibility = View.GONE
@@ -57,7 +53,6 @@ class EditThemeActivity : AppCompatActivity() {
             editThemeBinding.imgViewSmallRight.setImageResource(defaultTheme.defaultThemeSmallRight)
             editThemeBinding.imgViewBigRight.setImageResource(defaultTheme.defaultThemeBigRight)
             selectedThemeName=defaultTheme.themeName
-
             AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewRound3)
             editThemeBinding.imgViewRound3.postDelayed({
                 AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewRound4)
@@ -90,7 +85,7 @@ class EditThemeActivity : AppCompatActivity() {
             AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound2)
             AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
             AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
-            themeSharedPreferences.edit().putString(Constant.SharePres.ACTIVE_THEME_NAME,selectedThemeName).apply()
+            SharePreferenceUtils.setThemeName(selectedThemeName)
             val intent = Intent(this, ChangeThemeActivity::class.java)
             startActivity(intent)
             finish()
@@ -127,8 +122,8 @@ class EditThemeActivity : AppCompatActivity() {
         dialogBinding.deleteNameButton.setOnClickListener {
             dialogBinding.etxName.setText("")
         }
-        name=themeSharedPreferences.getString(Constant.SharePres.NAME,getString(R.string.name)).toString()
-        phone=themeSharedPreferences.getString(Constant.SharePres.PHONE,getString(R.string.phone)).toString()
+        name= SharePreferenceUtils.getName()
+        phone=SharePreferenceUtils.getPhone()
         dialogBinding.etxPhone.setText(phone)
         dialogBinding.etxName.setText(name)
         val nameFilter = InputFilter { source, start, end, dest, dstart, dend ->
@@ -174,8 +169,8 @@ class EditThemeActivity : AppCompatActivity() {
             if (dialogBinding.etxName.text.toString().isEmpty() || dialogBinding.etxPhone.text.toString().isEmpty()){
                 Toast.makeText(this,getString(R.string.empty),Toast.LENGTH_SHORT).show()
             }else{
-                themeSharedPreferences.edit().putString(Constant.SharePres.NAME,dialogBinding.etxName.text.trim().toString()).apply()
-                themeSharedPreferences.edit().putString(Constant.SharePres.PHONE,dialogBinding.etxPhone.text.trim().toString()).apply()
+                SharePreferenceUtils.setName(dialogBinding.etxName.text.trim().toString())
+                SharePreferenceUtils.setPhone(dialogBinding.etxPhone.text.trim().toString())
                 customDialog.dismiss()
                 editThemeBinding.txtName.text=dialogBinding.etxName.text.trim().toString()
                 editThemeBinding.txtPhone.text=dialogBinding.etxPhone.text.trim().toString()
@@ -183,8 +178,4 @@ class EditThemeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 }

@@ -34,6 +34,7 @@ import com.example.claptofindphone.noti.NotificationScheduler
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.InstallData
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.reflect.typeOf
@@ -42,10 +43,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var soundAdapter: SoundAdapter
     private lateinit var soundList: List<Sound>
-    private lateinit var notificationSharedPreferences: SharedPreferences
     private val REQUEST_CODE_POST_NOTIFICATION = 101
     private lateinit var permissionController: PermissionController
-    private lateinit var serviceSharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
@@ -64,10 +63,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         permissionController=PermissionController()
-        notificationSharedPreferences = getSharedPreferences(
-            Constant.SharePres.NOTIFICATION_SHARE_PRES,
-            MODE_PRIVATE
-        )
+
         handleNotificationPermission()
         val myService = MyService()
         myService.handleBackPress(this)
@@ -121,26 +117,19 @@ class HomeActivity : AppCompatActivity() {
             }
 
         })
-        serviceSharedPreferences = getSharedPreferences(
-            Constant.SharePres.SERVICE_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        val typeOfService = serviceSharedPreferences.getString(
-            Constant.Service.RUNNING_SERVICE,
-           null
-        )
-        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING || typeOfService==null) {
+
+        val homeOpenFragment = SharePreferenceUtils.getOpenHomeFragment()
+        if (homeOpenFragment == Constant.Service.CLAP_TO_FIND_PHONE) {
             homeViewPager.currentItem = 0
-        } else if (typeOfService == Constant.Service.VOICE_PASSCODE_RUNNING) {
+        } else if (homeOpenFragment == Constant.Service.VOICE_PASSCODE) {
             homeViewPager.currentItem = 1
-        } else if (typeOfService == Constant.Service.POCKET_MODE_RUNNING) {
+        } else if (homeOpenFragment == Constant.Service.POCKET_MODE) {
             homeViewPager.currentItem = 2
-        } else if (typeOfService == Constant.Service.CHARGER_ALARM_RUNNING) {
+        } else if (homeOpenFragment == Constant.Service.CHARGER_PHONE) {
             homeViewPager.currentItem = 3
-        } else if (typeOfService == Constant.Service.TOUCH_PHONE_RUNNING) {
+        } else if (homeOpenFragment == Constant.Service.DONT_TOUCH_MY_PHONE) {
             homeViewPager.currentItem = 4
         }
-
         homeBinding.cardViewChangeTheme.setOnClickListener {
             val intent = Intent(this, ChangeThemeActivity::class.java)
             startActivity(intent)
@@ -164,19 +153,10 @@ class HomeActivity : AppCompatActivity() {
 
 
         homeBinding.changeAudioPasscodeButton.setOnClickListener {
+            val isRunningService=SharePreferenceUtils.getRunningService()
             if (permissionController.hasAudioPermission(this)){
                 if(permissionController.isInternetAvailable(this)){
-                    val isOnVoicePasscodeService =
-                        serviceSharedPreferences.getBoolean(Constant.Service.VOICE_PASSCODE, false)
-                    val isOnDontTouchMyPhoneService =
-                        serviceSharedPreferences.getBoolean(Constant.Service.DONT_TOUCH_MY_PHONE, false)
-                    val isOnPocketModeService =
-                        serviceSharedPreferences.getBoolean(Constant.Service.POCKET_MODE, false)
-                    val isOnChargerAlarmService =
-                        serviceSharedPreferences.getBoolean(Constant.Service.CHARGER_PHONE, false)
-                    val isOnClapService =
-                        serviceSharedPreferences.getBoolean(Constant.Service.CLAP_TO_FIND_PHONE, false)
-                    if (isOnVoicePasscodeService || isOnDontTouchMyPhoneService || isOnPocketModeService || isOnChargerAlarmService || isOnClapService){
+                    if (isRunningService!=""){
                         Toast.makeText(this,getString(R.string.deactive_all_feature_before_run),Toast.LENGTH_SHORT).show()
                     }else{
                         val intent = Intent(this, VoicePasscodeActivity::class.java)
@@ -222,13 +202,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getDeniedCount(): Int {
-        return notificationSharedPreferences.getInt(Constant.SharePres.DENY_COUNT, 0)
+        return SharePreferenceUtils.getDeniCount()
     }
 
     fun incrementDeniedCount() {
         val currentCount = getDeniedCount()
-        notificationSharedPreferences.edit().putInt(Constant.SharePres.DENY_COUNT, currentCount + 1)
-            .apply()
+        SharePreferenceUtils.setDeniCount(currentCount+1)
     }
 
     fun handleNotificationPermission() {

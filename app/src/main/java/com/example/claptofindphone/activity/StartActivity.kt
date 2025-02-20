@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityStartBinding
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class StartActivity : AppCompatActivity() {
     private lateinit var startActivityBinding: ActivityStartBinding
@@ -24,6 +25,7 @@ class StartActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
     }
 
     override fun onBackPressed() {

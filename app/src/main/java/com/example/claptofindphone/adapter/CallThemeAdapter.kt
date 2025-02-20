@@ -10,7 +10,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.EditThemeActivity
 import com.example.claptofindphone.databinding.CallThemeItemBinding
 import com.example.claptofindphone.model.CallTheme
-import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class CallThemeAdapter(val context: Context,
     val callThemeList: List<CallTheme>): RecyclerView.Adapter<CallThemeAdapter.CallThemeViewHolder>() {
@@ -18,24 +18,17 @@ class CallThemeAdapter(val context: Context,
         RecyclerView.ViewHolder(callThemeItemBinding.root) {
         val callThemeItemBinding: CallThemeItemBinding = callThemeItemBinding
     }
-    val callThemeSharedPreferences =
-        context.getSharedPreferences(Constant.SharePres.THEME_SHARE_PRES, MODE_PRIVATE)
-    val callThemeName = callThemeSharedPreferences.getString(
-        Constant.SharePres.ACTIVE_THEME_NAME,
-        Constant.DefaultTheme.DefaultTheme1
-    )
-    val name=callThemeSharedPreferences.getString(Constant.SharePres.NAME,context.getString(R.string.name))
-    val phone=callThemeSharedPreferences.getString(Constant.SharePres.PHONE,context.getString(R.string.phone))
+    val callThemeName = SharePreferenceUtils.getThemeName()
+    val name=SharePreferenceUtils.getName()
+    val phone=SharePreferenceUtils.getPhone()
     val selectedPosition = callThemeList.indexOfFirst { it.themeName == callThemeName }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CallThemeViewHolder {
         val callThemeItemBinding= CallThemeItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return CallThemeViewHolder(callThemeItemBinding)
     }
-
     override fun getItemCount(): Int {
       return callThemeList.size
     }
-
     override fun onBindViewHolder(holder: CallThemeViewHolder, position: Int) {
         val callThemeItem= callThemeList[position]
         holder.callThemeItemBinding.bgCallTheme.setBackgroundResource(callThemeItem.callThemeBg)
@@ -58,6 +51,4 @@ class CallThemeAdapter(val context: Context,
             context.startActivity(intent)
         }
     }
-
-
 }

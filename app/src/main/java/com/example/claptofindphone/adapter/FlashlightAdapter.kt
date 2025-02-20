@@ -2,7 +2,6 @@ package com.example.claptofindphone.adapter
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
 import com.example.claptofindphone.databinding.FlashlightItemBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Flashlight
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class FlashlightAdapter(
     val context: Context,
@@ -19,12 +18,8 @@ class FlashlightAdapter(
     val onItemSelected: (Flashlight) -> Unit
 ) : RecyclerView.Adapter<FlashlightAdapter.FlashlightViewHolder>() {
 
-    val flashlightSharedPreferences =
-        context.getSharedPreferences(Constant.SharePres.FLASHLIGHT_SHARE_PRES, MODE_PRIVATE)
-    val selectedFlashlight = flashlightSharedPreferences.getString(
-        Constant.SharePres.ACTIVE_FLASHLIGHT_NAME,
-        Constant.Flashlight.default
-    )
+
+    val selectedFlashlight = SharePreferenceUtils.getFlashName()
     var selectedPosition = flashlightList.indexOfFirst { it.flashlightName == selectedFlashlight }
 
     class FlashlightViewHolder(itemFlashlightItemBinding: FlashlightItemBinding) :
@@ -44,7 +39,7 @@ class FlashlightAdapter(
 
     override fun onBindViewHolder(holder: FlashlightViewHolder, position: Int) {
         val flashlightItem = flashlightList[position]
-        val isPremiumVisible = flashlightSharedPreferences.getBoolean("isPremiumVisible_$position", true)
+        val isPremiumVisible = SharePreferenceUtils.isPremiumVisible(position)
 
         holder.itemFlashlightItemBinding.flashlightBg.setBackgroundResource(flashlightItem.flashlightBg)
         holder.itemFlashlightItemBinding.txtFlashlightName.text = flashlightItem.flashlightName
@@ -81,7 +76,7 @@ class FlashlightAdapter(
                 dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_flashlight_title)
                 dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_flashlight_content)
                 dialogBinding.watchAdsButton.setOnClickListener {
-                    flashlightSharedPreferences.edit().putBoolean("isPremiumVisible_$position", false).apply()
+                    SharePreferenceUtils.setIsPremiumVisible(position,false)
                     selectedPosition = position
                     notifyDataSetChanged()
                     customDialog.dismiss()

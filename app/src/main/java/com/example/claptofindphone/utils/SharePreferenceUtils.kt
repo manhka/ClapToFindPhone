@@ -1,0 +1,133 @@
+package com.example.claptofindphone.utils
+
+import android.content.Context
+import android.content.SharedPreferences
+import com.example.claptofindphone.model.Constant
+
+object SharePreferenceUtils {
+
+    const val PER_NAME = "data_app_shared_preference"
+
+    lateinit var sharePref: SharedPreferences
+
+    fun init(context: Context) {
+        if (!SharePreferenceUtils::sharePref.isInitialized) {
+            sharePref = context.getSharedPreferences(PER_NAME, Context.MODE_PRIVATE)
+        }
+    }
+
+    fun <T> saveKey(key: String, value: T) {
+        when (value) {
+            is String -> sharePref.edit().putString(key, value).apply()
+            is Int -> sharePref.edit().putInt(key, value).apply()
+            is Boolean -> sharePref.edit().putBoolean(key, value).apply()
+            is Long -> sharePref.edit().putLong(key, value).apply()
+            is Float -> sharePref.edit().putFloat(key, value).apply()
+        }
+
+    }
+
+    fun getString(key: String, value: String = ""): String {
+        return sharePref.getString(key, value)?.trim() ?: value
+    }
+
+    fun getInt(key: String, defaultValue: Int = 0): Int {
+        return sharePref.getInt(key, defaultValue)
+    }
+
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean {
+        return sharePref.getBoolean(key, defaultValue)
+    }
+
+    fun getLong(key: String): Long {
+        return sharePref.getLong(key, 15000L)
+    }
+
+    fun getFloat(key: String): Float {
+        return sharePref.getFloat(key, 0f)
+    }
+
+    // First time get in App
+    fun isFirstTimeGetInApp(): Boolean= getBoolean("isFirstTimeGetInApp",true)
+    fun setIsFirstTimeGetInApp(value: Boolean)= saveKey("isFirstTimeGetInApp",value)
+
+    //Show dialog fragment home
+    fun isShowClapAndWhistleDialog():Boolean= getBoolean("isShowClapAndWhistleDialog",true)
+    fun setIsShowClapAndWhistleDialog(value: Boolean)= saveKey("isShowClapAndWhistleDialog",value)
+
+    fun isShowVoicePasscodeDialog():Boolean= getBoolean("isShowVoicePasscodeDialog",true)
+    fun setIsShowVoicePasscodeDialog(value: Boolean)= saveKey("isShowVoicePasscodeDialog",value)
+
+    fun isShowPocketModeDialog():Boolean= getBoolean("isShowPocketModeDialog",true)
+    fun setIsShowPocketModeDialog(value: Boolean)= saveKey("isShowPocketModeDialog",value)
+
+    fun isShowChargerPhoneDialog():Boolean= getBoolean("isShowChargerPhoneDialog",true)
+    fun setIsShowChargerPhoneDialog(value: Boolean)= saveKey("isShowChargerPhoneDialog",value)
+
+    fun isShowTouchPhoneDialog():Boolean= getBoolean("isShowTouchPhoneDialog",true)
+    fun setIsShowTouchPhoneDialog(value: Boolean)= saveKey("isShowTouchPhoneDialog",value)
+
+    // Flashlight
+    fun isOnFlash():Boolean= getBoolean("isOnFlash",true)
+    fun setOnFlash(value: Boolean)= saveKey("isOnFlash",value)
+    fun getFlashName():String= getString("getFlashName", Constant.Flashlight.default)
+    fun setFlashName(value: String)= saveKey("getFlashName",value)
+
+
+
+    // Vibrate
+    fun isOnVibrate():Boolean= getBoolean("isOnVibrate",true)
+    fun setOnVibrate(value: Boolean)= saveKey("isOnVibrate",value)
+    fun getVibrateName():String= getString("getVibrateName", Constant.Vibrate.default)
+    fun setVibrateName(value: String)= saveKey("getVibrateName",value)
+    // Sound
+
+    fun isOnSound():Boolean= getBoolean("isOnSound",true)
+    fun setOnSound(value: Boolean)= saveKey("isOnSound",value)
+    fun getSoundId():Int= getInt("getSoundId", 1)
+    fun setSoundId(value: Int)= saveKey("getSoundId",1)
+    fun getTimeSoundPlay():Long= getLong("getTimeSoundPlay")
+    fun setTimeSoundPlay(value: Long)= saveKey("getTimeSoundPlay",value)
+    fun getVolumeSound():Int= getInt("getVolumeSound",50)
+    fun setVolumeSound(value: Int)= saveKey("getVolumeSound",value)
+
+
+    // is premium
+
+    fun isPremiumVisible(position: Int):Boolean= getBoolean("isPremiumVisible_$position",true)
+    fun setIsPremiumVisible(position: Int, value: Boolean)= saveKey("isPremiumVisible_$position",value)
+    // Language
+    fun getLanguageCode(): String = getString("getLanguageCode", "en")
+    fun setLanguageCode(value: String) = saveKey("getLanguageCode", value)
+
+    // Theme
+    fun getThemeName():String= getString("getThemeName",Constant.DefaultTheme.DefaultTheme1)
+    fun setThemeName(value: String)= saveKey("getThemeName",value)
+    fun getName():String= getString("getName","Name")
+    fun setName(value: String)= saveKey("getName",value)
+    fun getPhone():String= getString("getPhone","x123456789")
+    fun setPhone(value: String)= saveKey("getPhone",value)
+
+
+    // Voice passcode
+    fun getVoicePasscode():String= getString("getVoicePasscode","Hello")
+    fun setVoicePasscode(value: String)= saveKey("getVoicePasscode",value)
+
+    // notification
+    fun getDeniCount():Int= getInt("getDeniCount",0)
+    fun setDeniCount(value: Int)= saveKey("getDeniCount",value)
+
+
+    // wait screen
+    fun isWaited():Boolean= getBoolean("isWaited",true)
+    fun setIsWaited(value: Boolean)= saveKey("isWaited",value)
+
+    // service
+    fun getRunningService():String= getString("getRunningService","")
+    fun setRunningService(value: String)= saveKey("getRunningService",value)
+
+    // home open fragment
+    fun getOpenHomeFragment():String= getString("getOpenHomeFragment",Constant.Service.CLAP_TO_FIND_PHONE)
+    fun setOpenHomeFragment(value: String)= saveKey("getOpenHomeFragment",value)
+
+}

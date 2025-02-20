@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.SoundAdapter2
 import com.example.claptofindphone.databinding.ActivityChangeSoundBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
 import com.example.claptofindphone.service.SoundController
 import com.example.claptofindphone.utils.InstallData
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class ChangeSoundActivity : AppCompatActivity() {
     private lateinit var changeSoundBinding: ActivityChangeSoundBinding
@@ -28,7 +28,6 @@ class ChangeSoundActivity : AppCompatActivity() {
     private lateinit var changeSoundAdapter: SoundAdapter2
     private lateinit var soundController: SoundController
     private lateinit var audioManager: AudioManager
-    private lateinit var soundSharedPreferences: SharedPreferences
     private  var selectedSoundId: Int=1
     private var timeSoundPlay: Long = 15000
     private var soundStatus: Boolean = true
@@ -43,21 +42,16 @@ class ChangeSoundActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
         soundList=InstallData.getListSound(this)
-        audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        soundController = SoundController(this)
-        soundSharedPreferences = getSharedPreferences(
-            Constant.SharePres.SOUND_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        soundStatus =
-            soundSharedPreferences.getBoolean(Constant.SharePres.SOUND_STATUS, true)
-        timeSoundPlay =
-            soundSharedPreferences.getLong(Constant.SharePres.TIME_SOUND_PLAY, 15 * 1000)
 
-        soundVolume=soundSharedPreferences.getInt(Constant.SharePres.SOUND_VOLUME,50)
+        audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+
+        soundController = SoundController(this)
+
+        soundStatus =SharePreferenceUtils.isOnSound()
+        timeSoundPlay = SharePreferenceUtils.getTimeSoundPlay()
+        soundVolume=SharePreferenceUtils.getVolumeSound()
+
         changeSoundBinding.seekbarVolume.max=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         changeSoundBinding.seekbarVolume.progress=soundVolume
         audioManager.setStreamVolume(
@@ -114,16 +108,11 @@ class ChangeSoundActivity : AppCompatActivity() {
             updateOnOffToggle(soundStatus)
         }
         changeSoundBinding.saveButton.setOnClickListener {
-            soundSharedPreferences.edit()
-                .putInt(Constant.SharePres.ACTIVE_SOUND_ID, selectedSoundId)
-                .apply()
-            soundSharedPreferences.edit()
-                .putBoolean(Constant.SharePres.SOUND_STATUS, soundStatus)
-                .apply()
-
-            soundSharedPreferences.edit().putLong(Constant.SharePres.TIME_SOUND_PLAY,timeSoundPlay).apply()
+            SharePreferenceUtils.setSoundId(selectedSoundId)
+            SharePreferenceUtils.setOnSound(soundStatus)
+            SharePreferenceUtils.setTimeSoundPlay(timeSoundPlay)
             soundVolume=changeSoundBinding.seekbarVolume.progress
-            soundSharedPreferences.edit().putInt(Constant.SharePres.SOUND_VOLUME,soundVolume).apply()
+            SharePreferenceUtils.setVolumeSound(soundVolume)
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
@@ -263,7 +252,6 @@ class ChangeSoundActivity : AppCompatActivity() {
             changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
         }
     }
-
 
     private fun updateOnOffToggle(soundStatus: Boolean) {
 

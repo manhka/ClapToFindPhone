@@ -1,57 +1,53 @@
 package com.example.claptofindphone.model
-
-import android.content.Context
-import android.content.res.Resources
-import androidx.core.content.ContextCompat.getString
 import com.example.claptofindphone.R
 
 class Constant {
-    object SharePres {
-        const val FIRST_TIME_JOIN_SHARE_PRES = "first_time_join"
-        const val FIRST_TIME_GET_IN_APP = "first_time_get_in_app"
-        const val FIRST_TIME_GET_IN_CLAP_AND_WHISTLE = "first_time_get_in_clap_and_whistle"
-        const val FIRST_TIME_GET_IN_VOICE_PASSCODE = "first_time_get_in_voice_passcode"
-        const val FIRST_TIME_GET_IN_POCKET_MODE = "first_time_get_in_pocket_mode"
-        const val FIRST_TIME_GET_IN_CHARGER_ALARM = "first_time_get_in_charger_alarm"
-        const val FIRST_TIME_GET_IN_TOUCH_PHONE = "first_time_get_in_touch_phone"
-        const val LANGUAGE_SHARE_PRES = "language"
-        const val CURRENT_LANGUAGE = "current_language"
-        const val SERVICE_SHARE_PRES = "service_share_pres"
-
-        // flashlight
-        const val FLASHLIGHT_SHARE_PRES = "flashlight_share_pres"
-        const val FLASHLIGHT_STATUS = "flashlight_status"
-        const val ACTIVE_FLASHLIGHT_NAME = "active_flashlight_name"
-
-        // vibrate
-        const val VIBRATE_SHARE_PRES = "vibrate_share_pres"
-        const val VIBRATE_STATUS = "vibrate_status"
-        const val ACTIVE_VIBRATE_NAME = "active_vibrate_name"
-
-        // sound
-        const val SOUND_SHARE_PRES = "sound_share_pres"
-        const val SOUND_STATUS = "sound_status"
-        const val ACTIVE_SOUND_ID = "active_sound_id"
-        const val TIME_SOUND_PLAY = "time_sound_play"
-        const val SOUND_VOLUME = "sound_volume"
-
-        // theme
-        const val THEME_SHARE_PRES = "theme_share_pres"
-        const val ACTIVE_THEME_NAME = "active_theme_name"
-        const val NAME = "name"
-        const val PHONE = "phone"
-
-        // voice passcode
-        const val VOICE_PASSCODE_SHARE_PRES = "voice_passcode_share_pres"
-        const val PASSCODE = "passcode"
-        // notification
-        const val NOTIFICATION_SHARE_PRES ="notification_share_pres"
-        const val DENY_COUNT="deny_count"
-
-        // wait activity
-        const val WAIT_SHARE_PRES="wait_share_pres"
-        const val IS_ACTIVE_WAIT_ACTIVITY="is_active_wait_activity"
-    }
+//    object SharePres {
+//        const val FIRST_TIME_JOIN_SHARE_PRES = "first_time_join"
+//        const val FIRST_TIME_GET_IN_APP = "first_time_get_in_app"
+//        const val FIRST_TIME_GET_IN_CLAP_AND_WHISTLE = "first_time_get_in_clap_and_whistle"
+//        const val FIRST_TIME_GET_IN_VOICE_PASSCODE = "first_time_get_in_voice_passcode"
+//        const val FIRST_TIME_GET_IN_POCKET_MODE = "first_time_get_in_pocket_mode"
+//        const val FIRST_TIME_GET_IN_CHARGER_ALARM = "first_time_get_in_charger_alarm"
+//        const val FIRST_TIME_GET_IN_TOUCH_PHONE = "first_time_get_in_touch_phone"
+//        const val LANGUAGE_SHARE_PRES = "language"
+//        const val CURRENT_LANGUAGE = "current_language"
+//        const val SERVICE_SHARE_PRES = "service_share_pres"
+//
+//        // flashlight
+//        const val FLASHLIGHT_SHARE_PRES = "flashlight_share_pres"
+//        const val FLASHLIGHT_STATUS = "flashlight_status"
+//        const val ACTIVE_FLASHLIGHT_NAME = "active_flashlight_name"
+//
+//        // vibrate
+//        const val VIBRATE_SHARE_PRES = "vibrate_share_pres"
+//        const val VIBRATE_STATUS = "vibrate_status"
+//        const val ACTIVE_VIBRATE_NAME = "active_vibrate_name"
+//
+//        // sound
+//        const val SOUND_SHARE_PRES = "sound_share_pres"
+//        const val SOUND_STATUS = "sound_status"
+//        const val ACTIVE_SOUND_ID = "active_sound_id"
+//        const val TIME_SOUND_PLAY = "time_sound_play"
+//        const val SOUND_VOLUME = "sound_volume"
+//
+//        // theme
+//        const val THEME_SHARE_PRES = "theme_share_pres"
+//        const val ACTIVE_THEME_NAME = "active_theme_name"
+//        const val NAME = "name"
+//        const val PHONE = "phone"
+//
+//        // voice passcode
+//        const val VOICE_PASSCODE_SHARE_PRES = "voice_passcode_share_pres"
+//        const val PASSCODE = "passcode"
+//        // notification
+//        const val NOTIFICATION_SHARE_PRES ="notification_share_pres"
+//        const val DENY_COUNT="deny_count"
+//
+//        // wait activity
+//        const val WAIT_SHARE_PRES="wait_share_pres"
+//        const val IS_ACTIVE_WAIT_ACTIVITY="is_active_wait_activity"
+//    }
 
     object Permission {
         // permission

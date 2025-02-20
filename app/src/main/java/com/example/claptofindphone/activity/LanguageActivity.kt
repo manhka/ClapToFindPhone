@@ -16,13 +16,13 @@ import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Language
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.utils.InstallData
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 class LanguageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLanguageBinding
     private lateinit var languageList: List<Language>
     private lateinit var languageAdapter: LanguageAdapter
-    private lateinit var languageSharePres: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLanguageBinding.inflate(layoutInflater)
@@ -39,10 +39,7 @@ class LanguageActivity : AppCompatActivity() {
         // list of language
         languageList =InstallData.getLanguageList()
         // language sharePres
-        languageSharePres =
-            getSharedPreferences(Constant.SharePres.LANGUAGE_SHARE_PRES, MODE_PRIVATE)
-        val current_language_code =
-            languageSharePres.getString(Constant.SharePres.CURRENT_LANGUAGE, "en")
+        val current_language_code =SharePreferenceUtils.getLanguageCode()
         val newLanguageList = ArrayList<Language>()
         for (language in languageList) {
             if (language.languageCode != current_language_code) {
@@ -62,11 +59,10 @@ class LanguageActivity : AppCompatActivity() {
         binding.btnApplyLanguage.setOnClickListener {
             val selectedLanguage = languageAdapter.getSelectedLanguage()
             if (selectedLanguage != null) {
-                languageSharePres.edit().putString(Constant.SharePres.CURRENT_LANGUAGE,selectedLanguage.languageCode).apply()
+                SharePreferenceUtils.setLanguageCode(selectedLanguage.languageCode)
                 setAppLocale(selectedLanguage.languageCode)
             } else {
-                val curLanguage =
-                    languageSharePres.getString(Constant.SharePres.CURRENT_LANGUAGE, "en") ?: "en"
+                val curLanguage =SharePreferenceUtils.getLanguageCode()
                 setAppLocale(curLanguage)
             }
             if (isNavigateFromHome){
@@ -95,8 +91,7 @@ class LanguageActivity : AppCompatActivity() {
     // set up language for app
     private fun setAppLocale(languageCode: String) {
         // change current language
-        languageSharePres.edit().putString(Constant.SharePres.CURRENT_LANGUAGE, languageCode)
-            .apply()
+        SharePreferenceUtils.setLanguageCode(languageCode)
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
         val config = Configuration()
@@ -106,23 +101,22 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     private fun loadSavedLanguage() {
-        val savedLanguageCode =
-            languageSharePres.getString(Constant.SharePres.CURRENT_LANGUAGE, "en") ?: "en"
+        val savedLanguageCode = SharePreferenceUtils.getLanguageCode()
         setAppLocale(savedLanguageCode)
         updateCurrentLanguageDisplay(savedLanguageCode)
     }
 
     private fun updateCurrentLanguageDisplay(languageCode: String) {
         val languageName = when (languageCode) {
-            "vi" -> "Vietnamese"
-            "fr" -> "French"
-            "hi" -> "Hindi"
-            "id" -> "Indonesian"
-            "ja" -> "Japanese"
-            "pt" -> "Portuguese (Brazil)"
-            "ko" -> "Korean"
-            "tr" -> "Turkish"
-            else -> "English"
+            "vi" -> Constant.Country.VIETNAM
+            "fr" -> Constant.Country.FRENCH
+            "hi" -> Constant.Country.INDIA
+            "id" -> Constant.Country.INDONESIA
+            "ja" -> Constant.Country.JAPAN
+            "pt" -> Constant.Country.BRAZILIAN
+            "ko" -> Constant.Country.KOREAN
+            "tr" -> Constant.Country.TURKEY
+            else -> Constant.Country.ENGLISH
         }
 
         val flagResource = when (languageCode) {

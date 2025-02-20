@@ -17,12 +17,12 @@ import com.airbnb.lottie.LottieDrawable
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySetupPasscodeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 class SetupVoicePasscodeActivity : AppCompatActivity() {
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var recognizerIntent: Intent
-    private lateinit var passcodeSharedPreferences: SharedPreferences
     private lateinit var passcode : String
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var setupPasscodeBinding: ActivitySetupPasscodeBinding
@@ -35,11 +35,8 @@ class SetupVoicePasscodeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        passcodeSharedPreferences = getSharedPreferences(
-            Constant.SharePres.VOICE_PASSCODE_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        passcode=passcodeSharedPreferences.getString(Constant.SharePres.PASSCODE,"Hello").toString()
+
+        passcode=SharePreferenceUtils.getVoicePasscode()
         setupPasscodeBinding.micButton.setOnClickListener {
             setupPasscodeBinding.txtTapToDo.visibility = View.GONE
             setupPasscodeBinding.micButton.visibility = View.GONE
@@ -66,8 +63,7 @@ class SetupVoicePasscodeActivity : AppCompatActivity() {
             Log.d("sfasdf",passcode)
         }
         setupPasscodeBinding.saveButton.setOnClickListener {
-
-            passcodeSharedPreferences.edit().putString(Constant.SharePres.PASSCODE,passcode).apply()
+            SharePreferenceUtils.setVoicePasscode(passcode)
             val intent= Intent(this,HomeActivity::class.java)
             startActivity(intent)
             finish()

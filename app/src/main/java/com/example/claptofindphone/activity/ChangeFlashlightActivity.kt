@@ -12,17 +12,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.FlashlightAdapter
 import com.example.claptofindphone.databinding.ActivityChangeFlashlightBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Flashlight
 import com.example.claptofindphone.service.FlashlightController
 import com.example.claptofindphone.utils.InstallData
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class ChangeFlashlightActivity : AppCompatActivity() {
     private lateinit var changeFlashlightBinding: ActivityChangeFlashlightBinding
     private lateinit var changeFlashlightAdapter: FlashlightAdapter
     private lateinit var flashlightList: List<Flashlight>
     private lateinit var selectedFlashlightName: String
-    private lateinit var flashlightSharedPreferences: SharedPreferences
     private var flashlightStatus: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +35,9 @@ class ChangeFlashlightActivity : AppCompatActivity() {
         // flashlight list
        flashlightList = InstallData.getFlashlightList()
         // flashlight share pres
-        flashlightSharedPreferences = getSharedPreferences(
-            Constant.SharePres.FLASHLIGHT_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        selectedFlashlightName =
-            flashlightSharedPreferences.getString(
-                Constant.SharePres.ACTIVE_FLASHLIGHT_NAME,
-                Constant.Flashlight.default
-            ).toString()
-        flashlightStatus =
-            flashlightSharedPreferences.getBoolean(Constant.SharePres.FLASHLIGHT_STATUS, true)
+        selectedFlashlightName =SharePreferenceUtils.getFlashName()
+        flashlightStatus = SharePreferenceUtils.isOnFlash()
         // on off toggle
-
         updateOnOffToggle(flashlightStatus)
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
@@ -69,12 +58,8 @@ class ChangeFlashlightActivity : AppCompatActivity() {
         changeFlashlightBinding.rcvChangeFlashlight.layoutManager = GridLayoutManager(this, 2)
         changeFlashlightBinding.rcvChangeFlashlight.adapter = changeFlashlightAdapter
         changeFlashlightBinding.saveButton.setOnClickListener {
-            flashlightSharedPreferences.edit()
-                .putString(Constant.SharePres.ACTIVE_FLASHLIGHT_NAME, selectedFlashlightName)
-                .apply()
-            flashlightSharedPreferences.edit()
-                .putBoolean(Constant.SharePres.FLASHLIGHT_STATUS, flashlightStatus)
-                .apply()
+            SharePreferenceUtils.setFlashName(selectedFlashlightName)
+            SharePreferenceUtils.setOnFlash(flashlightStatus)
             finish()
 
         }
@@ -90,7 +75,6 @@ class ChangeFlashlightActivity : AppCompatActivity() {
 
 
     private fun updateOnOffToggle(flashlightStatus:Boolean) {
-
         if (!flashlightStatus) {
             changeFlashlightBinding.offButton.visibility = View.VISIBLE
             changeFlashlightBinding.onButton.visibility = View.GONE

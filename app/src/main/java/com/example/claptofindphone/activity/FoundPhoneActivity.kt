@@ -28,16 +28,13 @@ import com.example.claptofindphone.service.FlashlightController
 import com.example.claptofindphone.service.SoundController
 import com.example.claptofindphone.service.VibrateController
 import com.example.claptofindphone.utils.InstallData
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class FoundPhoneActivity : AppCompatActivity() {
     private lateinit var foundPhoneBinding: ActivityFoundPhoneBinding
-    private lateinit var soundSharedPreferences: SharedPreferences
-    private lateinit var flashlightSharedPreferences: SharedPreferences
-    private lateinit var vibrateSharedPreferences: SharedPreferences
     private lateinit var soundList: List<Sound>
     private lateinit var flashlightList: List<Flashlight>
     private lateinit var vibrateList: List<Vibrate>
-    private lateinit var themeSharedPreferences: SharedPreferences
     private lateinit var name: String
     private lateinit var phone: String
     private lateinit var themeName: String
@@ -56,43 +53,31 @@ class FoundPhoneActivity : AppCompatActivity() {
             insets
         }
 
-       val serviceSharedPreferences = getSharedPreferences(
-            Constant.SharePres.SERVICE_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        val typeOfService = serviceSharedPreferences.getString(
-            Constant.Service.RUNNING_SERVICE,
-            null
-        )
-        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING || typeOfService==null) {
-            foundPhoneBinding.txtTitleFoundPhone.text=getString(R.string.found_your_phone)
+        SharePreferenceUtils.setIsWaited(false)
+        val typeOfService = SharePreferenceUtils.getRunningService()
+
+        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING || typeOfService == "") {
+            foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.VOICE_PASSCODE_RUNNING) {
-            foundPhoneBinding.txtTitleFoundPhone.text=getString(R.string.found_your_phone)
+            foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.POCKET_MODE_RUNNING) {
-            foundPhoneBinding.txtTitleFoundPhone.text=getString(R.string.found_your_phone)
+            foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.CHARGER_ALARM_RUNNING) {
-            foundPhoneBinding.txtTitleFoundPhone.text=getString(R.string.charger_alert)
+            foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.charger_alert)
         } else if (typeOfService == Constant.Service.TOUCH_PHONE_RUNNING) {
-            foundPhoneBinding.txtTitleFoundPhone.text=getString(R.string.dont_touch_my_phone)
+            foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.dont_touch_my_phone)
         }
-        themeSharedPreferences = getSharedPreferences(
-            Constant.SharePres.THEME_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        name = themeSharedPreferences.getString(Constant.SharePres.NAME, getString(R.string.name))
-            .toString()
-        phone =
-            themeSharedPreferences.getString(Constant.SharePres.PHONE, getString(R.string.phone))
-                .toString()
-        themeName = themeSharedPreferences.getString(
-            Constant.SharePres.ACTIVE_THEME_NAME,
-            Constant.DefaultTheme.DefaultTheme1
-        ).toString()
-        soundList=InstallData.getListSound(this)
-        flashlightList=InstallData.getFlashlightList()
-        vibrateList=InstallData.getVibrateList()
-        defaultThemeList=InstallData.getDefaultThemeList()
-        callThemeList=InstallData.getCallThemeList()
+
+        name = SharePreferenceUtils.getName()
+
+        phone = SharePreferenceUtils.getPhone()
+
+        themeName = SharePreferenceUtils.getThemeName()
+        soundList = InstallData.getListSound(this)
+        flashlightList = InstallData.getFlashlightList()
+        vibrateList = InstallData.getVibrateList()
+        defaultThemeList = InstallData.getDefaultThemeList()
+        callThemeList = InstallData.getCallThemeList()
         val soundController = SoundController(this)
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
@@ -102,72 +87,54 @@ class FoundPhoneActivity : AppCompatActivity() {
         val flashlightController = FlashlightController(cameraManager, cameraId)
         val vibrateController = VibrateController(this)
         // sound
-        soundSharedPreferences = getSharedPreferences(
-            Constant.SharePres.SOUND_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        val soundId = soundSharedPreferences.getInt(
-            Constant.SharePres.ACTIVE_SOUND_ID,
-            1
-        )
+        val soundId = SharePreferenceUtils.getSoundId()
         var selectedSoundPosition = soundList.indexOfFirst { it.id == soundId }
 
-        val soundVolume = soundSharedPreferences.getInt(Constant.SharePres.SOUND_VOLUME, 50)
-        val soundTimePlay =
-            soundSharedPreferences.getLong(Constant.SharePres.TIME_SOUND_PLAY, 15 * 1000)
-        val soundStatus = soundSharedPreferences.getBoolean(Constant.SharePres.SOUND_STATUS, true)
+        val soundVolume = SharePreferenceUtils.getVolumeSound()
+        val soundTimePlay = SharePreferenceUtils.getTimeSoundPlay()
+        val soundStatus = SharePreferenceUtils.isOnSound()
 
         // flashlight
-        flashlightSharedPreferences = getSharedPreferences(
-            Constant.SharePres.FLASHLIGHT_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        val flashlightName = flashlightSharedPreferences.getString(
-            Constant.SharePres.ACTIVE_FLASHLIGHT_NAME,
-            Constant.Flashlight.default
-        )
+
+        val flashlightName = SharePreferenceUtils.getFlashName()
         var selectedFlashlightPosition =
             flashlightList.indexOfFirst { it.flashlightName == flashlightName }
-        val flashlightStatus =
-            flashlightSharedPreferences.getBoolean(Constant.SharePres.FLASHLIGHT_STATUS, true)
+        val flashlightStatus = SharePreferenceUtils.isOnFlash()
         // vibrate
-        vibrateSharedPreferences = getSharedPreferences(
-            Constant.SharePres.VIBRATE_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        val vibrateName = vibrateSharedPreferences.getString(
-            Constant.SharePres.ACTIVE_VIBRATE_NAME,
-            Constant.Vibrate.default
-        )
+        val vibrateName = SharePreferenceUtils.getVibrateName()
         var selectedVibratePosition = vibrateList.indexOfFirst { it.vibrateName == vibrateName }
-        val vibrateStatus =
-            vibrateSharedPreferences.getBoolean(Constant.SharePres.VIBRATE_STATUS, true)
+        val vibrateStatus = SharePreferenceUtils.isOnVibrate()
         val selectedPosition = callThemeList.indexOfFirst { it.themeName == themeName }
-        if (selectedPosition==-1){
+        if (selectedPosition == -1) {
             val selectedPosition = defaultThemeList.indexOfFirst { it.themeName == themeName }
-            val defaultTheme= defaultThemeList.get(selectedPosition)
-            foundPhoneBinding.txtTitleFoundPhone.setTextColor(ContextCompat.getColor(this, R.color.black))
+            val defaultTheme = defaultThemeList.get(selectedPosition)
+            foundPhoneBinding.txtTitleFoundPhone.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.black
+                )
+            )
             // default theme
-            foundPhoneBinding.round4.visibility=View.VISIBLE
-            foundPhoneBinding.round3.visibility=View.VISIBLE
-            foundPhoneBinding.round2.visibility=View.VISIBLE
-            foundPhoneBinding.roundCenter.visibility=View.VISIBLE
-            foundPhoneBinding.smallLeftDfTheme.visibility=View.VISIBLE
-            foundPhoneBinding.bigLeftDfTheme.visibility=View.VISIBLE
-            foundPhoneBinding.smallRightDfTheme.visibility=View.VISIBLE
-            foundPhoneBinding.bigRightDfTheme.visibility=View.VISIBLE
-            foundPhoneBinding.notifyBell.visibility=View.VISIBLE
-            foundPhoneBinding.iFoundItButton.visibility=View.VISIBLE
+            foundPhoneBinding.round4.visibility = View.VISIBLE
+            foundPhoneBinding.round3.visibility = View.VISIBLE
+            foundPhoneBinding.round2.visibility = View.VISIBLE
+            foundPhoneBinding.roundCenter.visibility = View.VISIBLE
+            foundPhoneBinding.smallLeftDfTheme.visibility = View.VISIBLE
+            foundPhoneBinding.bigLeftDfTheme.visibility = View.VISIBLE
+            foundPhoneBinding.smallRightDfTheme.visibility = View.VISIBLE
+            foundPhoneBinding.bigRightDfTheme.visibility = View.VISIBLE
+            foundPhoneBinding.notifyBell.visibility = View.VISIBLE
+            foundPhoneBinding.iFoundItButton.visibility = View.VISIBLE
 
 
             // call theme
-            foundPhoneBinding.imgViewCallThemeRound1.visibility= View.GONE
-            foundPhoneBinding.imgViewCallThemeRound2.visibility= View.GONE
-            foundPhoneBinding.imgViewCallThemeProfile.visibility=View.GONE
-            foundPhoneBinding.responseButton.visibility=View.GONE
-            foundPhoneBinding.rejectButton.visibility=View.GONE
-            foundPhoneBinding.txtName.visibility=View.GONE
-            foundPhoneBinding.txtPhone.visibility=View.GONE
+            foundPhoneBinding.imgViewCallThemeRound1.visibility = View.GONE
+            foundPhoneBinding.imgViewCallThemeRound2.visibility = View.GONE
+            foundPhoneBinding.imgViewCallThemeProfile.visibility = View.GONE
+            foundPhoneBinding.responseButton.visibility = View.GONE
+            foundPhoneBinding.rejectButton.visibility = View.GONE
+            foundPhoneBinding.txtName.visibility = View.GONE
+            foundPhoneBinding.txtPhone.visibility = View.GONE
 
             foundPhoneBinding.activityFoundPhone.setBackgroundResource(defaultTheme.defaultThemeBg)
             foundPhoneBinding.round4.setImageResource(defaultTheme.defaultThemeRound4)
@@ -198,71 +165,75 @@ class FoundPhoneActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-        }else{
-            val callTheme= callThemeList.get(selectedPosition)
-            foundPhoneBinding.txtTitleFoundPhone.setTextColor(ContextCompat.getColor(this, R.color.white))
+        } else {
+            val callTheme = callThemeList.get(selectedPosition)
+            foundPhoneBinding.txtTitleFoundPhone.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.white
+                )
+            )
             // default theme
 
-            foundPhoneBinding.round4.visibility=View.GONE
-            foundPhoneBinding.round3.visibility=View.GONE
-            foundPhoneBinding.round2.visibility=View.GONE
-            foundPhoneBinding.roundCenter.visibility=View.GONE
-            foundPhoneBinding.smallLeftDfTheme.visibility=View.GONE
-            foundPhoneBinding.bigLeftDfTheme.visibility=View.GONE
-            foundPhoneBinding.smallRightDfTheme.visibility=View.GONE
-            foundPhoneBinding.bigRightDfTheme.visibility=View.GONE
-            foundPhoneBinding.notifyBell.visibility=View.GONE
-            foundPhoneBinding.iFoundItButton.visibility=View.GONE
+            foundPhoneBinding.round4.visibility = View.GONE
+            foundPhoneBinding.round3.visibility = View.GONE
+            foundPhoneBinding.round2.visibility = View.GONE
+            foundPhoneBinding.roundCenter.visibility = View.GONE
+            foundPhoneBinding.smallLeftDfTheme.visibility = View.GONE
+            foundPhoneBinding.bigLeftDfTheme.visibility = View.GONE
+            foundPhoneBinding.smallRightDfTheme.visibility = View.GONE
+            foundPhoneBinding.bigRightDfTheme.visibility = View.GONE
+            foundPhoneBinding.notifyBell.visibility = View.GONE
+            foundPhoneBinding.iFoundItButton.visibility = View.GONE
 
             // call theme
-            foundPhoneBinding.imgViewCallThemeRound1.visibility= View.VISIBLE
-            foundPhoneBinding.imgViewCallThemeRound2.visibility= View.VISIBLE
-            foundPhoneBinding.imgViewCallThemeProfile.visibility=View.VISIBLE
-            foundPhoneBinding.responseButton.visibility=View.VISIBLE
-            foundPhoneBinding.rejectButton.visibility=View.VISIBLE
-            foundPhoneBinding.txtName.visibility=View.VISIBLE
-            foundPhoneBinding.txtPhone.visibility=View.VISIBLE
+            foundPhoneBinding.imgViewCallThemeRound1.visibility = View.VISIBLE
+            foundPhoneBinding.imgViewCallThemeRound2.visibility = View.VISIBLE
+            foundPhoneBinding.imgViewCallThemeProfile.visibility = View.VISIBLE
+            foundPhoneBinding.responseButton.visibility = View.VISIBLE
+            foundPhoneBinding.rejectButton.visibility = View.VISIBLE
+            foundPhoneBinding.txtName.visibility = View.VISIBLE
+            foundPhoneBinding.txtPhone.visibility = View.VISIBLE
             foundPhoneBinding.activityFoundPhone.setBackgroundResource(callTheme.callThemeBg)
             foundPhoneBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
-            foundPhoneBinding.txtName.text=name
-            foundPhoneBinding.txtPhone.text=phone
+            foundPhoneBinding.txtName.text = name
+            foundPhoneBinding.txtPhone.text = phone
             AnimationUtils.applyWaveAnimation(foundPhoneBinding.imgViewCallThemeRound1)
             AnimationUtils.applyWaveAnimation(foundPhoneBinding.imgViewCallThemeRound2)
             AnimationUtils.applyShakeAnimation(foundPhoneBinding.rejectButton)
             AnimationUtils.applyShakeAnimation(foundPhoneBinding.responseButton)
             foundPhoneBinding.rejectButton.setOnClickListener {
 
-                    if (soundStatus) {
-                        soundController.stopSound()
-                    }
-                    if (flashlightStatus) {
-                        flashlightController.stopFlashing()
-                    }
-                    if (vibrateStatus) {
-                        vibrateController.stopVibrating()
-                    }
-                    AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
-                    AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
-                    val intent = Intent(this, SplashActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
-            }
-            foundPhoneBinding.responseButton.setOnClickListener {
-                    if (soundStatus) {
-                        soundController.stopSound()
-                    }
-                    if (flashlightStatus) {
-                        flashlightController.stopFlashing()
-                    }
-                    if (vibrateStatus) {
-                        vibrateController.stopVibrating()
-                    }
+                if (soundStatus) {
+                    soundController.stopSound()
+                }
+                if (flashlightStatus) {
+                    flashlightController.stopFlashing()
+                }
+                if (vibrateStatus) {
+                    vibrateController.stopVibrating()
+                }
                 AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
                 AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
-                    val intent = Intent(this, SplashActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                val intent = Intent(this, SplashActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            foundPhoneBinding.responseButton.setOnClickListener {
+                if (soundStatus) {
+                    soundController.stopSound()
+                }
+                if (flashlightStatus) {
+                    flashlightController.stopFlashing()
+                }
+                if (vibrateStatus) {
+                    vibrateController.stopVibrating()
+                }
+                AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
+                AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
+                val intent = Intent(this, SplashActivity::class.java)
+                startActivity(intent)
+                finish()
 
             }
         }
@@ -304,10 +275,4 @@ class FoundPhoneActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
-
-
-
-
 }

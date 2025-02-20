@@ -1,7 +1,6 @@
 package com.example.claptofindphone.adapter
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.EditThemeActivity
 import com.example.claptofindphone.databinding.DefaultThemeItemBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.DefaultTheme
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class DefaultThemeAdapter(
     val context: Context,
@@ -21,12 +20,7 @@ class DefaultThemeAdapter(
         val defaultThemeItemBinding: DefaultThemeItemBinding = defaultThemeItemBinding
     }
 
-    val defaultThemeSharedPreferences =
-        context.getSharedPreferences(Constant.SharePres.THEME_SHARE_PRES, MODE_PRIVATE)
-    val defaultThemeName = defaultThemeSharedPreferences.getString(
-        Constant.SharePres.ACTIVE_THEME_NAME,
-        Constant.DefaultTheme.DefaultTheme1
-    )
+    val defaultThemeName = SharePreferenceUtils.getThemeName()
     val selectedPosition = defaultThemeList.indexOfFirst { it.themeName == defaultThemeName }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefaultThemeViewHolder {
         val defaultThemeItemBinding =

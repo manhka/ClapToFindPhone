@@ -18,13 +18,13 @@ import com.example.claptofindphone.databinding.VibrateItemBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Vibrate
 import com.example.claptofindphone.service.VibrateController
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class ChangeVibrateActivity : AppCompatActivity() {
     private lateinit var changeVibrateItemBinding: ActivityChangeVibrateBinding
     private lateinit var vibrateAdapter: VibrateAdapter
     private lateinit var vibrateList: List<Vibrate>
     private lateinit var selectedVibrateName: String
-    private lateinit var vibrateSharedPreferences: SharedPreferences
     private lateinit var vibrateController: VibrateController
     private var vibrateStatus: Boolean = true
     @RequiresApi(Build.VERSION_CODES.O)
@@ -41,19 +41,10 @@ class ChangeVibrateActivity : AppCompatActivity() {
         vibrateController=VibrateController(this)
 
         // vibrate share pres
-        vibrateSharedPreferences = getSharedPreferences(
-            Constant.SharePres.VIBRATE_SHARE_PRES,
-            MODE_PRIVATE
-        )
-        selectedVibrateName =
-            vibrateSharedPreferences.getString(
-                Constant.SharePres.ACTIVE_VIBRATE_NAME,
-                Constant.Vibrate.default
-            ).toString()
 
+        selectedVibrateName =SharePreferenceUtils.getVibrateName()
 
-        vibrateStatus =
-            vibrateSharedPreferences.getBoolean(Constant.SharePres.VIBRATE_STATUS, true)
+        vibrateStatus =SharePreferenceUtils.isOnVibrate()
         // on off toggle
         updateOnOffToggle(vibrateStatus)
         var selectedPosition =
@@ -69,12 +60,9 @@ class ChangeVibrateActivity : AppCompatActivity() {
         changeVibrateItemBinding.rcvChangeVibrate.adapter=vibrateAdapter
         changeVibrateItemBinding.saveButton.setOnClickListener {
 
-            vibrateSharedPreferences.edit()
-                .putString(Constant.SharePres.ACTIVE_VIBRATE_NAME, selectedVibrateName)
-                .apply()
-            vibrateSharedPreferences.edit()
-                .putBoolean(Constant.SharePres.VIBRATE_STATUS, vibrateStatus)
-                .apply()
+            SharePreferenceUtils.setVibrateName(selectedVibrateName)
+            SharePreferenceUtils.setOnVibrate(vibrateStatus)
+
             finish()
         }
         changeVibrateItemBinding.onOffLayout.setOnClickListener {

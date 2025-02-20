@@ -17,6 +17,7 @@
     android:text="@string/dont_touch_my_phone"
     android:textStyle="bold"
     android:textSize="24sp"
+    android:gravity="center"
     android:layout_marginTop="40dp"/>
     <ImageView
         android:layout_width="wrap_content"

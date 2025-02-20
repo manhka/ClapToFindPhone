@@ -16,12 +16,12 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySetupPasscodeBinding
 import com.example.claptofindphone.databinding.ActivitySetupTextPasscodeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 class SetupTextPasscodeActivity : AppCompatActivity() {
     private lateinit var setupTextPasscodeActivity: ActivitySetupTextPasscodeBinding
     private lateinit var textToSpeech: TextToSpeech
-    private lateinit var voicePasscodeSharePres: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupTextPasscodeActivity = ActivitySetupTextPasscodeBinding.inflate(layoutInflater)
@@ -31,19 +31,13 @@ class SetupTextPasscodeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        voicePasscodeSharePres = getSharedPreferences(
-            Constant.SharePres.VOICE_PASSCODE_SHARE_PRES,
-            MODE_PRIVATE
-        )
         setupTextPasscodeActivity.edtTextPasscode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // call before text change
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // call when text is changing
             }
-
             override fun afterTextChanged(p0: Editable?) {
                 // call after text changed
                 if (p0 != null) {
@@ -77,7 +71,7 @@ class SetupTextPasscodeActivity : AppCompatActivity() {
         setupTextPasscodeActivity.saveButton.setOnClickListener {
 
             val passcode = setupTextPasscodeActivity.edtTextPasscode.text.toString().trim()
-            voicePasscodeSharePres.edit().putString(Constant.SharePres.PASSCODE, passcode).apply()
+            SharePreferenceUtils.setVoicePasscode(passcode)
             val intent= Intent(this,HomeActivity::class.java)
             startActivity(intent)
             finish()

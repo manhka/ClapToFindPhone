@@ -9,18 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.ChangeSoundActivity
 import com.example.claptofindphone.databinding.SoundItemBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
+import com.example.claptofindphone.utils.SharePreferenceUtils
+
 // sound adapter in home
 class SoundAdapter(
     private val context: Context,
     private val soundList: List<Sound>) :
     RecyclerView.Adapter<SoundAdapter.SoundHolder>() {
-    val soundSharedPreferences =
-        context.getSharedPreferences(Constant.SharePres.SOUND_SHARE_PRES, MODE_PRIVATE)
-    val selectedSoundId = soundSharedPreferences.getInt(
-        Constant.SharePres.ACTIVE_SOUND_ID,
-        1    )
+
+    val selectedSoundId = SharePreferenceUtils.getSoundId()
     var selectedPosition = soundList.indexOfFirst { it.id == selectedSoundId }
     class SoundHolder(soundItemBinding: SoundItemBinding) :
         RecyclerView.ViewHolder(soundItemBinding.root) {
