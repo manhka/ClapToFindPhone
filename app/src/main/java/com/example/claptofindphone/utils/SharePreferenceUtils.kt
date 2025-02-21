@@ -85,7 +85,7 @@ object SharePreferenceUtils {
     fun isOnSound():Boolean= getBoolean("isOnSound",true)
     fun setOnSound(value: Boolean)= saveKey("isOnSound",value)
     fun getSoundId():Int= getInt("getSoundId", 1)
-    fun setSoundId(value: Int)= saveKey("getSoundId",1)
+    fun setSoundId(value: Int)= saveKey("getSoundId",value)
     fun getTimeSoundPlay():Long= getLong("getTimeSoundPlay")
     fun setTimeSoundPlay(value: Long)= saveKey("getTimeSoundPlay",value)
     fun getVolumeSound():Int= getInt("getVolumeSound",50)

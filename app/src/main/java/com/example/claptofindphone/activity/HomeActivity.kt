@@ -3,30 +3,23 @@ package com.example.claptofindphone.activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.HomeAdapter
 import com.example.claptofindphone.adapter.SoundAdapter
 import com.example.claptofindphone.databinding.ActivityHomeBinding
-import com.example.claptofindphone.databinding.DialogChargerAlarmDialogBinding
-import com.example.claptofindphone.databinding.DialogEditThemeBinding
 import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
@@ -37,7 +30,6 @@ import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlin.reflect.typeOf
 
 class HomeActivity : BaseActivity() {
     private lateinit var homeBinding: ActivityHomeBinding
@@ -61,7 +53,6 @@ class HomeActivity : BaseActivity() {
         ) {
             NotificationScheduler().scheduleDailyNotifications(this)
         }
-
         permissionController = PermissionController()
 
         handleNotificationPermission()
@@ -214,12 +205,12 @@ class HomeActivity : BaseActivity() {
         return SharePreferenceUtils.getDeniCount()
     }
 
-    fun incrementDeniedCount() {
+    private fun incrementDeniedCount() {
         val currentCount = getDeniedCount()
         SharePreferenceUtils.setDeniCount(currentCount + 1)
     }
 
-    fun handleNotificationPermission() {
+    private fun handleNotificationPermission() {
         if (!checkNotificationPermission(this)) {
             val deniedCount = getDeniedCount()
             if (deniedCount < 2) {

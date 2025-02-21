@@ -75,7 +75,6 @@ class CallThemeAdapter(val context: Context,
                     customDialog.dismiss()
                     val intent= Intent(context,EditThemeActivity::class.java)
                     intent.putExtra("call_theme",callThemeItem)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     context.startActivity(intent)
                 }
                 dialogBinding.exitButton.setOnClickListener {
@@ -84,7 +83,6 @@ class CallThemeAdapter(val context: Context,
             }else{
                 val intent= Intent(context,EditThemeActivity::class.java)
                 intent.putExtra("call_theme",callThemeItem)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivity(intent)
             }
         }

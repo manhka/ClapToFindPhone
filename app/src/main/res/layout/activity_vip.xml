@@ -101,13 +101,14 @@
 
             <TextView
                 android:id="@+id/txt_remove_ads_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/remove_ads_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/remove_ads"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_remove_ads_title" />
 
             <ImageView
@@ -142,13 +143,14 @@
 
             <TextView
                 android:id="@+id/txt_unlock_theme_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/unlock_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/unlock_theme"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_unlock_theme_title" />
 
             <ImageView
@@ -183,13 +185,14 @@
 
             <TextView
                 android:id="@+id/txt_unlock_sound_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/unlock_sound_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/unlock_theme"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_unlock_sound_title" />
 
             <ImageView
@@ -224,13 +227,14 @@
 
             <TextView
                 android:id="@+id/txt_unlock_flashlight_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/unlock_flashlight_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/unlock_theme"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_unlock_flashlight_title" />
 
             <ImageView
@@ -265,13 +269,14 @@
 
             <TextView
                 android:id="@+id/txt_unlock_vibrate_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/unlock_vibrate_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/unlock_theme"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_unlock_vibrate_title" />
 
 

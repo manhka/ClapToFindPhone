@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -58,19 +59,18 @@ class LanguageActivity : BaseActivity() {
         // apply btn
         binding.btnApplyLanguage.setOnClickListener {
             val selectedLanguage = languageAdapter.getSelectedLanguage()
+
             if (selectedLanguage != null) {
                 SharePreferenceUtils.setLanguageCode(selectedLanguage.languageCode)
-                setAppLocale(selectedLanguage.languageCode)
-            } else {
-                val curLanguage =SharePreferenceUtils.getLanguageCode()
-                setAppLocale(curLanguage)
             }
             if (isNavigateFromHome){
                     val intent = Intent(this,HomeActivity::class.java)
                     startActivity(intent)
+                finish()
             }else{
                 val intent = Intent(this, IntroductionActivity::class.java)
                 startActivity(intent)
+                finish()
             }
             finish()
         }
@@ -88,21 +88,9 @@ class LanguageActivity : BaseActivity() {
 
     }
 
-    // set up language for app
-    private fun setAppLocale(languageCode: String) {
-        // change current language
-        SharePreferenceUtils.setLanguageCode(languageCode)
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
-
-    }
 
     private fun loadSavedLanguage() {
         val savedLanguageCode = SharePreferenceUtils.getLanguageCode()
-        setAppLocale(savedLanguageCode)
         updateCurrentLanguageDisplay(savedLanguageCode)
     }
 
