@@ -19,7 +19,7 @@ import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
-class LanguageActivity : AppCompatActivity() {
+class LanguageActivity : BaseActivity() {
     private lateinit var binding: ActivityLanguageBinding
     private lateinit var languageList: List<Language>
     private lateinit var languageAdapter: LanguageAdapter

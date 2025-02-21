@@ -191,5 +191,14 @@
     <string name="anti_theft">Antifurto!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">Alertas quando o telefone for retirado do bolso</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">Crie um alarme antifurto ao carregar em público</string>
+    <string name="wait_touch_phone_content">O alarme começará após 5 segundos\ncoloque o telefone no seu lugar.</string>
+    <string name="wait_pocket_mode_title">Trave e coloque seu telefone\ndentro do seu bolso.</string>
+    <string name="wait_pocket_mode_content">Seu telefone começará a tocar se alguém\nretirar ele do seu bolso.</string>
+    <string name="wait_charger_alarm_title">Reconecte o carregador da bateria.</string>
+    <string name="wait_charger_alarm_content">Seu telefone começará a tocar se alguém\ndesconectar o seu carregador.</string>
+    <string name="other_service_running">Outro serviço está em execução.</string>
+    <string name="charger_alert">Alerta de Carregador</string>
+    <string name="dialog_calltheme_title">Adicione seu Tema de Chamada</string>
+    <string name="dialog_calltheme_content">Assista a um vídeo curto para desbloquear o Tema de Chamada</string>
 
 </resources>

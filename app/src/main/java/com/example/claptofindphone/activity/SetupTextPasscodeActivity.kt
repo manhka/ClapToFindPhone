@@ -19,7 +19,7 @@ import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
-class SetupTextPasscodeActivity : AppCompatActivity() {
+class SetupTextPasscodeActivity : BaseActivity() {
     private lateinit var setupTextPasscodeActivity: ActivitySetupTextPasscodeBinding
     private lateinit var textToSpeech: TextToSpeech
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -16,6 +16,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.hardware.camera2.CaptureResult.SENSOR_SENSITIVITY
 import android.media.AudioRecord
 import android.os.BatteryManager
 import android.os.Build
@@ -48,14 +49,14 @@ class MyService : Service(), SensorEventListener {
     private var handler: Handler? = null
     private var runnable: Runnable? = null
     private lateinit var mSensorManager: SensorManager
-    private lateinit var mAccelerometer: Sensor
-    private lateinit var lightSensor: Sensor
+    private var mAccelerometer: Sensor? = null
+    private var lightSensor: Sensor? = null
     private var mLastShakeTime: Long = 0
     private val SHAKE_THRESHOLD = 1000L
     private var batteryReceiver: BroadcastReceiver? = null
     private var isVoiceDetectListening = false
     private var isClapDetectListening = false
-    private lateinit var proximitySensor: Sensor
+    private var proximitySensor: Sensor? = null
     private var isProximityTriggered = false
     private var isPhoneInPocket = false
     private var isLightTriggered = false
@@ -71,9 +72,7 @@ class MyService : Service(), SensorEventListener {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         handlerClap = Handler()
         mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
-        lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
-        proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
+
 
         handler = Handler()
         runnable = Runnable { voicePasswordDetect() }
@@ -103,13 +102,14 @@ class MyService : Service(), SensorEventListener {
         } else if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
             voicePasswordDetect()
         } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
-            mSensorManager.unregisterListener(this, lightSensor)
+            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
             mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL)
         } else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
             chargerPhoneDetect()
         } else if (runningService == Constant.Service.POCKET_MODE_RUNNING) {
-            mSensorManager.unregisterListener(this, mAccelerometer)
+            lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
             mSensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+            proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
             mSensorManager.registerListener(
                 this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL
             )
@@ -149,14 +149,14 @@ class MyService : Service(), SensorEventListener {
         // Inflate the custom layout using RemoteViews
         val customView = RemoteViews(packageName, R.layout.big_custom_notify2)
         val customView2 = RemoteViews(packageName, R.layout.custom_notifiy2)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             customView.setOnClickPendingIntent(
                 R.id.power_button, PendingIntent.getActivity(
                     this, 5000,
                     Intent(this, HomeActivity::class.java), PendingIntent.FLAG_IMMUTABLE
                 )
             )
-        }else{
+        } else {
             customView.setOnClickPendingIntent(
                 R.id.power_button, PendingIntent.getActivity(
                     this, 5000,
@@ -334,14 +334,15 @@ class MyService : Service(), SensorEventListener {
             Sensor.TYPE_PROXIMITY -> {
                 // Xử lý cảm biến tiệm cận
                 val proximityValue = event.values[0]
-                isProximityTriggered = proximityValue < proximitySensor.maximumRange
-            }
+                isProximityTriggered = proximityValue <= proximitySensor!!.maximumRange
 
+            }
             Sensor.TYPE_LIGHT -> {
                 // Xử lý cảm biến ánh sáng
                 val lightValue = event.values[0]
                 isLightTriggered = lightValue < 50
             }
+
         }
         checkPocketMode()
     }
@@ -389,13 +390,19 @@ class MyService : Service(), SensorEventListener {
                 Log.e(TAG, "Error releasing resources: ${e.message}")
             }
         }
+        if (proximitySensor != null) {
+            mSensorManager.unregisterListener(this, proximitySensor)
+        }
+        if (mAccelerometer != null) {
+            mSensorManager.unregisterListener(this, mAccelerometer)
+        }
+        if (lightSensor != null) {
+            mSensorManager.unregisterListener(this, lightSensor)
+        }
 
-        mSensorManager.unregisterListener(this, mAccelerometer)
-        mSensorManager.unregisterListener(this, lightSensor)
         if (batteryReceiver != null) {
             unregisterReceiver(batteryReceiver)
         }
-
         // Hiển thị lại notification khi kết thúc (nếu cần)
         val notification = createNotifyOff()
         // Tạo notification với layout ban đầu

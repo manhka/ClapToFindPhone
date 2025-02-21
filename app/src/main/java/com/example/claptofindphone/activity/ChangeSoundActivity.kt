@@ -22,7 +22,7 @@ import com.example.claptofindphone.service.SoundController
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
-class ChangeSoundActivity : AppCompatActivity() {
+class ChangeSoundActivity : BaseActivity() {
     private lateinit var changeSoundBinding: ActivityChangeSoundBinding
     private lateinit var soundList: List<Sound>
     private lateinit var changeSoundAdapter: SoundAdapter2

@@ -39,7 +39,7 @@ class FlashlightAdapter(
 
     override fun onBindViewHolder(holder: FlashlightViewHolder, position: Int) {
         val flashlightItem = flashlightList[position]
-        val isPremiumVisible = SharePreferenceUtils.isPremiumVisible(position)
+        val isPremiumVisible = SharePreferenceUtils.isFlashlightPremiumVisible(position)
 
         holder.itemFlashlightItemBinding.flashlightBg.setBackgroundResource(flashlightItem.flashlightBg)
         holder.itemFlashlightItemBinding.txtFlashlightName.text = flashlightItem.flashlightName
@@ -76,7 +76,7 @@ class FlashlightAdapter(
                 dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_flashlight_title)
                 dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_flashlight_content)
                 dialogBinding.watchAdsButton.setOnClickListener {
-                    SharePreferenceUtils.setIsPremiumVisible(position,false)
+                    SharePreferenceUtils.setIsFlashlightPremiumVisible(position,false)
                     selectedPosition = position
                     notifyDataSetChanged()
                     customDialog.dismiss()

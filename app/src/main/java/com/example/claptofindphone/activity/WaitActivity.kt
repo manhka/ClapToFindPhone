@@ -15,7 +15,7 @@ import com.example.claptofindphone.databinding.ActivityWaitBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.MyService
 
-class WaitActivity : AppCompatActivity() {
+class WaitActivity : BaseActivity() {
     private lateinit var waitBinding: ActivityWaitBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

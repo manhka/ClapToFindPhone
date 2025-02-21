@@ -14,7 +14,7 @@ import com.example.claptofindphone.databinding.ActivityInstallingLanguageBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
-class InstallingLanguageActivity : AppCompatActivity() {
+class InstallingLanguageActivity : BaseActivity() {
     private lateinit var installingLanguageBinding: ActivityInstallingLanguageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

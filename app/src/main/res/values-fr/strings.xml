@@ -191,5 +191,14 @@
     <string name="anti_theft">Anti-vol !</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">Alerte lorsque le téléphone est sorti de la poche</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">Créez une alarme anti-vol lors de la charge en public</string>
+    <string name="wait_touch_phone_content">L\'alarme commencera après 5 secondes\nmettez le téléphone à votre place.</string>
+    <string name="wait_pocket_mode_title">Verrouillez et mettez votre téléphone\ndans votre poche.</string>
+    <string name="wait_pocket_mode_content">Votre téléphone commencera à sonner si quelqu\'un\nle retire de votre poche.</string>
+    <string name="wait_charger_alarm_title">Rebranchez le chargeur de la batterie.</string>
+    <string name="wait_charger_alarm_content">Votre téléphone commencera à sonner si quelqu\'un\ndébranche votre chargeur.</string>
+    <string name="other_service_running">Un autre service est en cours d\'exécution.</string>
+    <string name="charger_alert">Alerte de Charge</string>
+    <string name="dialog_calltheme_title">Ajoutez votre Thème d\'Appel</string>
+    <string name="dialog_calltheme_content">Regardez une vidéo courte pour débloquer le Thème d\'Appel</string>
 
 </resources>

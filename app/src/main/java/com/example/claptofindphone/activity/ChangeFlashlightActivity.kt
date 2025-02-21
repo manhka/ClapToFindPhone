@@ -17,7 +17,7 @@ import com.example.claptofindphone.service.FlashlightController
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
-class ChangeFlashlightActivity : AppCompatActivity() {
+class ChangeFlashlightActivity : BaseActivity() {
     private lateinit var changeFlashlightBinding: ActivityChangeFlashlightBinding
     private lateinit var changeFlashlightAdapter: FlashlightAdapter
     private lateinit var flashlightList: List<Flashlight>

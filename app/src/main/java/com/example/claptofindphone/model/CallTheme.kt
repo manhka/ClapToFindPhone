@@ -12,5 +12,5 @@ class CallTheme(
     val callThemeReject:Int,
     val callThemeName:String,
     val callThemePhone:String,
-    val callThemePremium:Int
+    var callThemePremium:Int
 ): Serializable

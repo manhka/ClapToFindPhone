@@ -5,9 +5,9 @@
     android:id="@+id/change_flashlight_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="10dp"
-    tools:context=".activity.ChangeFlashlightActivity"
-    android:background="@color/white">
+    tools:context=".activity.ChangeFlashlightActivity">
 
     <ImageView
         android:id="@+id/back_button"
@@ -18,18 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txt_custom_flashlight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/change_flashlight"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/back_button"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/save_button"
@@ -43,6 +31,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txt_custom_flashlight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="@string/change_flashlight"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toStartOf="@id/save_button"
+        app:layout_constraintStart_toEndOf="@id/back_button"
+        app:layout_constraintTop_toTopOf="@id/back_button"
+        app:layout_constraintBottom_toBottomOf="@id/back_button"/>
+
     <LinearLayout
         android:id="@+id/onOffLayout"
         android:layout_width="wrap_content"
@@ -53,8 +58,7 @@
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/save_button"
-        >
+        app:layout_constraintTop_toBottomOf="@id/save_button">
 
         <TextView
             android:id="@+id/txt_on"
@@ -67,20 +71,21 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/on_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/on_ic"
-            android:visibility="visible"/>
+            android:visibility="visible" />
+
         <ImageView
             android:id="@+id/off_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/off_ic"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/txt_off"
@@ -93,9 +98,8 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
-
 
 
     <androidx.recyclerview.widget.RecyclerView

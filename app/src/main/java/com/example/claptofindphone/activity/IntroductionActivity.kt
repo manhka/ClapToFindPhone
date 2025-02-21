@@ -12,7 +12,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.IntroViewPagerAdapter
 import com.example.claptofindphone.databinding.ActivityIntroductionBinding
 
-class IntroductionActivity : AppCompatActivity() {
+class IntroductionActivity : BaseActivity() {
 
     private lateinit var introductionBinding: ActivityIntroductionBinding
     override fun onCreate(savedInstanceState: Bundle?) {

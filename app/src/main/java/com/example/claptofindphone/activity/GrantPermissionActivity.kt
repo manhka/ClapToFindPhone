@@ -16,7 +16,7 @@ import com.example.claptofindphone.databinding.ActivityGrantPermissionBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.PermissionController
 
-class GrantPermissionActivity : AppCompatActivity() {
+class GrantPermissionActivity : BaseActivity() {
     private lateinit var grantPermissionBinding: ActivityGrantPermissionBinding
     private lateinit var permissionController: PermissionController
     private lateinit var typeOfPermission: String

@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityBecomeVipMemberBinding
 
-class BecomeVipMemberActivity : AppCompatActivity() {
+class BecomeVipMemberActivity : BaseActivity() {
     private lateinit var becomeVipMemberBinding: ActivityBecomeVipMemberBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -191,5 +191,13 @@
     <string name="anti_theft">Chống trộm!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">Cảnh báo khi điện thoại bị lấy ra khỏi túi</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">Tạo cảnh báo chống trộm khi sạc điện thoại ở nơi công cộng</string>
-
+    <string name="wait_touch_phone_content">Cảnh báo sẽ bắt đầu sau 5 giây\nđặt điện thoại của bạn vào vị trí của bạn.</string>
+    <string name="wait_pocket_mode_title">Khóa và đặt điện thoại của bạn\nvào trong túi.</string>
+    <string name="wait_pocket_mode_content">Điện thoại của bạn sẽ bắt đầu đổ chuông nếu ai đó\nlấy điện thoại ra khỏi túi của bạn.</string>
+    <string name="wait_charger_alarm_title">Cắm lại bộ sạc điện thoại.</string>
+    <string name="wait_charger_alarm_content">Điện thoại của bạn sẽ bắt đầu đổ chuông nếu ai đó\nrút bộ sạc điện thoại của bạn.</string>
+    <string name="other_service_running">Một dịch vụ khác đang chạy.</string>
+    <string name="charger_alert">Cảnh báo Sạc</string>
+    <string name="dialog_calltheme_title">Thêm chủ đề Cuộc gọi của bạn</string>
+    <string name="dialog_calltheme_content">Xem video ngắn để mở khóa chủ đề Cuộc gọi</string>
 </resources>

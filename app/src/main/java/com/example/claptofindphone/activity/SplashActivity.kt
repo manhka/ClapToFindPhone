@@ -17,7 +17,7 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

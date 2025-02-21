@@ -35,7 +35,7 @@ class VibrateAdapter(
 
     override fun onBindViewHolder(holder: VibrateViewHolder, position: Int) {
        val vibrate=vibrateList[position]
-        val isPremiumVisible = SharePreferenceUtils.isPremiumVisible(position)
+        val isPremiumVisible = SharePreferenceUtils.isVibratePremiumVisible(position)
         holder.vibrateItemBinding.vibrateBg.setBackgroundResource(vibrate.vibrateBg)
         holder.vibrateItemBinding.txtVibrateName.text=vibrate.vibrateName
         holder.vibrateItemBinding.selectedIc.setImageResource(vibrate.vibrateSelected)
@@ -68,7 +68,7 @@ class VibrateAdapter(
                 dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_vibrate_title)
                 dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_vibrate_content)
                 dialogBinding.watchAdsButton.setOnClickListener {
-                   SharePreferenceUtils.setIsPremiumVisible(position,false)
+                   SharePreferenceUtils.setIsVibratePremiumVisible(position,false)
 //                    holder.vibrateItemBinding.premiumButton.setImageResource(0)
                     selectedPosition = position
                     notifyDataSetChanged()

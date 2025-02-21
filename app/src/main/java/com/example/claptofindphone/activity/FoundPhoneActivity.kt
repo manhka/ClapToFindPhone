@@ -30,7 +30,7 @@ import com.example.claptofindphone.service.VibrateController
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
-class FoundPhoneActivity : AppCompatActivity() {
+class FoundPhoneActivity : BaseActivity() {
     private lateinit var foundPhoneBinding: ActivityFoundPhoneBinding
     private lateinit var soundList: List<Sound>
     private lateinit var flashlightList: List<Flashlight>

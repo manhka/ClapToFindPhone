@@ -20,7 +20,7 @@ import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
-class SetupVoicePasscodeActivity : AppCompatActivity() {
+class SetupVoicePasscodeActivity : BaseActivity() {
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var recognizerIntent: Intent
     private lateinit var passcode : String

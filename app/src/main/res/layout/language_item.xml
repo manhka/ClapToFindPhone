@@ -31,11 +31,13 @@
             android:id="@+id/imgView_language_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:text="@string/english"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_marginTop="2dp"
+            />
 
         <ImageView
             android:id="@+id/imgView_language_selected"

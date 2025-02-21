@@ -39,7 +39,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.reflect.typeOf
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var soundAdapter: SoundAdapter
     private lateinit var soundList: List<Sound>
@@ -62,12 +62,12 @@ class HomeActivity : AppCompatActivity() {
             NotificationScheduler().scheduleDailyNotifications(this)
         }
 
-        permissionController=PermissionController()
+        permissionController = PermissionController()
 
         handleNotificationPermission()
         val myService = MyService()
         myService.handleBackPress(this)
-        soundList=InstallData.getListSound(this)
+        soundList = InstallData.getListSound(this)
         soundAdapter = SoundAdapter(this, soundList)
         homeBinding.rcvHomeSound.layoutManager = GridLayoutManager(this, 3)
         homeBinding.rcvHomeSound.adapter = soundAdapter
@@ -153,22 +153,31 @@ class HomeActivity : AppCompatActivity() {
 
 
         homeBinding.changeAudioPasscodeButton.setOnClickListener {
-            val isRunningService=SharePreferenceUtils.getRunningService()
-            if (permissionController.hasAudioPermission(this)){
-                if(permissionController.isInternetAvailable(this)){
-                    if (isRunningService!=""){
-                        Toast.makeText(this,getString(R.string.deactive_all_feature_before_run),Toast.LENGTH_SHORT).show()
-                    }else{
+            SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
+            val isRunningService = SharePreferenceUtils.getRunningService()
+            if (permissionController.hasAudioPermission(this)) {
+                if (permissionController.isInternetAvailable(this)) {
+                    if (isRunningService != "") {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.deactive_all_feature_before_run),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
                         val intent = Intent(this, VoicePasscodeActivity::class.java)
                         startActivity(intent)
                     }
-                }else{
-                    Toast.makeText(this,R.string.connect_internet_to_use_this_feature,Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        R.string.connect_internet_to_use_this_feature,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            }else{
-                Toast.makeText(this,R.string.active_audio_to_use_this_feature,Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, R.string.active_audio_to_use_this_feature, Toast.LENGTH_SHORT)
+                    .show()
             }
-
         }
     }
 
@@ -207,7 +216,7 @@ class HomeActivity : AppCompatActivity() {
 
     fun incrementDeniedCount() {
         val currentCount = getDeniedCount()
-        SharePreferenceUtils.setDeniCount(currentCount+1)
+        SharePreferenceUtils.setDeniCount(currentCount + 1)
     }
 
     fun handleNotificationPermission() {

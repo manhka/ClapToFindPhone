@@ -191,5 +191,14 @@
     <string name="anti_theft">도난 방지!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">전화가 주머니에서 꺼낼 때 알림</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">공공장소에서 충전 중일 때 도난 방지 알람 설정</string>
+    <string name="wait_touch_phone_content">알람은 5초 후에 시작됩니다\n전화기를 지정된 위치에 놓아주세요.</string>
+    <string name="wait_pocket_mode_title">전화기를 잠그고\n주머니에 넣어주세요.</string>
+    <string name="wait_pocket_mode_content">누군가가 주머니에서 전화기를 꺼내면\n전화기가 울리기 시작합니다.</string>
+    <string name="wait_charger_alarm_title">배터리 충전기를\n다시 연결해주세요.</string>
+    <string name="wait_charger_alarm_content">누군가 충전기를 뽑으면\n전화기가 울리기 시작합니다.</string>
+    <string name="other_service_running">다른 서비스가 실행 중입니다.</string>
+    <string name="charger_alert">충전기 알림</string>
+    <string name="dialog_calltheme_title">전화 테마 추가</string>
+    <string name="dialog_calltheme_content">전화 테마 잠금을 해제하려면 짧은 영상을 시청하세요</string>
 
 </resources>

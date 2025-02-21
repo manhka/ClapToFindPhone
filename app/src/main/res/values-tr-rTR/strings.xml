@@ -191,5 +191,13 @@
     <string name="anti_theft">Hırsızlık karşıtı!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">Telefon cebinizden çıkarıldığında uyarı</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">Halka açık alanda şarj edilirken hırsızlık alarmı oluşturun</string>
-
+    <string name="wait_touch_phone_content">Alarm 5 saniye sonra başlayacak\ntelefonunuzu yerine koyun.</string>
+    <string name="wait_pocket_mode_title">Telefonunuzu kilitleyin ve\ncep telefonunuzu cebinize koyun.</string>
+    <string name="wait_pocket_mode_content">Birisi telefonunuzu cebinizden alırsa\ntelefonunuz çalmaya başlayacak.</string>
+    <string name="wait_charger_alarm_title">Şarj cihazını tekrar takın.</string>
+    <string name="wait_charger_alarm_content">Birisi şarj cihazınızı çıkarırsa\ntelefonunuz çalmaya başlayacak.</string>
+    <string name="other_service_running">Başka bir hizmet çalışıyor.</string>
+    <string name="charger_alert">Şarj Uyarısı</string>
+    <string name="dialog_calltheme_title">Arama Temanızı Ekleyin</string>
+    <string name="dialog_calltheme_content">Arama temasını açmak için kısa bir video izleyin</string>
 </resources>

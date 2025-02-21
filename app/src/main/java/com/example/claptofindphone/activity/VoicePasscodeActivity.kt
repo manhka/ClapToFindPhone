@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityVoicePasscodeBinding
 
-class VoicePasscodeActivity : AppCompatActivity() {
+class VoicePasscodeActivity : BaseActivity() {
     private lateinit var voicePasscodeBinding: ActivityVoicePasscodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

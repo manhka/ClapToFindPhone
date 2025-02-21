@@ -50,7 +50,7 @@ class DontTouchMyPhoneFragment : Fragment() {
                 } else if (runningService != Constant.Service.TOUCH_PHONE_RUNNING) {
                     Toast.makeText(
                         requireContext(),
-                        "Another service is running",
+                        R.string.other_service_running,
                         Toast.LENGTH_LONG
                     ).show()
                 } else {

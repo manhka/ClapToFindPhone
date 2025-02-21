@@ -18,7 +18,7 @@ import com.example.claptofindphone.model.DefaultTheme
 import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
-class EditThemeActivity : AppCompatActivity() {
+class EditThemeActivity : BaseActivity() {
     private lateinit var editThemeBinding: ActivityEditThemeBinding
     private lateinit var selectedThemeName:String
     private lateinit var name:String
@@ -88,7 +88,7 @@ class EditThemeActivity : AppCompatActivity() {
             SharePreferenceUtils.setThemeName(selectedThemeName)
             val intent = Intent(this, ChangeThemeActivity::class.java)
             startActivity(intent)
-            finish()
+
         }
 
         editThemeBinding.backButton.setOnClickListener {

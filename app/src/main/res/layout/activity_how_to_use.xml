@@ -36,6 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_how_to_use"
         app:tabMode="scrollable"
+        android:background="@color/white"
         app:tabIndicatorColor="@color/blue"
         app:tabSelectedTextColor="@color/black" />
 

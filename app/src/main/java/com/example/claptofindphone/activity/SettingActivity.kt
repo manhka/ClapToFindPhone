@@ -3,6 +3,7 @@ package com.example.claptofindphone.activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,7 +13,7 @@ import com.example.claptofindphone.databinding.ActivitySettingBinding
 import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.model.Constant
 
-class SettingActivity : AppCompatActivity() {
+class SettingActivity : BaseActivity() {
     private lateinit var settingActivityBinding: ActivitySettingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,25 @@ class SettingActivity : AppCompatActivity() {
         }
         settingActivityBinding.policyButton.setOnClickListener {
             policy()
+        }
+        settingActivityBinding.feedbackButton.setOnClickListener {
+            val deviceName = Build.MODEL // returns model name
+            val deviceManufacturer = Build.MANUFACTURER
+
+            val testIntent = Intent(Intent.ACTION_VIEW)
+            val data: Uri = Uri.parse(
+                """mailto:?subject=Clap To Find Phone &body=Device: $deviceManufacturer - $deviceName 
+                        | ${getAndroidVersion()} 
+                         &to=phuongculinh2015@gmail.com""".trimMargin()
+            )
+            testIntent.data = data
+            try {
+                startActivity(testIntent)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            }
         }
         settingActivityBinding.rateUsButton.setOnClickListener {
             val dialogBinding = DialogRateUsBinding.inflate(layoutInflater)
@@ -79,5 +99,10 @@ class SettingActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+    fun getAndroidVersion(): String {
+        val release = Build.VERSION.RELEASE
+        val sdkVersion = Build.VERSION.SDK_INT
+        return "Android SDK: $sdkVersion (version $release)"
     }
 }

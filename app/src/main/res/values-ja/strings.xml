@@ -191,4 +191,14 @@
     <string name="anti_theft">盗難防止！</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">電話がポケットから取り出されるとアラートを表示</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">公共の場で充電中に盗難防止アラームを作成</string>
+    <string name="wait_touch_phone_content">アラームは5秒後に開始されます\n電話を指定の場所に置いてください。</string>
+    <string name="wait_pocket_mode_title">電話をロックし、ポケットに\n入れてください。</string>
+    <string name="wait_pocket_mode_content">誰かがポケットから電話を取り出すと\n電話が鳴り始めます。</string>
+    <string name="wait_charger_alarm_title">バッテリーの充電器を\n再度接続してください。</string>
+    <string name="wait_charger_alarm_content">誰かが充電器を抜くと\n電話が鳴り始めます。</string>
+    <string name="other_service_running">別のサービスが実行中です。</string>
+    <string name="charger_alert">充電器アラート</string>
+    <string name="dialog_calltheme_title">コールテーマを追加</string>
+    <string name="dialog_calltheme_content">コールテーマをアンロックするために短い動画を視聴してください</string>
+
 </resources>

@@ -9,7 +9,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityStartBinding
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
-class StartActivity : AppCompatActivity() {
+class StartActivity : BaseActivity() {
     private lateinit var startActivityBinding: ActivityStartBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

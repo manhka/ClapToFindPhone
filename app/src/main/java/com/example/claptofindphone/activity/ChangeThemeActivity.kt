@@ -1,5 +1,6 @@
 package com.example.claptofindphone.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,7 +14,7 @@ import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.DefaultTheme
 import com.example.claptofindphone.utils.InstallData
 
-class ChangeThemeActivity : AppCompatActivity() {
+class ChangeThemeActivity : BaseActivity() {
     private lateinit var changeThemeBinding: ActivityChangeThemeBinding
     private lateinit var defaultThemeAdapter: DefaultThemeAdapter
     private lateinit var callThemeAdapter: CallThemeAdapter
@@ -41,6 +42,8 @@ class ChangeThemeActivity : AppCompatActivity() {
         changeThemeBinding.rcvCallTheme.adapter = callThemeAdapter
         changeThemeBinding.rcvCallTheme.layoutManager = GridLayoutManager(this, 2)
         changeThemeBinding.backButton.setOnClickListener {
+            val intent= Intent(this,HomeActivity::class.java)
+            startActivity(intent)
             finish()
         }
     }

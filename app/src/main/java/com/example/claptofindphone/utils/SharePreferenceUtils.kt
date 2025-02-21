@@ -94,8 +94,12 @@ object SharePreferenceUtils {
 
     // is premium
 
-    fun isPremiumVisible(position: Int):Boolean= getBoolean("isPremiumVisible_$position",true)
-    fun setIsPremiumVisible(position: Int, value: Boolean)= saveKey("isPremiumVisible_$position",value)
+    fun isVibratePremiumVisible(position: Int):Boolean= getBoolean("isVibratePremiumVisible_$position",true)
+    fun setIsVibratePremiumVisible(position: Int, value: Boolean)= saveKey("isVibratePremiumVisible_$position",value)
+    fun isFlashlightPremiumVisible(position: Int):Boolean= getBoolean("isFlashlightPremiumVisible_$position",true)
+    fun setIsFlashlightPremiumVisible(position: Int, value: Boolean)= saveKey("isFlashlightPremiumVisible_$position",value)
+    fun isCallThemePremiumVisible(position: Int):Boolean= getBoolean("isCallThemePremiumVisible_$position",true)
+    fun setIsCallThemePremiumVisible(position: Int, value: Boolean)= saveKey("isCallThemePremiumVisible_$position",value)
     // Language
     fun getLanguageCode(): String = getString("getLanguageCode", "en")
     fun setLanguageCode(value: String) = saveKey("getLanguageCode", value)

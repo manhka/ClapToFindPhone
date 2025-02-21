@@ -46,7 +46,7 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
                 } else if (runningService != Constant.Service.POCKET_MODE_RUNNING) {
                     Toast.makeText(
                         requireContext(),
-                        "Another service is running",
+                        R.string.other_service_running,
                         Toast.LENGTH_LONG
                     ).show()
                 } else {

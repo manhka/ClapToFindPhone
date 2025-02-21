@@ -304,7 +304,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme3,
@@ -316,7 +316,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme4,
@@ -328,7 +328,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme5,
@@ -340,7 +340,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme6,
@@ -352,7 +352,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme7,
@@ -364,7 +364,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme8,
@@ -376,7 +376,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme9,
@@ -388,7 +388,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme10,
@@ -400,7 +400,7 @@ class InstallData {
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
                     R.string.phone.toString(),
-                    0
+                    R.drawable.ic_premium
                 )
             )
         }

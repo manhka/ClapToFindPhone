@@ -89,7 +89,7 @@ class ChargerAlarmFragment() : Fragment() {
                     }
                 } else if (runningService != Constant.Service.CHARGER_ALARM_RUNNING) {
                     Toast.makeText(
-                        requireContext(), "Another service is running", Toast.LENGTH_LONG
+                        requireContext(), R.string.other_service_running, Toast.LENGTH_LONG
                     ).show()
                 } else {
                     chargerAlarmInHomeBinding.txtActionStatus.text =

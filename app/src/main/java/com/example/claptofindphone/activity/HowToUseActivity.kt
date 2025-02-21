@@ -12,7 +12,7 @@ import com.example.claptofindphone.databinding.ActivityHowToUseBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HowToUseActivity : AppCompatActivity() {
+class HowToUseActivity : BaseActivity() {
     private lateinit var howToUseBinding: ActivityHowToUseBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -191,5 +191,14 @@
     <string name="anti_theft">Anti pencurian!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">Pemberitahuan saat ponsel diambil dari saku</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">Buat alarm anti-pencurian saat mengisi daya di tempat umum</string>
+    <string name="wait_touch_phone_content">Alarm akan dimulai setelah 5 detik\nletakkan ponsel Anda di tempat Anda.</string>
+    <string name="wait_pocket_mode_title">Kunci dan letakkan ponsel Anda\ndi dalam saku Anda.</string>
+    <string name="wait_pocket_mode_content">Ponsel Anda akan mulai berbunyi jika seseorang\nmengambilnya dari saku Anda.</string>
+    <string name="wait_charger_alarm_title">Colokkan kembali pengisi daya baterai.</string>
+    <string name="wait_charger_alarm_content">Ponsel Anda akan mulai berbunyi jika seseorang\nmencabut pengisi daya Anda.</string>
+    <string name="other_service_running">Layanan lain sedang berjalan.</string>
+    <string name="charger_alert">Peringatan Pengisi Daya</string>
+    <string name="dialog_calltheme_title">Tambahkan Tema Panggilan Anda</string>
+    <string name="dialog_calltheme_content">Tonton video pendek untuk membuka tema panggilan</string>
 
 </resources>

@@ -191,5 +191,14 @@
     <string name="anti_theft">एंटी-चोरी!</string>
     <string name="alert_when_phone_is_taken_out_of_pocket">जब फोन जेब से निकाला जाए तो अलर्ट</string>
     <string name="create_an_anti_theft_alarm_when_charging_in_public">सार्वजनिक स्थान पर चार्ज करते समय एंटी-चोरी अलार्म बनाएं</string>
+    <string name="wait_touch_phone_content">अलार्म 5 सेकंड बाद शुरू होगा\nफोन को अपनी जगह पर रखें।</string>
+    <string name="wait_pocket_mode_title">अपने फोन को लॉक करें और\nउसे अपनी जेब में रखें।</string>
+    <string name="wait_pocket_mode_content">अगर कोई आपका फोन आपकी जेब से बाहर निकालता है\nतो आपका फोन बजने लगेगा।</string>
+    <string name="wait_charger_alarm_title">बैटरी चार्जर को फिर से प्लग इन करें।</string>
+    <string name="wait_charger_alarm_content">अगर कोई आपका चार्जर निकालता है\nतो आपका फोन बजने लगेगा।</string>
+    <string name="other_service_running">कोई और सेवा चल रही है।</string>
+    <string name="charger_alert">चार्जर अलर्ट</string>
+    <string name="dialog_calltheme_title">अपना कॉल थीम जोड़ें</string>
+    <string name="dialog_calltheme_content">कॉल थीम अनलॉक करने के लिए एक छोटा वीडियो देखें</string>
 
 </resources>
