@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:background="@color/white"
+        >
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="330dp"
@@ -24,14 +26,16 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
+            android:textColor="@color/black"
             />
         <TextView
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/to_find_the_lost_phone"
+            android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="16sp"/>
+            android:textSize="16dp"/>
     </LinearLayout>
 
 </FrameLayout>

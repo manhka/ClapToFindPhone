@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".fragment.home.ClapToFindFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clap_to_find_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="20dp"
         >
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/round3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/round3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_home"
+            app:lottie_renderMode="hardware"
+            app:lottie_speed="1" />
 
         <ImageView
             android:id="@+id/round2"
@@ -56,7 +66,7 @@
             android:id="@+id/hand_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="200dp"
+            android:layout_marginEnd="170dp"
             android:src="@drawable/hand"
            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,5 +87,9 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-      />
-</LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/clap_to_find_container"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

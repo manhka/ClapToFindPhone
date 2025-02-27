@@ -37,6 +37,7 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig=true
     }
 
 
@@ -71,6 +72,7 @@ dependencies {
     implementation(libs.lottie)
     // speech
     implementation(libs.speech)
-
+    // work manager
+    implementation(libs.work.runtime.ktx.v2100)
 
 }

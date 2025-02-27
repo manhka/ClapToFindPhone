@@ -22,6 +22,7 @@ class ChangeFlashlightActivity : BaseActivity() {
     private lateinit var changeFlashlightAdapter: FlashlightAdapter
     private lateinit var flashlightList: List<Flashlight>
     private lateinit var selectedFlashlightName: String
+    private lateinit var  flashlightController:FlashlightController
     private var flashlightStatus: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,7 @@ class ChangeFlashlightActivity : BaseActivity() {
             val characteristics = cameraManager.getCameraCharacteristics(id)
             characteristics.get(android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
         }
-        val flashlightController = FlashlightController(cameraManager, cameraId)
+         flashlightController = FlashlightController(cameraManager, cameraId)
         var selectedPosition =
             flashlightList.indexOfFirst { it.flashlightName == selectedFlashlightName }
         val flashlight = flashlightList[selectedPosition]
@@ -88,5 +89,10 @@ class ChangeFlashlightActivity : BaseActivity() {
             changeFlashlightBinding.txtOff.visibility = View.GONE
             changeFlashlightBinding.onOffLayout.setBackgroundResource(R.drawable.bg_on_btn)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        flashlightController.stopFlashing()
     }
 }

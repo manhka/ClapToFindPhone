@@ -30,8 +30,12 @@ class ChangeThemeActivity : BaseActivity() {
             insets
         }
 
-        defaultThemeList=InstallData.getDefaultThemeList()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        defaultThemeList=InstallData.getDefaultThemeList()
         //default theme
         defaultThemeAdapter = DefaultThemeAdapter(this, defaultThemeList)
         changeThemeBinding.rcvDefaultTheme.adapter = defaultThemeAdapter
@@ -47,6 +51,5 @@ class ChangeThemeActivity : BaseActivity() {
             finish()
         }
     }
-
 
 }

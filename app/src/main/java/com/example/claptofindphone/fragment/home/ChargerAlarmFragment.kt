@@ -11,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
@@ -32,6 +34,7 @@ class ChargerAlarmFragment() : Fragment() {
     private lateinit var permissionController: PermissionController
     private var batteryReceiver: BroadcastReceiver? = null
     private var isOnWaitActivity: Boolean = false
+    private var anim: ScaleAnimation? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionController = PermissionController()
@@ -47,24 +50,38 @@ class ChargerAlarmFragment() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var isChargerPhone = false
+        setupAnim()
+
         chargerAlarmInHomeBinding.chargerAlarmButton.setOnClickListener {
+            var isChargerPhone = false
+            // Kiểm tra ngay lập tức trạng thái pin
+            val batteryIntent = requireActivity().registerReceiver(
+                null,
+                IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+            )
+            val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+            when (status) {
+                BatteryManager.BATTERY_STATUS_CHARGING -> {
+                    // Điện thoại đang sạc
+                    isChargerPhone = true
+                }
+
+                BatteryManager.BATTERY_STATUS_DISCHARGING -> {
+                    // Rút sạc
+                    isChargerPhone = false
+                }
+            }
             batteryReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     if (intent?.action == Intent.ACTION_BATTERY_CHANGED) {
-                        val status =
-                            intent.getIntExtra(
-                                BatteryManager.EXTRA_STATUS,
-                                -1
-                            ) // Lấy trạng thái pin
+                        val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                        // Lấy trạng thái pin
                         when (status) {
                             BatteryManager.BATTERY_STATUS_CHARGING -> {
-                                // Điện thoại đang sạc
                                 isChargerPhone = true
-
                             }
+
                             BatteryManager.BATTERY_STATUS_DISCHARGING -> {
-                                // Rút sạc
                                 isChargerPhone = false
                             }
                         }
@@ -74,11 +91,14 @@ class ChargerAlarmFragment() : Fragment() {
             // Đăng ký Receiver cho sự kiện pin
             val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
             requireActivity().registerReceiver(batteryReceiver, intentFilter)
+
+            // Kiểm tra quyền và các hành động tiếp theo
             if (permissionController.isOverlayPermissionGranted(requireActivity())) {
                 val runningService = SharePreferenceUtils.getRunningService()
                 if (runningService == "") {
                     SharePreferenceUtils.setOpenHomeFragment(Constant.Service.CHARGER_PHONE)
                     if (isChargerPhone) {
+                        SharePreferenceUtils.setIsWaited(false)
                         onService(Constant.Service.CHARGER_ALARM_RUNNING)
                     } else {
                         Toast.makeText(
@@ -89,7 +109,9 @@ class ChargerAlarmFragment() : Fragment() {
                     }
                 } else if (runningService != Constant.Service.CHARGER_ALARM_RUNNING) {
                     Toast.makeText(
-                        requireContext(), R.string.other_service_running, Toast.LENGTH_LONG
+                        requireContext(),
+                        R.string.other_service_running,
+                        Toast.LENGTH_LONG
                     ).show()
                 } else {
                     chargerAlarmInHomeBinding.txtActionStatus.text =
@@ -97,20 +119,18 @@ class ChargerAlarmFragment() : Fragment() {
                     chargerAlarmInHomeBinding.handIc.visibility = View.VISIBLE
                     chargerAlarmInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     SharePreferenceUtils.setRunningService("")
-                    AnimationUtils.applyAnimations(chargerAlarmInHomeBinding.handIc)
-                    AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.round3)
+                    chargerAlarmInHomeBinding.handIc.startAnimation(anim)
                     SharePreferenceUtils.setIsWaited(false)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                 }
             } else {
                 permissionController.showInitialDialog(
-                    requireActivity(), Constant.Permission.OVERLAY_PERMISSION
+                    requireActivity(),
+                    Constant.Permission.OVERLAY_PERMISSION
                 )
             }
-
         }
-
     }
 
 
@@ -119,17 +139,14 @@ class ChargerAlarmFragment() : Fragment() {
         val isOnChargerAlarmService = SharePreferenceUtils.getRunningService()
         if (isOnChargerAlarmService == Constant.Service.CHARGER_ALARM_RUNNING) {
             onService(Constant.Service.CHARGER_ALARM_RUNNING)
-            AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.handIc)
-            AnimationUtils.applyWaveAnimation(chargerAlarmInHomeBinding.round3)
 
         } else {
-            AnimationUtils.applyAnimations(chargerAlarmInHomeBinding.handIc)
-            AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.round3)
+            chargerAlarmInHomeBinding.handIc.startAnimation(anim)
         }
 
         val isFirstTimeGetInChargerAlarm = SharePreferenceUtils.isShowChargerPhoneDialog()
         if (isFirstTimeGetInChargerAlarm) {
-            val dialogBinding = DialogTouchPhoneBinding.inflate(layoutInflater)
+            val dialogBinding = DialogChargerAlarmDialogBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog =
                 AlertDialog.Builder(this.requireActivity()).setView(dialogBinding.root)
@@ -145,8 +162,7 @@ class ChargerAlarmFragment() : Fragment() {
     }
 
     private fun onService(runningService: String) {
-        AnimationUtils.stopAnimations(chargerAlarmInHomeBinding.handIc)
-        AnimationUtils.applyWaveAnimation(chargerAlarmInHomeBinding.round3)
+        stopAnim()
         chargerAlarmInHomeBinding.txtActionStatus.text = getString(R.string.tap_to_deactive)
         chargerAlarmInHomeBinding.handIc.visibility = View.GONE
         chargerAlarmInHomeBinding.round2.setImageResource(R.drawable.round2_active)
@@ -166,5 +182,24 @@ class ChargerAlarmFragment() : Fragment() {
         if (batteryReceiver != null) {
             requireActivity().unregisterReceiver(batteryReceiver)
         }
+    }
+
+    private fun setupAnim() {
+        anim = ScaleAnimation(
+            1.0f,
+            1.3f,
+            1.0f,
+            1.3f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        anim?.duration = 600
+        anim?.repeatCount = 10000
+        anim?.repeatMode = Animation.REVERSE
+    }
+    private fun stopAnim() {
+        anim?.cancel()
     }
 }

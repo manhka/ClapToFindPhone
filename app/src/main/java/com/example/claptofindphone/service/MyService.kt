@@ -16,6 +16,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CaptureResult.SENSOR_SENSITIVITY
 import android.media.AudioRecord
 import android.os.BatteryManager
@@ -26,11 +27,17 @@ import android.util.Log
 import android.widget.RemoteViews
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.FoundPhoneActivity
 import com.example.claptofindphone.activity.HomeActivity
+import com.example.claptofindphone.activity.SplashActivity
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.model.Flashlight
+import com.example.claptofindphone.model.Sound
+import com.example.claptofindphone.model.Vibrate
+import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import net.gotev.speech.GoogleVoiceTypingDisabledException
 import net.gotev.speech.Speech
@@ -50,17 +57,32 @@ class MyService : Service(), SensorEventListener {
     private var runnable: Runnable? = null
     private lateinit var mSensorManager: SensorManager
     private var mAccelerometer: Sensor? = null
-    private var lightSensor: Sensor? = null
     private var mLastShakeTime: Long = 0
     private val SHAKE_THRESHOLD = 1000L
     private var batteryReceiver: BroadcastReceiver? = null
     private var isVoiceDetectListening = false
     private var isClapDetectListening = false
     private var proximitySensor: Sensor? = null
-    private var isProximityTriggered = false
-    private var isPhoneInPocket = false
-    private var isLightTriggered = false
     private lateinit var passcode: String
+    private var soundVolume: Int = 80
+    private var soundTimePlay: Long = 15000
+    private var soundStatus: Boolean = true
+    private var soundController: SoundController? = null
+    private var flashlightController: FlashlightController? = null
+    private var vibrateController: VibrateController? = null
+    private lateinit var soundList: List<Sound>
+    private lateinit var flashlightList: List<Flashlight>
+    private lateinit var vibrateList: List<Vibrate>
+    private lateinit var vibrateName: String
+    private lateinit var flashlightName: String
+    private var soundId: Int = 1
+    private var selectedFlashlightPosition = 0
+    private var selectedVibratePosition = 0
+    private var flashlightStatus: Boolean = true
+    private var vibrateStatus: Boolean = true
+    private var selectedSoundPosition = 0
+    private var isFromFoundPhone: Boolean = false
+    private var isInPocket = false
 
     companion object {
         private const val CHANNEL_ID = "clap_service_channel"
@@ -72,12 +94,37 @@ class MyService : Service(), SensorEventListener {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         handlerClap = Handler()
         mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-
-
         handler = Handler()
         runnable = Runnable { voicePasswordDetect() }
         passcode = SharePreferenceUtils.getVoicePasscode()
 
+        soundList = InstallData.getListSound(this)
+        flashlightList = InstallData.getFlashlightList()
+        vibrateList = InstallData.getVibrateList()
+
+        // sound
+        soundController = SoundController(this)
+        soundId = SharePreferenceUtils.getSoundId()
+        selectedSoundPosition = soundList.indexOfFirst { it.id == soundId }
+        soundVolume = SharePreferenceUtils.getVolumeSound(this)
+        soundTimePlay = SharePreferenceUtils.getTimeSoundPlay()
+        soundStatus = SharePreferenceUtils.isOnSound()
+        // flashlight
+        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
+            val characteristics = cameraManager.getCameraCharacteristics(id)
+            characteristics.get(android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+        }
+        flashlightController = FlashlightController(cameraManager, cameraId)
+        flashlightName = SharePreferenceUtils.getFlashName()
+        selectedFlashlightPosition =
+            flashlightList.indexOfFirst { it.flashlightName == flashlightName }
+        flashlightStatus = SharePreferenceUtils.isOnFlash()
+        // vibrate
+        vibrateController = VibrateController(this)
+        vibrateName = SharePreferenceUtils.getVibrateName()
+        selectedVibratePosition = vibrateList.indexOfFirst { it.vibrateName == vibrateName }
+        vibrateStatus = SharePreferenceUtils.isOnVibrate()
     }
 
     fun handleBackPress(activity: Activity) {
@@ -90,30 +137,58 @@ class MyService : Service(), SensorEventListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ForegroundServiceType")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
-
         val notification = createNotifyOn()
         startForeground(1, notification)
-        val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
-        if (runningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-            clapAndWhistleDetect()
-        } else if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
-            voicePasswordDetect()
-        } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
-            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
-            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL)
-        } else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
-            chargerPhoneDetect()
-        } else if (runningService == Constant.Service.POCKET_MODE_RUNNING) {
-            lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
-            mSensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
-            proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
-            mSensorManager.registerListener(
-                this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL
-            )
+        isFromFoundPhone = intent?.getBooleanExtra("is_from_found_phone", false) == true
+        if (isFromFoundPhone == true) {
+            SharePreferenceUtils.setIsFoundPhone(true)
+            if (soundStatus) {
+                soundController?.playSoundInLoop(
+                    soundList[selectedSoundPosition].soundType,
+                    soundVolume.toFloat(),
+                    soundTimePlay
+                )
+            }
+            if (flashlightStatus) {
+                flashlightController?.startPattern(
+                    flashlightList.get(selectedFlashlightPosition).flashlightMode,
+                    Long.MAX_VALUE
+                )
+            }
+            if (vibrateStatus) {
+                vibrateController?.startPattern(
+                    vibrateList.get(selectedVibratePosition).vibrateMode,
+                    Long.MAX_VALUE
+                )
+            }
+        } else {
+            val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
+            Log.d("sdfasf", "onStartCommand:${runningService} ")
+            if (runningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+                clapAndWhistleDetect()
+            } else if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
+                voicePasswordDetect()
+            } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
+                mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
+                mSensorManager.registerListener(
+                    this,
+                    mAccelerometer,
+                    SensorManager.SENSOR_DELAY_NORMAL
+                )
+            } else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
+                chargerPhoneDetect()
+            } else if (runningService == Constant.Service.POCKET_MODE_RUNNING) {
+                proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
+                mSensorManager.registerListener(
+                    this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL
+                )
+            }
         }
+
         return START_STICKY
     }
 
@@ -152,15 +227,16 @@ class MyService : Service(), SensorEventListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             customView.setOnClickPendingIntent(
                 R.id.power_button, PendingIntent.getActivity(
-                    this, 5000,
-                    Intent(this, HomeActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+                    this, 5000, Intent(this, HomeActivity::class.java), PendingIntent.FLAG_IMMUTABLE
                 )
             )
         } else {
             customView.setOnClickPendingIntent(
                 R.id.power_button, PendingIntent.getActivity(
-                    this, 5000,
-                    Intent(this, HomeActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT
+                    this,
+                    5000,
+                    Intent(this, HomeActivity::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
         }
@@ -248,7 +324,6 @@ class MyService : Service(), SensorEventListener {
                 override fun onSpeechResult(result: String) {
                     Log.i("speech", "result: $result")
                     if (result == passcode) {
-                        SharePreferenceUtils.setRunningService("")
                         foundPhone()
                         runnable?.let { handler?.removeCallbacks(it) }
                     } else {
@@ -266,26 +341,33 @@ class MyService : Service(), SensorEventListener {
 
     // charger phone
     private fun chargerPhoneDetect() {
+        // Kiểm tra ngay lập tức trạng thái pin khi gọi function này
+        val batteryIntent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+        when (status) {
+            BatteryManager.BATTERY_STATUS_CHARGING -> {
+                // Điện thoại đang sạc
+            }
+
+            BatteryManager.BATTERY_STATUS_DISCHARGING -> {
+                // Rút sạc
+                foundPhone()
+            }
+        }
+        // Đăng ký Receiver cho sự kiện pin để theo dõi tiếp
         batteryReceiver = object : BroadcastReceiver() {
-            var isChargerPhone = false
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == Intent.ACTION_BATTERY_CHANGED) {
-                    val status =
-                        intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1) // Lấy trạng thái pin
+                    val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
                     when (status) {
                         BatteryManager.BATTERY_STATUS_CHARGING -> {
                             // Điện thoại đang sạc
-                            isChargerPhone = true
-
                         }
 
                         BatteryManager.BATTERY_STATUS_DISCHARGING -> {
                             // Rút sạc
-                            if (isChargerPhone) {
-                                SharePreferenceUtils.setRunningService("")
-                                isChargerPhone = false
-                                foundPhone()
-                            }
+                            // Chạy hành động khi điện thoại không còn sạc
+                            foundPhone()  // Gọi hàm cần thiết
                         }
                     }
                 }
@@ -296,6 +378,7 @@ class MyService : Service(), SensorEventListener {
         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         registerReceiver(batteryReceiver, intentFilter)
     }
+
 
     private fun foundPhone() {
         stopSelf()
@@ -308,6 +391,7 @@ class MyService : Service(), SensorEventListener {
 
 
     override fun onSensorChanged(event: SensorEvent?) {
+        Log.d("sensorsss", "onSensorChanged:${event?.sensor?.type} ")
         // don't touch phone
         if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
             // Xử lý cảm biến gia tốc (phát hiện rung lắc)
@@ -323,45 +407,27 @@ class MyService : Service(), SensorEventListener {
             val currentTime = System.currentTimeMillis()
             if (acceleration > 10 && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
                 mLastShakeTime = currentTime
-                SharePreferenceUtils.setRunningService("")
                 foundPhone()
                 return
             }
         }
-
         // pocket mode
-        when (event?.sensor?.type) {
-            Sensor.TYPE_PROXIMITY -> {
-                // Xử lý cảm biến tiệm cận
-                val proximityValue = event.values[0]
-                isProximityTriggered = proximityValue <= proximitySensor!!.maximumRange
-
+        if (event?.sensor?.type == Sensor.TYPE_PROXIMITY) {
+            val proximityValue = event.values[0]
+            Log.d("sdfasf", "onSensorChanged:${proximityValue} ")
+            if (proximityValue.toInt() == 0) {
+                isInPocket = true
             }
-            Sensor.TYPE_LIGHT -> {
-                // Xử lý cảm biến ánh sáng
-                val lightValue = event.values[0]
-                isLightTriggered = lightValue < 50
-            }
-
-        }
-        checkPocketMode()
-    }
-
-    private fun checkPocketMode() {
-        if (isProximityTriggered && isLightTriggered) {
-            // phone is in the pocket
-            if (!isPhoneInPocket) {
-                isPhoneInPocket = true
-            }
-        } else {
-            // phone is not in the pocket
-            if (isPhoneInPocket) {
-                SharePreferenceUtils.setRunningService("")
-                isPhoneInPocket = false
-                foundPhone()
+            if (isInPocket) {
+                if (proximityValue == proximitySensor!!.maximumRange) {
+                    isInPocket = false
+                    mSensorManager.unregisterListener(this, proximitySensor)
+                    foundPhone()
+                }
             }
         }
     }
+
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
@@ -374,6 +440,16 @@ class MyService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("sdfasf", "onDestroy: ")
+        if (soundStatus) {
+            soundController?.stopSound()
+        }
+        if (flashlightStatus) {
+            flashlightController?.stopFlashing()
+        }
+        if (vibrateStatus) {
+            vibrateController?.stopVibrating()
+        }
         if (isVoiceDetectListening) {
             isVoiceDetectListening = false
             Speech.getInstance().stopListening()
@@ -396,10 +472,12 @@ class MyService : Service(), SensorEventListener {
         if (mAccelerometer != null) {
             mSensorManager.unregisterListener(this, mAccelerometer)
         }
-        if (lightSensor != null) {
-            mSensorManager.unregisterListener(this, lightSensor)
-        }
 
+        if (isFromFoundPhone) {
+            val intent = Intent(this, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
         if (batteryReceiver != null) {
             unregisterReceiver(batteryReceiver)
         }
@@ -407,5 +485,6 @@ class MyService : Service(), SensorEventListener {
         val notification = createNotifyOff()
         // Tạo notification với layout ban đầu
         notificationManager.notify(1, notification)
+
     }
 }

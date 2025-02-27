@@ -8,7 +8,7 @@
     tools:context=".activity.SplashActivity"
     android:background="@drawable/splash_img">
    <TextView
-       android:textSize="16sp"
+       android:textSize="16dp"
        android:textColor="@color/white"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"

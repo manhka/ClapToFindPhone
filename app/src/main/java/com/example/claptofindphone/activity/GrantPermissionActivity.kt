@@ -15,6 +15,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityGrantPermissionBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.PermissionController
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class GrantPermissionActivity : BaseActivity() {
     private lateinit var grantPermissionBinding: ActivityGrantPermissionBinding
@@ -22,6 +23,7 @@ class GrantPermissionActivity : BaseActivity() {
     private lateinit var typeOfPermission: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        changeBackPressCallBack {  }
         grantPermissionBinding = ActivityGrantPermissionBinding.inflate(layoutInflater)
         setContentView(grantPermissionBinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -58,21 +60,23 @@ class GrantPermissionActivity : BaseActivity() {
         checkAllPermission()
         typeOfPermission = intent.getStringExtra("typeOfPermission").toString()
         if (typeOfPermission == Constant.Permission.OVERLAY_PERMISSION) {
-            if (permissionController.isOverlayPermissionGranted(this)){
-                grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_active_btn)
+            if (permissionController.isOverlayPermissionGranted(this)) {
+                grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_allow)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = true
                 grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 }
-            }else{
+            } else {
                 grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = false
             }
         } else {
-            if (permissionController.hasAudioPermission(this) && permissionController.isOverlayPermissionGranted(this)
+            if (permissionController.hasAudioPermission(this) && permissionController.isOverlayPermissionGranted(
+                    this
+                )
             ) {
-                grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_active_btn)
+                grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_allow)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = true
                 grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
                     val intent = Intent(this, HomeActivity::class.java)
@@ -84,6 +88,7 @@ class GrantPermissionActivity : BaseActivity() {
             }
         }
     }
+
 
     // check for audio and overlay permission
     override fun onRequestPermissionsResult(
@@ -97,40 +102,49 @@ class GrantPermissionActivity : BaseActivity() {
                 grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
                 grantPermissionBinding.btnAllowRecordingPermission.isEnabled = false
             } else {
-                permissionController.showSettingsDialog(
-                    Constant.Permission.RECORDING_PERMISSION,
-                    this
-                )
+                if (SharePreferenceUtils.getTimeDeniRecordPermission() <= 3) {
+
+                    if (SharePreferenceUtils.getTimeDeniRecordPermission() == 2) {
+                        permissionController.showSettingsDialog(
+                            Constant.Permission.RECORDING_PERMISSION,
+                            this
+                        )
+                    }
+                    if (SharePreferenceUtils.getTimeDeniRecordPermission()<2){
+                        SharePreferenceUtils.setTimeDeniRecordPermission(SharePreferenceUtils.getTimeDeniRecordPermission() + 1)
+                    }
+                }
+            }
+
+        }
+    }
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+            if (requestCode == Constant.Permission.OVERLAY_PERMISSION_REQUEST_CODE) {
+                if (Settings.canDrawOverlays(this)) {
+                    grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
+                    grantPermissionBinding.btnAllowOverlayPermission.isEnabled = false
+                }
             }
         }
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constant.Permission.OVERLAY_PERMISSION_REQUEST_CODE) {
-            if (Settings.canDrawOverlays(this)) {
+        // check all permission
+        private fun checkAllPermission() {
+            if (permissionController.hasAudioPermission(this)) {
+                grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
+                grantPermissionBinding.btnAllowRecordingPermission.isEnabled = false
+            } else {
+                grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_allow)
+                grantPermissionBinding.btnAllowRecordingPermission.isEnabled = true
+            }
+            if (permissionController.isOverlayPermissionGranted(this)) {
                 grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
                 grantPermissionBinding.btnAllowOverlayPermission.isEnabled = false
+            } else {
+                grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_allow)
+                grantPermissionBinding.btnAllowOverlayPermission.isEnabled = true
             }
         }
-    }
 
-    // check all permission
-    private fun checkAllPermission() {
-        if (permissionController.hasAudioPermission(this)) {
-            grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
-            grantPermissionBinding.btnAllowRecordingPermission.isEnabled = false
-        }else{
-            grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_active_btn)
-            grantPermissionBinding.btnAllowRecordingPermission.isEnabled = true
-        }
-        if (permissionController.isOverlayPermissionGranted(this)) {
-            grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
-            grantPermissionBinding.btnAllowOverlayPermission.isEnabled = false
-        }else{
-            grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_active_btn)
-            grantPermissionBinding.btnAllowOverlayPermission.isEnabled = true
-        }
+
     }
-}

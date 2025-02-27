@@ -13,6 +13,11 @@ class BecomeVipMemberActivity : BaseActivity() {
     private lateinit var becomeVipMemberBinding: ActivityBecomeVipMemberBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        changeBackPressCallBack {
+            val intent= Intent(this,HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         becomeVipMemberBinding=ActivityBecomeVipMemberBinding.inflate(layoutInflater)
         setContentView(becomeVipMemberBinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

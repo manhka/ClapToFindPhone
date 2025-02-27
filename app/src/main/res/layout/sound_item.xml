@@ -22,5 +22,5 @@
         android:text="@string/cat_meowing"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 </LinearLayout>

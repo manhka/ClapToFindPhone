@@ -16,37 +16,38 @@
         android:src="@drawable/back_ic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"/>
+        android:padding="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+       />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/setting"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="16dp"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/language_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_button"
-        app:cardCornerRadius="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        >
+
 
         <LinearLayout
+            android:id="@+id/language_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/back_button"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            android:background="@drawable/bg_item_setting"
+            android:elevation="1.5dp"
             android:padding="20dp">
 
             <ImageView
@@ -60,31 +61,27 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/language"
-                android:textSize="16sp" />
-
+                android:textSize="16dp" />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_ic" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/rate_us_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/language_button"
-        app:cardCornerRadius="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        >
+
 
         <LinearLayout
+            android:id="@+id/rate_us_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/language_button"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            android:background="@drawable/bg_item_setting"
+            android:elevation="1.5dp"
             android:padding="20dp">
 
             <ImageView
@@ -98,31 +95,29 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/rate"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_ic" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/feedback_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rate_us_button"
-        app:cardCornerRadius="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        >
+
 
         <LinearLayout
+            android:id="@+id/feedback_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rate_us_button"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            android:elevation="1.5dp"
+            android:background="@drawable/bg_item_setting"
             android:padding="20dp">
 
             <ImageView
@@ -136,31 +131,28 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/feedback"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_ic" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/share_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feedback_button"
-        app:cardCornerRadius="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        >
 
         <LinearLayout
+            android:id="@+id/share_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feedback_button"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            android:background="@drawable/bg_item_setting"
+            android:elevation="1.5dp"
             android:padding="20dp">
 
             <ImageView
@@ -174,31 +166,29 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/share"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_ic" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/policy_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/share_button"
-        app:cardCornerRadius="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        >
+
 
         <LinearLayout
+            android:id="@+id/policy_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/share_button"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            android:background="@drawable/bg_item_setting"
+            android:elevation="1.5dp"
             android:padding="20dp">
 
             <ImageView
@@ -212,12 +202,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/policy"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_ic" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

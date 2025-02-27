@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.HowToUseActivity"
-    android:padding="10dp"
     android:background="@color/white">
 <ImageView
     android:id="@+id/back_button"
@@ -14,16 +13,20 @@
     android:layout_height="wrap_content"
     android:src="@drawable/back_ic"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
+    app:layout_constraintTop_toTopOf="parent"
+    android:padding="4dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="12dp"/>
     <TextView
         android:id="@+id/txt_how_to_use"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/black"
         android:text="@string/how_to_use"
         android:textStyle="bold"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
          />
@@ -31,8 +34,9 @@
         android:id="@+id/tab_how_to_use"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_how_to_use"
         app:tabMode="scrollable"
@@ -46,5 +50,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_how_to_use" />
+        app:layout_constraintTop_toBottomOf="@id/tab_how_to_use"
+        android:padding="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

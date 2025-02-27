@@ -38,16 +38,22 @@ class LanguageActivity : BaseActivity() {
         val myService = MyService()
         myService.handleBackPress(this)
         // list of language
-        languageList =InstallData.getLanguageList()
+        languageList = InstallData.getLanguageList()
         // language sharePres
-        val current_language_code =SharePreferenceUtils.getLanguageCode()
+        var current_language_code:String = SharePreferenceUtils.getLanguageCode()
+        if (current_language_code !in getLanguageAppList()){
+            current_language_code="en"
+        }
         val newLanguageList = ArrayList<Language>()
         for (language in languageList) {
             if (language.languageCode != current_language_code) {
                 newLanguageList.add(language)
             }
         }
-        languageAdapter = LanguageAdapter(newLanguageList)
+        languageAdapter = LanguageAdapter(newLanguageList) {
+            binding.layoutCurrentLanguage.setBackgroundResource(R.drawable.bg_btn_grey)
+            binding.selectedCurrentLanguage.setImageResource(R.drawable.passive_radio)
+        }
         // load language
         loadSavedLanguage()
         // set up rcv
@@ -55,7 +61,7 @@ class LanguageActivity : BaseActivity() {
             rcvLanguage.layoutManager = LinearLayoutManager(this@LanguageActivity)
             rcvLanguage.adapter = languageAdapter
         }
-        val isNavigateFromHome=intent.getBooleanExtra("navigate_from_home",false)
+        val isNavigateFromHome = intent.getBooleanExtra("navigate_from_home", false)
         // apply btn
         binding.btnApplyLanguage.setOnClickListener {
             val selectedLanguage = languageAdapter.getSelectedLanguage()
@@ -63,29 +69,26 @@ class LanguageActivity : BaseActivity() {
             if (selectedLanguage != null) {
                 SharePreferenceUtils.setLanguageCode(selectedLanguage.languageCode)
             }
-            if (isNavigateFromHome){
-                    val intent = Intent(this,HomeActivity::class.java)
-                    startActivity(intent)
+            if (isNavigateFromHome) {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
                 finish()
-            }else{
-                val intent = Intent(this, IntroductionActivity::class.java)
+            } else {
+                val intent = Intent(this, InstallingLanguageActivity::class.java)
                 startActivity(intent)
                 finish()
             }
             finish()
         }
 
-        if (isNavigateFromHome){
-            binding.imgViewBack.visibility= View.VISIBLE
+        if (isNavigateFromHome) {
+            binding.imgViewBack.visibility = View.VISIBLE
             binding.imgViewBack.setOnClickListener {
                 finish()
             }
-
-        }else{
-            binding.imgViewBack.visibility= View.GONE
+        } else {
+            binding.imgViewBack.visibility = View.GONE
         }
-
-
     }
 
 
@@ -125,4 +128,19 @@ class LanguageActivity : BaseActivity() {
 
     override fun onBackPressed() {
     }
+
+    private fun getLanguageAppList(): List<String> {
+        val languageAppList = listOf(
+            "vi",
+            "fr",
+            "hi",
+            "id",
+            "ja",
+            "pt",
+            "ko",
+            "tr"
+        )
+        return languageAppList
+    }
+
 }

@@ -4,15 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityInstallingLanguageBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class InstallingLanguageActivity : BaseActivity() {
     private lateinit var installingLanguageBinding: ActivityInstallingLanguageBinding
@@ -48,27 +44,17 @@ class InstallingLanguageActivity : BaseActivity() {
                     handler.postDelayed(this,300)
                     index++
                 }else{
-                    navigate()
+                    val intent= Intent(this@InstallingLanguageActivity,IntroductionActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
         handler.post(runnable)
     }
 
-    private fun navigate() {
 
-        val isFirstTimeGetInApp= SharePreferenceUtils.isFirstTimeGetInApp()
 
-        if(isFirstTimeGetInApp){
-            SharePreferenceUtils.setIsFirstTimeGetInApp(false)
-            val intent= Intent(this,LanguageActivity::class.java)
-            startActivity(intent)
-            finish()
-
-        }else{
-            val intent= Intent(this,IntroductionActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+    override fun onBackPressed() {
     }
 }

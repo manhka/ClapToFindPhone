@@ -73,6 +73,7 @@ class VibrateAdapter(
                     selectedPosition = position
                     notifyDataSetChanged()
                     customDialog.dismiss()
+                    onItemSelected(vibrate)
                 }
                 dialogBinding.exitButton.setOnClickListener {
                     customDialog.dismiss()
@@ -80,8 +81,9 @@ class VibrateAdapter(
             }else{
                 selectedPosition = position
                 notifyDataSetChanged()
+                onItemSelected(vibrate)
             }
-            onItemSelected(vibrate)
+
         }
     }
 

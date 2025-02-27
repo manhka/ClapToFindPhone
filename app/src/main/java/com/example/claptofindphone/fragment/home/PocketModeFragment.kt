@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.WaitActivity
+import com.example.claptofindphone.databinding.DialogPocketModeBinding
 import com.example.claptofindphone.databinding.DialogTouchPhoneBinding
 import com.example.claptofindphone.databinding.FragmentPocketModeInHomeBinding
 import com.example.claptofindphone.model.Constant
@@ -24,6 +27,7 @@ class PocketModeFragment : Fragment() {
 private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
     private lateinit var permissionController: PermissionController
     private var isOnWaitActivity: Boolean= false
+    private var anim: ScaleAnimation? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionController=PermissionController()
@@ -37,6 +41,7 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
         return pocketModeInHomeBinding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupAnim()
         pocketModeInHomeBinding.pocketModeButton.setOnClickListener {
             if (permissionController.isOverlayPermissionGranted(requireActivity())) {
                 val runningService = SharePreferenceUtils.getRunningService()
@@ -54,8 +59,7 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
                     pocketModeInHomeBinding.handIc.visibility = View.VISIBLE
                     pocketModeInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     SharePreferenceUtils.setRunningService("")
-                    AnimationUtils.applyAnimations(pocketModeInHomeBinding.handIc)
-                    AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
+                    pocketModeInHomeBinding.handIc.startAnimation(anim)
                     SharePreferenceUtils.setIsWaited(false)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
@@ -75,17 +79,13 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
         val isOnPocketModeService =SharePreferenceUtils.getRunningService()
         if (isOnPocketModeService==Constant.Service.POCKET_MODE_RUNNING) {
             onService(Constant.Service.POCKET_MODE_RUNNING)
-            AnimationUtils.stopAnimations(pocketModeInHomeBinding.handIc)
-            AnimationUtils.applyWaveAnimation(pocketModeInHomeBinding.round3)
-
         } else {
-            AnimationUtils.applyAnimations(pocketModeInHomeBinding.handIc)
-            AnimationUtils.stopAnimations(pocketModeInHomeBinding.round3)
+            pocketModeInHomeBinding.handIc.startAnimation(anim)
         }
 
         val isFirstTimeGetInPocketMode = SharePreferenceUtils.isShowPocketModeDialog()
         if (isFirstTimeGetInPocketMode) {
-            val dialogBinding = DialogTouchPhoneBinding.inflate(layoutInflater)
+            val dialogBinding = DialogPocketModeBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog = AlertDialog.Builder(this.requireActivity())
                 .setView(dialogBinding.root)
@@ -101,10 +101,8 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
         }
     }
     private fun onService(runningService: String) {
-        AnimationUtils.stopAnimations(pocketModeInHomeBinding.handIc)
-        AnimationUtils.applyWaveAnimation(pocketModeInHomeBinding.round3)
-        pocketModeInHomeBinding.txtActionStatus.text =
-            getString(R.string.tap_to_deactive)
+        stopAnim()
+        pocketModeInHomeBinding.txtActionStatus.text = getString(R.string.tap_to_deactive)
         pocketModeInHomeBinding.handIc.visibility = View.GONE
         pocketModeInHomeBinding.round2.setImageResource(R.drawable.round2_active)
         SharePreferenceUtils.setRunningService(runningService)
@@ -116,5 +114,23 @@ private lateinit var pocketModeInHomeBinding: FragmentPocketModeInHomeBinding
             SharePreferenceUtils.setIsWaited(true)
         }
 
+    }
+    private fun setupAnim() {
+        anim = ScaleAnimation(
+            1.0f,
+            1.3f,
+            1.0f,
+            1.3f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        anim?.duration = 600
+        anim?.repeatCount = 10000
+        anim?.repeatMode = Animation.REVERSE
+    }
+    private fun stopAnim() {
+        anim?.cancel()
     }
 }

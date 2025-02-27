@@ -16,7 +16,7 @@
     android:layout_height="wrap_content"
     android:text="@string/dont_touch_my_phone"
     android:textStyle="bold"
-    android:textSize="24sp"
+    android:textSize="24dp"
     android:gravity="center"
     android:layout_marginTop="40dp"/>
     <ImageView
@@ -28,7 +28,7 @@
         android:id="@+id/txt_wait_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="70sp"
+        android:textSize="70dp"
         android:text="5"
         android:textColor="#42A3E9"
         android:textStyle="bold"

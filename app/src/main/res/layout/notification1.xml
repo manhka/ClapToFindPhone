@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         android:text="@string/where_is_your_phone" />
 
@@ -38,8 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/black"
             android:text="@string/clap_tool_will_help_you_find"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
     </LinearLayout>
 
     <ImageView

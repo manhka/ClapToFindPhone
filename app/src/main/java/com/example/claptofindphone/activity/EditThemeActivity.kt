@@ -71,8 +71,12 @@ class EditThemeActivity : BaseActivity() {
             editThemeBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
             editThemeBinding.imgViewCallThemeRound2.setImageResource(callTheme.callThemeRound2)
             editThemeBinding.imgViewCallThemeProfile.setImageResource(callTheme.callThemeProfile)
-            editThemeBinding.txtName.text=name
-            editThemeBinding.txtPhone.text=phone
+            if (name!=""){
+                editThemeBinding.txtName.text=name
+            }
+            if (phone!=""){
+                editThemeBinding.txtPhone.text=phone
+            }
             selectedThemeName=callTheme.themeName
 
             AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewCallThemeRound1)
@@ -86,8 +90,7 @@ class EditThemeActivity : BaseActivity() {
             AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
             AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
             SharePreferenceUtils.setThemeName(selectedThemeName)
-            val intent = Intent(this, ChangeThemeActivity::class.java)
-            startActivity(intent)
+            finish()
 
         }
 
@@ -96,9 +99,6 @@ class EditThemeActivity : BaseActivity() {
             AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound2)
             AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
             AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
-            val intent=Intent(this,ChangeThemeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
             finish()
         }
         editThemeBinding.editButton.setOnClickListener {

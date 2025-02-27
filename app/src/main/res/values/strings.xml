@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">ClapToFindPhone</string>
-    <string name="splash_warning">This action can contain ads</string>
+    <string name="splash_warning">(This action can contain ads)</string>
     <string name="install_language">Initializing languages...</string>
     <string name="english">English</string>
     <string name="language">Language</string>
-    <string name="appliquer">Appliquer</string>
+    <string name="appliquer">Apply</string>
     <string name="current_language">Current Language</string>
-    <string name="all_language">All Language</string>
+    <string name="all_language">All Languages</string>
     <string name="next">Next</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="first_fragment_label">First Fragment</string>
@@ -67,8 +67,8 @@
     <string name="how_to_use_clap3">The app will detect the clapping sound and start ringing</string>
     <string name="how_to_use_clap4">Before activating, you can set the flashlight, adjust the volume and select alarm sound...</string>
     <string name="how_to_use_voice_passcode1">Create an audio passcode and save it</string>
-    <string name="how_to_use_voice_passcode2">Double clap when you can’t find your phone</string>
-    <string name="how_to_use_voice_passcode3">The app will detect the clapping sound and start ringing</string>
+    <string name="how_to_use_voice_passcode2">Click the activate button</string>
+    <string name="how_to_use_voice_passcode3">Read the audio passcode aloud when you can\'t find your phone</string>
     <string name="how_to_use_voice_passcode4">The app will detect the sound passcode and start ringing</string>
     <string name="how_to_use_voice_passcode5">Before activating, you can set the flashlight, adjust the volume and select alarm sound...</string>
     <string name="how_to_use_touch_phone2">Wait about 5 seconds to set the alarm</string>
@@ -200,4 +200,5 @@
     <string name="charger_alert">Charger Alert</string>
     <string name="dialog_calltheme_title">Add  your Call theme</string>
     <string name="dialog_calltheme_content">Watch a short video add to unlock Call theme</string>
+    <string name="turn_off">Turn Off</string>
 </resources>

@@ -51,7 +51,7 @@ class ChangeSoundActivity : BaseActivity() {
 
         soundStatus =SharePreferenceUtils.isOnSound()
         timeSoundPlay = SharePreferenceUtils.getTimeSoundPlay()
-        soundVolume=SharePreferenceUtils.getVolumeSound()
+        soundVolume=SharePreferenceUtils.getVolumeSound(this)
 
         changeSoundBinding.seekbarVolume.max=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         changeSoundBinding.seekbarVolume.progress=soundVolume
@@ -95,6 +95,7 @@ class ChangeSoundActivity : BaseActivity() {
         }
         soundController.playSound(soundType, 30f, 3000)
         changeSoundAdapter = SoundAdapter2(this, soundList, soundId) { sound ->
+
             selectedSoundId = sound.id
             soundController.playSound(sound.soundType, 30f, 3000)
         }
@@ -269,5 +270,10 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.txtOff.visibility = View.GONE
             changeSoundBinding.onOffLayout.setBackgroundResource(R.drawable.bg_on_btn)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        soundController.stopSound()
     }
 }

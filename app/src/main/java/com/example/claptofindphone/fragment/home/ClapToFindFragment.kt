@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogClapAndWhistleBinding
@@ -19,6 +21,7 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 class ClapToFindFragment : Fragment() {
     private lateinit var clapToFindInHomeBinding: FragmentClapToFindInHomeBinding
     private lateinit var permissionController: PermissionController
+    private var anim: ScaleAnimation? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionController = PermissionController()
@@ -33,6 +36,7 @@ class ClapToFindFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupAnim()
         clapToFindInHomeBinding.handClapButton.setOnClickListener {
             if (permissionController.hasAudioPermission(requireActivity()) && permissionController.isOverlayPermissionGranted(
                     requireActivity()
@@ -58,8 +62,7 @@ class ClapToFindFragment : Fragment() {
                     clapToFindInHomeBinding.handIc.visibility = View.VISIBLE
                     clapToFindInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     SharePreferenceUtils.setRunningService("")
-                    AnimationUtils.applyAnimations(clapToFindInHomeBinding.handIc)
-                    AnimationUtils.stopAnimations(clapToFindInHomeBinding.round3)
+                    clapToFindInHomeBinding.handIc.startAnimation(anim)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
                 }
@@ -77,11 +80,9 @@ class ClapToFindFragment : Fragment() {
         val isOnClapService =SharePreferenceUtils.getRunningService()
         if (isOnClapService==Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
             onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
-            AnimationUtils.stopAnimations(clapToFindInHomeBinding.handIc)
-            AnimationUtils.applyWaveAnimation(clapToFindInHomeBinding.round3)
+
         } else {
-            AnimationUtils.applyAnimations(clapToFindInHomeBinding.handIc)
-            AnimationUtils.stopAnimations(clapToFindInHomeBinding.round3)
+            clapToFindInHomeBinding.handIc.startAnimation(anim)
         }
         val isFirstTimeGetInClap =  SharePreferenceUtils.isShowClapAndWhistleDialog()
         if (isFirstTimeGetInClap) {
@@ -103,8 +104,7 @@ class ClapToFindFragment : Fragment() {
     }
 
     private fun onService(runningService: String) {
-        AnimationUtils.stopAnimations(clapToFindInHomeBinding.handIc)
-        AnimationUtils.applyWaveAnimation(clapToFindInHomeBinding.round3)
+        stopAnim()
         clapToFindInHomeBinding.txtActionStatus.text =
             getString(R.string.tap_to_deactive)
         clapToFindInHomeBinding.handIc.visibility = View.GONE
@@ -118,7 +118,22 @@ class ClapToFindFragment : Fragment() {
         requireContext().startService(intent)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun setupAnim() {
+        anim = ScaleAnimation(
+            1.0f,
+            1.3f,
+            1.0f,
+            1.3f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        anim?.duration = 600
+        anim?.repeatCount = 10000
+        anim?.repeatMode = Animation.REVERSE
+    }
+    private fun stopAnim() {
+        anim?.cancel()
     }
 }

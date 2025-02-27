@@ -13,9 +13,14 @@ class VipActivity : BaseActivity() {
     private lateinit var vipBinding: ActivityVipBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        changeBackPressCallBack {
+            val intent= Intent(this,HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
        vipBinding=ActivityVipBinding.inflate(layoutInflater)
         setContentView(vipBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.vip_activity)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -32,6 +37,5 @@ class VipActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-    }
+
 }

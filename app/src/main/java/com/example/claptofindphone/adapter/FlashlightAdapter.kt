@@ -80,6 +80,7 @@ class FlashlightAdapter(
                     selectedPosition = position
                     notifyDataSetChanged()
                     customDialog.dismiss()
+                    onItemSelected(flashlightItem)
                 }
                 dialogBinding.exitButton.setOnClickListener {
                     customDialog.dismiss()
@@ -87,8 +88,9 @@ class FlashlightAdapter(
             }else{
                 selectedPosition = position
                 notifyDataSetChanged()
+                onItemSelected(flashlightItem)
             }
-            onItemSelected(flashlightItem)
+
         }
         }
 

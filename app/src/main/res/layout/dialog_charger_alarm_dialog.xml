@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
     android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp">
+    android:layout_marginEnd="20dp"
+    app:cardBackgroundColor="@color/white"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,12 +28,12 @@
 
         <TextView
             android:id="@+id/txt_rate_us_title"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:text="@string/dialog_charger_alarm_title"
-            android:textSize="16sp"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,11 +41,14 @@
 
         <TextView
             android:id="@+id/txt_rate_us_content"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/dialog_charger_alarm_content"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_rate_us_title" />
 
@@ -52,9 +57,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:background="@drawable/bg_active_btn"
+            android:background="@drawable/bg_btn_allow"
             android:text="@string/got_it"
-            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textSize="16dp"
             android:textStyle="bold"
             app:backgroundTint="@null"
             app:layout_constraintDimensionRatio="118:46"

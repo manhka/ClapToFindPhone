@@ -8,7 +8,8 @@ import com.example.claptofindphone.databinding.LanguageItemBinding
 import com.example.claptofindphone.model.Language
 
 class LanguageAdapter(
-    private val languageList: List<Language>
+    private val languageList: List<Language>,
+    private val onClickItem:()-> Unit
 ) :
     RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {
 
@@ -45,6 +46,7 @@ class LanguageAdapter(
             holder.languageItemBinding.imgViewLanguageSelected.setImageResource(R.drawable.passive_radio)
         }
         holder.itemView.setOnClickListener {
+            onClickItem()
             val previousPosition = selectedPosition
             selectedPosition = position
 

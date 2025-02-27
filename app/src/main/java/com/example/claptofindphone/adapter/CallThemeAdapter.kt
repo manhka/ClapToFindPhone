@@ -40,8 +40,21 @@ class CallThemeAdapter(val context: Context,
         holder.callThemeItemBinding.profileCallTheme.setImageResource(callThemeItem.callThemeProfile)
         holder.callThemeItemBinding.rejectCallThemeButton.setImageResource(callThemeItem.callThemeReject)
         holder.callThemeItemBinding.responseCallThemeButton.setImageResource(callThemeItem.callThemeResponse)
-        holder.callThemeItemBinding.txtName.text=name
-        holder.callThemeItemBinding.txtPhone.text=phone
+        if (name==""){
+            holder.callThemeItemBinding.txtName.text=context.getString(R.string.name)
+
+        }else{
+            holder.callThemeItemBinding.txtName.text=name
+        }
+        if (phone==""){
+            holder.callThemeItemBinding.txtPhone.text=context.getString(R.string.phone)
+
+        }else{
+            holder.callThemeItemBinding.txtPhone.text=phone
+        }
+
+
+
         holder.callThemeItemBinding.premiumButton.setImageResource(callThemeItem.callThemePremium)
         if (isPremiumVisible) {
             holder.callThemeItemBinding.premiumButton.setImageResource(callThemeItem.callThemePremium)

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_call_theme1"
-    android:padding="10dp"
     tools:context=".activity.EditThemeActivity">
 
     <ImageView
@@ -14,7 +13,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/back_ic"
+        android:padding="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="4dp"
+        android:src="@drawable/edit_ic"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -23,21 +36,12 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_theme"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/edit_button" />
 
-    <ImageView
-        android:id="@+id/edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit_ic"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -157,9 +161,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="visible">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imgView_call_theme_round2"
@@ -204,11 +208,11 @@
             android:id="@+id/txt_name"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:text="@string/name"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="30dp"
             android:textStyle="bold"
-            android:gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgView_call_theme_round2" />
@@ -217,10 +221,10 @@
             android:id="@+id/txt_phone"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="@string/phone"
             android:gravity="center_horizontal"
+            android:text="@string/phone"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_name" />
@@ -231,7 +235,8 @@
             android:layout_height="83dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/call_end_ic"
-            app:layout_constraintEnd_toStartOf="@id/txt_phone"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="28dp"
             app:layout_constraintTop_toBottomOf="@id/txt_phone" />
 
         <ImageView
@@ -240,7 +245,8 @@
             android:layout_height="83dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/call_ic"
-            app:layout_constraintStart_toEndOf="@id/txt_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="28dp"
             app:layout_constraintTop_toBottomOf="@id/txt_phone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -251,7 +257,7 @@
         android:layout_marginBottom="50dp"
         android:background="@drawable/bg_active_btn"
         android:text="@string/apply_theme"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"

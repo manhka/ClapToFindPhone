@@ -3,6 +3,7 @@ package com.example.claptofindphone.activity
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
@@ -22,5 +23,12 @@ open class BaseActivity : AppCompatActivity(){
             Locale(SharePreferenceUtils.getLanguageCode())
         )
     )
-
+    protected fun changeBackPressCallBack(action: () -> Unit) {
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                action.invoke()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+    }
 }

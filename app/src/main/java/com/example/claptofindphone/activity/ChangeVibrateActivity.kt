@@ -178,4 +178,9 @@ class ChangeVibrateActivity : BaseActivity() {
             changeVibrateItemBinding.onOffLayout.setBackgroundResource(R.drawable.bg_on_btn)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        vibrateController.stopVibrating()
+    }
 }

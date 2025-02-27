@@ -53,6 +53,9 @@ class IntroductionActivity : BaseActivity() {
 
     }
 
+    override fun onBackPressed() {
+    }
+
     private fun onChangeDot() {
         when (introductionBinding.viewPager2Intro.currentItem) {
             0 -> {
@@ -84,4 +87,5 @@ class IntroductionActivity : BaseActivity() {
             }
         }
     }
+
 }

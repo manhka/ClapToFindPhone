@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.WaitActivity
@@ -24,6 +26,7 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 class DontTouchMyPhoneFragment : Fragment() {
     private lateinit var touchPhoneInHomeBinding: FragmentDontTouchMyPhoneInHomeBinding
     private var isOnWaitActivity: Boolean = false
+    private var anim: ScaleAnimation? = null
     private lateinit var permissionController: PermissionController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +44,7 @@ class DontTouchMyPhoneFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupAnim()
         touchPhoneInHomeBinding.touchPhoneButton.setOnClickListener {
             if (permissionController.isOverlayPermissionGranted(requireActivity())) {
                 val runningService = SharePreferenceUtils.getRunningService()
@@ -59,7 +63,6 @@ class DontTouchMyPhoneFragment : Fragment() {
                     touchPhoneInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
                     SharePreferenceUtils.setRunningService("")
                     AnimationUtils.applyAnimations(touchPhoneInHomeBinding.handIc)
-                    AnimationUtils.stopAnimations(touchPhoneInHomeBinding.round3)
                     SharePreferenceUtils.setIsWaited(false)
                     val intent = Intent(requireContext(), MyService::class.java)
                     requireContext().stopService(intent)
@@ -80,12 +83,8 @@ class DontTouchMyPhoneFragment : Fragment() {
         val isOnTouchPhoneService =SharePreferenceUtils.getRunningService()
         if (isOnTouchPhoneService==Constant.Service.TOUCH_PHONE_RUNNING) {
             onService(Constant.Service.TOUCH_PHONE_RUNNING)
-            AnimationUtils.stopAnimations(touchPhoneInHomeBinding.handIc)
-            AnimationUtils.applyWaveAnimation(touchPhoneInHomeBinding.round3)
-
         } else {
-            AnimationUtils.applyAnimations(touchPhoneInHomeBinding.handIc)
-            AnimationUtils.stopAnimations(touchPhoneInHomeBinding.round3)
+            touchPhoneInHomeBinding.handIc.startAnimation(anim)
         }
 
         val isFirstTimeGetInTouchPhone = SharePreferenceUtils.isShowTouchPhoneDialog()
@@ -107,10 +106,8 @@ class DontTouchMyPhoneFragment : Fragment() {
     }
 
     private fun onService(runningService: String) {
-        AnimationUtils.stopAnimations(touchPhoneInHomeBinding.handIc)
-        AnimationUtils.applyWaveAnimation(touchPhoneInHomeBinding.round3)
-        touchPhoneInHomeBinding.txtActionStatus.text =
-            getString(R.string.tap_to_deactive)
+        stopAnim()
+        touchPhoneInHomeBinding.txtActionStatus.text = getString(R.string.tap_to_deactive)
         touchPhoneInHomeBinding.handIc.visibility = View.GONE
         touchPhoneInHomeBinding.round2.setImageResource(R.drawable.round2_active)
         SharePreferenceUtils.setRunningService(runningService)
@@ -123,5 +120,23 @@ class DontTouchMyPhoneFragment : Fragment() {
             SharePreferenceUtils.setIsWaited(true)
         }
 
+    }
+    private fun setupAnim() {
+        anim = ScaleAnimation(
+            1.0f,
+            1.3f,
+            1.0f,
+            1.3f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        anim?.duration = 600
+        anim?.repeatCount = 10000
+        anim?.repeatMode = Animation.REVERSE
+    }
+    private fun stopAnim() {
+        anim?.cancel()
     }
 }

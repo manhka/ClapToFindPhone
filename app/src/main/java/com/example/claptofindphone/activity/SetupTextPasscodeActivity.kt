@@ -82,6 +82,11 @@ class SetupTextPasscodeActivity : BaseActivity() {
         }
 
     }
+
+    override fun onStop() {
+        super.onStop()
+        textToSpeech.stop()
+    }
     override fun onDestroy() {
         super.onDestroy()
         textToSpeech.stop()

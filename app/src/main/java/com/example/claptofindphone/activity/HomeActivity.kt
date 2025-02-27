@@ -20,10 +20,10 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.HomeAdapter
 import com.example.claptofindphone.adapter.SoundAdapter
 import com.example.claptofindphone.databinding.ActivityHomeBinding
+import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
-import com.example.claptofindphone.noti.NotificationScheduler
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.InstallData
@@ -46,12 +46,30 @@ class HomeActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (ContextCompat.checkSelfPermission(
-                this,
-                "android.permission.POST_NOTIFICATIONS"
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            NotificationScheduler().scheduleDailyNotifications(this)
+        changeBackPressCallBack {
+            val dialogBinding = ExitDialogBinding.inflate(layoutInflater)
+            // Create an AlertDialog with the inflated ViewBinding root
+            val customDialog = AlertDialog.Builder(this)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .create()
+            customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            // Show the dialog
+            customDialog.show()
+            dialogBinding.cancelButton.setOnClickListener {
+                customDialog.dismiss()
+            }
+            dialogBinding.exitButton.setOnClickListener {
+                val intent = Intent(Intent.ACTION_MAIN)
+                intent.addCategory(Intent.CATEGORY_HOME)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finishAffinity()
+            }
+        }
+        val timeComeToHome = SharePreferenceUtils.getTimeComeHome()
+        if (timeComeToHome in 0..3) {
+            SharePreferenceUtils.setTimeComeHome(SharePreferenceUtils.getTimeComeHome() + 1)
         }
         permissionController = PermissionController()
 
@@ -144,7 +162,7 @@ class HomeActivity : BaseActivity() {
 
 
         homeBinding.changeAudioPasscodeButton.setOnClickListener {
-            SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
+
             val isRunningService = SharePreferenceUtils.getRunningService()
             if (permissionController.hasAudioPermission(this)) {
                 if (permissionController.isInternetAvailable(this)) {
@@ -170,32 +188,32 @@ class HomeActivity : BaseActivity() {
                     .show()
             }
         }
+
+        // show rate dialog after first time use service
+        if (SharePreferenceUtils.isShowRateDialog() == 1) {
+            val dialogBinding = DialogRateUsBinding.inflate(layoutInflater)
+            // Create an AlertDialog with the inflated ViewBinding root
+            val customDialog = AlertDialog.Builder(this)
+                .setView(dialogBinding.root)
+                .create()
+            customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            customDialog.show()
+
+            dialogBinding.yesButton.setOnClickListener {
+                customDialog.dismiss()
+            }
+            dialogBinding.noButton.setOnClickListener {
+                customDialog.dismiss()
+            }
+            dialogBinding.exitButton.setOnClickListener {
+                customDialog.dismiss()
+            }
+            SharePreferenceUtils.setIsShowRateDialog(2)
+        }
     }
 
     // create list of sound
 
-
-    override fun onBackPressed() {
-        val dialogBinding = ExitDialogBinding.inflate(layoutInflater)
-        // Create an AlertDialog with the inflated ViewBinding root
-        val customDialog = AlertDialog.Builder(this)
-            .setView(dialogBinding.root)
-            .setCancelable(false)
-            .create()
-        customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        // Show the dialog
-        customDialog.show()
-        dialogBinding.cancelButton.setOnClickListener {
-            customDialog.dismiss()
-        }
-        dialogBinding.exitButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.addCategory(Intent.CATEGORY_HOME)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finishAffinity()
-        }
-    }
 
     private fun checkNotificationPermission(context: Context): Boolean {
         return NotificationManagerCompat.from(context).areNotificationsEnabled()

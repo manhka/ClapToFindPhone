@@ -13,6 +13,7 @@ class StartActivity : BaseActivity() {
     private lateinit var startActivityBinding: ActivityStartBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        changeBackPressCallBack {  }
         startActivityBinding= ActivityStartBinding.inflate(layoutInflater)
         setContentView(startActivityBinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.start_activity)) { v, insets ->
@@ -21,13 +22,21 @@ class StartActivity : BaseActivity() {
             insets
         }
         startActivityBinding.startButton.setOnClickListener {
-            val intent= Intent(this,VipActivity::class.java)
-            startActivity(intent)
-            finish()
+
+            val timeComeToHome= SharePreferenceUtils.getTimeComeHome()
+            if(timeComeToHome in 1..2){
+                val intent= Intent(this,VipActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                val intent= Intent(this,HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
         }
 
     }
 
-    override fun onBackPressed() {
-    }
+
 }
