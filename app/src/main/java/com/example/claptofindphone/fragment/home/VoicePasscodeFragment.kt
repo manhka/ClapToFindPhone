@@ -96,7 +96,17 @@ class VoicePasscodeFragment : Fragment() {
         super.onResume()
         val isOnVoicePasscodeService = SharePreferenceUtils.getRunningService()
         if (isOnVoicePasscodeService == Constant.Service.VOICE_PASSCODE_RUNNING) {
-            onService(Constant.Service.VOICE_PASSCODE_RUNNING)
+            if (permissionController.isInternetAvailable(requireActivity())){
+                onService(Constant.Service.VOICE_PASSCODE_RUNNING)
+
+            }else{
+                SharePreferenceUtils.setRunningService("")
+                Toast.makeText(
+                    requireContext(),
+                    R.string.connect_internet_to_use_this_feature,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             voicePasscodeInHomeBinding.handIc.startAnimation(anim)
         }

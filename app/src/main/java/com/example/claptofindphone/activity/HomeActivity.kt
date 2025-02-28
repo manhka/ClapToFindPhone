@@ -200,15 +200,17 @@ class HomeActivity : BaseActivity() {
             customDialog.show()
 
             dialogBinding.yesButton.setOnClickListener {
+                SharePreferenceUtils.setIsShowRateDialog(2)
                 customDialog.dismiss()
             }
             dialogBinding.noButton.setOnClickListener {
+                SharePreferenceUtils.setIsShowRateDialog(1)
                 customDialog.dismiss()
             }
             dialogBinding.exitButton.setOnClickListener {
                 customDialog.dismiss()
             }
-            SharePreferenceUtils.setIsShowRateDialog(2)
+
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityInstallingLanguageBinding
 import com.example.claptofindphone.model.Constant
@@ -14,6 +15,7 @@ class InstallingLanguageActivity : BaseActivity() {
     private lateinit var installingLanguageBinding: ActivityInstallingLanguageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        changeBackPressCallBack {  }
         installingLanguageBinding = ActivityInstallingLanguageBinding.inflate(layoutInflater)
         val view = installingLanguageBinding.root
         setContentView(view)
@@ -44,9 +46,12 @@ class InstallingLanguageActivity : BaseActivity() {
                     handler.postDelayed(this,300)
                     index++
                 }else{
-                    val intent= Intent(this@InstallingLanguageActivity,IntroductionActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    lifecycleScope.launchWhenResumed {
+                        val intent= Intent(this@InstallingLanguageActivity,IntroductionActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
                 }
             }
         }
@@ -55,6 +60,5 @@ class InstallingLanguageActivity : BaseActivity() {
 
 
 
-    override fun onBackPressed() {
-    }
+
 }

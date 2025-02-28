@@ -202,5 +202,9 @@
   <string name="charger_alert">충전기 경보</string>  
   <string name="dialog_calltheme_title">통화 테마를 추가하십시오</string>  
   <string name="dialog_calltheme_content">편안한 호출 테마를 잠금 해제하기 위해 짧은 비디오 추가를 시청하십시오</string>  
-  <string name="turn_off">끄기</string>
+  <string name="turn_off">끄기</string>  
+  <string name="noti_clap">박수</string>
+  <string name="noti_voice">목소리 &amp;...</string>
+  <string name="noti_touch">하지 말아야 ...</string>
+  <string name="noti_pocket_mode">포켓...</string>
 </resources>

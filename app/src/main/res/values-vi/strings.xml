@@ -33,12 +33,12 @@
   <string name="how_to_use">Cách sử dụng</string>  
   <string name="flashlight">Đèn pin</string>  
   <string name="custom_sound">Âm thanh tùy chỉnh</string>  
-  <string name="cat_meowing">Mèo kêu</string>
+  <string name="cat_meowing">Mèo kêu</string>  
   <string name="clap_to_find">Vỗ tay để tìm</string>  
   <string name="charger_alarm">Báo động bộ sạc</string>  
   <string name="tap_to_active">Nhấn vào hoạt động</string>  
   <string name="change_audio_passcode">Thay đổi mật mã âm thanh</string>  
-  <string name="tap_to_deactive">Nhấn vào Deactive</string>  
+  <string name="tap_to_deactive">Nhấn vào để tắt</string>
   <string name="found_your_phone">Tìm thấy điện thoại của bạn</string>  
   <string name="i_found_it">Tôi đã tìm thấy nó</string>  
   <string name="find_my_phone">Tìm điện thoại của tôi</string>  
@@ -52,11 +52,11 @@
   <string name="name">Tên</string>  
   <string name="phone">+123456789X</string>  
   <string name="default_flash">Mặc định</string>  
-  <string name="save">Lưu</string>
+  <string name="save">Lưu</string>  
   <string name="edit_theme">Chỉnh sửa chủ đề</string>  
   <string name="apply_theme">Áp dụng chủ đề</string>  
   <string name="change_flashlight">Thay đổi đèn pin</string>  
-  <string name="ON">BẬT</string>
+  <string name="ON">BẬT</string>  
   <string name="OFF">TẮT</string>  
   <string name="change_vibrate">Thay đổi rung</string>  
   <string name="volume">Âm lượng</string>  
@@ -92,7 +92,7 @@
   <string name="rate_us_title">Bạn có thích ứng dụng của chúng tôi cho đến nay không? \n</string>  
   <string name="rate_us_content">Hãy cho chúng tôi biết và giúp chúng tôi cải thiện trải nghiệm cho người dùng như \n</string>  
   <string name="yes">Vâng, tôi thích nó</string>  
-  <string name="no">Không thực sự</string>
+  <string name="no">Không thực sự</string>  
   <string name="got_it">Hiểu rồi</string>  
   <string name="dialog_clap_title">Bạn có thể thử vỗ tay</string>  
   <string name="dialog_clap_content">Ứng dụng đã kích hoạt chế độ nghe Clap</string>  
@@ -104,7 +104,7 @@
   <string name="dialog_charger_alarm_content">Ứng dụng đã kích hoạt báo động bộ sạc</string>  
   <string name="dialog_touch_phone_title">Bạn có thể thử giữ điện thoại</string>  
   <string name="dialog_touch_phone_content">Ứng dụng đã bật chế độ chống cảm ứng</string>  
-  <string name="exit">Thoát</string>
+  <string name="exit">Thoát</string>  
   <string name="exit_content">Bạn có muốn thoát không?</string>  
   <string name="exit_title">Ứng dụng thoát</string>  
   <string name="watch_ads">Xem quảng cáo</string>  
@@ -160,7 +160,7 @@
   <string name="record_permission_content">Bạn phải cấp quyền bản ghi để sử dụng ứng dụng</string>  
   <string name="go_to_setting">Đi đến cài đặt</string>  
   <string name="request_permission_content">Bạn cần cho phép ứng dụng để làm việc</string>  
-  <string name="voice">Tiếng nói</string>  
+  <string name="voice">Tiếng nói</string>
   <string name="text_to_voice">Nhắn tin cho giọng nói</string>  
   <string name="warning">Cảnh báo:</string>  
   <string name="content_warning">Chức năng này đang được phát triển, mật mã tiếng Anh sẽ hoạt động tốt hơn. Vui lòng nói/viết mật mã bằng tiếng Anh để có chất lượng tốt nhất. \n Cảm ơn bạn đã tin tưởng và sử dụng ứng dụng!</string>  
@@ -171,7 +171,7 @@
   <string name="connect_internet_to_use_this_feature">Xin vui lòng, kết nối Internet để sử dụng tính năng này.</string>  
   <string name="deactive_all_feature_before_run">Xin vui lòng, hủy kích hoạt tính năng trước khi thay đổi mật mã.</string>  
   <string name="active_audio_to_use_this_feature">Vui lòng bật quyền âm thanh để thay đổi mật mã.</string>  
-  <string name="cat_sound">Mèo kêu</string>
+  <string name="cat_sound">Mèo kêu</string>  
   <string name="dog_barking">Chó sủa</string>  
   <string name="hey_stay_here">Này ở lại đây</string>  
   <string name="whistle">Còi</string>  
@@ -179,7 +179,7 @@
   <string name="car_horn">Còi xe</string>  
   <string name="door_bell">Chuông cửa</string>  
   <string name="party_horn">Sừng tiệc</string>  
-  <string name="police_whistle">Còi cảnh sát</string>
+  <string name="police_whistle">Còi cảnh sát</string>  
   <string name="cavarly">Cavarly</string>  
   <string name="army_trumpet">Trumpet quân đội</string>  
   <string name="rifle">Súng trường</string>  
@@ -202,5 +202,9 @@
   <string name="charger_alert">Thông báo về bộ sạc</string>  
   <string name="dialog_calltheme_title">Thêm chủ đề cuộc gọi của bạn</string>  
   <string name="dialog_calltheme_content">Xem một video ngắn thêm để mở khóa chủ đề cuộc gọi</string>  
-  <string name="turn_off">Tắt</string>
+  <string name="turn_off">Tắt</string>  
+  <string name="noti_clap">Vỗ tay</string>
+  <string name="noti_voice">Giọng...</string>
+  <string name="noti_touch">Đừng c...</string>
+  <string name="noti_pocket_mode">Chế độ...</string>
 </resources>

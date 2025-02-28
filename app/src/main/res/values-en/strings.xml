@@ -202,5 +202,9 @@
   <string name="charger_alert">Charger Alert</string>  
   <string name="dialog_calltheme_title">Add your Call theme</string>  
   <string name="dialog_calltheme_content">Watch a short video add to unlock Call theme</string>  
-  <string name="turn_off">Turn Off</string>
+  <string name="turn_off">Turn Off</string>  
+  <string name="noti_clap">Clap</string>
+  <string name="noti_voice">Voice &amp;...</string>
+  <string name="noti_touch">Don\'t to...</string>
+  <string name="noti_pocket_mode">Pocket...</string>
 </resources>

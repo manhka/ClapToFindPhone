@@ -202,5 +202,9 @@
   <string name="charger_alert">充電器アラート</string>  
   <string name="dialog_calltheme_title">コールテーマを追加します</string>  
   <string name="dialog_calltheme_content">コールテーマのロックを解除するために、短いビデオ追加をご覧ください</string>  
-  <string name="turn_off">消す</string>
+  <string name="turn_off">消す</string>  
+  <string name="noti_clap">拍手</string>
+  <string name="noti_voice">声 ＆...</string>
+  <string name="noti_touch">しないで...</string>
+  <string name="noti_pocket_mode">ポケット...</string>
 </resources>

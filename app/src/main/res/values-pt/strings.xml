@@ -43,7 +43,7 @@
   <string name="i_found_it">Eu encontrei</string>  
   <string name="find_my_phone">Encontre meu telefone</string>  
   <string name="clap">Palma ...</string>  
-  <string name="voice_passcode_notify">Voz &amp; Pass ...</string>
+  <string name="voice_passcode_notify">Voz &amp; Pass …</string>
   <string name="touch_phone_notify">Não toque ...</string>  
   <string name="clap_to_find_phone_is_running">Palmas para encontrar o telefone está funcionando</string>  
   <string name="touch_button_power_to_stop_alarm">Toque no botão energia para parar o alarme</string>  
@@ -202,5 +202,9 @@
   <string name="charger_alert">Alerta do carregador</string>  
   <string name="dialog_calltheme_title">Adicione seu tema de chamada</string>  
   <string name="dialog_calltheme_content">Assista a um pequeno vídeo Adicionar ao tema do desbloqueio de chamadas</string>  
-  <string name="turn_off">Desligar</string>
+  <string name="turn_off">Desligar</string>  
+  <string name="noti_clap">Aplauso</string>
+  <string name="noti_voice">Voz &amp; ...</string>
+  <string name="noti_touch">Não para ...</string>
+  <string name="noti_pocket_mode">Bolso...</string>
 </resources>

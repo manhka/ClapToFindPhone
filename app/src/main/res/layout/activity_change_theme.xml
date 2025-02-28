@@ -27,7 +27,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/change_theme"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/back_button"
             android:padding="16dp"
+            android:layout_marginTop="16dp"
             android:background="@color/start_grey">
             <ImageView
                 android:layout_width="wrap_content"
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/default_theme"
                 android:textColor="@color/black"
+                android:textSize="16dp"
                 android:layout_marginStart="10dp"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -71,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/call_theme"
+                android:textSize="16dp"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"/>
         </LinearLayout>

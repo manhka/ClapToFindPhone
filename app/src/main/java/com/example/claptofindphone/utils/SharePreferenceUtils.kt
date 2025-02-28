@@ -3,6 +3,7 @@ package com.example.claptofindphone.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.AudioManager
+import android.util.Log
 import com.example.claptofindphone.model.Constant
 import java.util.Locale
 
@@ -90,21 +91,27 @@ object SharePreferenceUtils {
     fun getTimeSoundPlay(): Long = getLong("getTimeSoundPlay")
     fun setTimeSoundPlay(value: Long) = saveKey("getTimeSoundPlay", value)
     fun getVolumeSound(context: Context): Int {
-        // Get the AudioManager system service
-        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        // Lấy giá trị âm lượng từ SharedPreferences
+        var volume = getInt("getVolumeSound", -1) // Trả về -1 nếu không có giá trị lưu
 
-        // Get the maximum volume for the music stream (can be changed to other streams like STREAM_RING)
-        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        // Nếu không có giá trị lưu (lần đầu hoặc giá trị chưa được lưu), tính toán 80% max volume
+        if (volume == -1) {
+            // Lấy AudioManager từ hệ thống
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        // Get the current volume for the music stream
-        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+            // Lấy giá trị âm lượng tối đa của STREAM_MUSIC
+            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 
-        // Calculate 80% of the current volume
-        val volume80Percent = (currentVolume * 0.8).toInt()
+            // Tính toán 80% của giá trị âm lượng tối đa
+            volume = (maxVolume * 0.8).toInt()
 
-        // Return 80% of the current volume (or use volume80Percent as needed)
-        return volume80Percent
-    }    fun setVolumeSound(value: Int) = saveKey("getVolumeSound", value)
+            // Lưu giá trị đã tính toán vào SharedPreferences để sử dụng lần sau
+            setVolumeSound(volume)
+        }
+
+        return volume
+    }
+    fun setVolumeSound(value: Int) = saveKey("getVolumeSound", value)
 
 
     // is premium

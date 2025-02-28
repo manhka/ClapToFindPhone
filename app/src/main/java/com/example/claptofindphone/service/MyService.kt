@@ -12,6 +12,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -25,6 +26,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.RemoteViews
+import android.widget.TextView
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
 import androidx.annotation.RequiresApi
@@ -44,6 +46,8 @@ import net.gotev.speech.Speech
 import net.gotev.speech.SpeechDelegate
 import net.gotev.speech.SpeechRecognitionNotAvailable
 import org.tensorflow.lite.task.audio.classifier.AudioClassifier
+import kotlin.math.acos
+import kotlin.math.roundToInt
 
 
 class MyService : Service(), SensorEventListener {
@@ -57,12 +61,13 @@ class MyService : Service(), SensorEventListener {
     private var runnable: Runnable? = null
     private lateinit var mSensorManager: SensorManager
     private var mAccelerometer: Sensor? = null
+    private var proximitySensor: Sensor? = null
     private var mLastShakeTime: Long = 0
     private val SHAKE_THRESHOLD = 1000L
     private var batteryReceiver: BroadcastReceiver? = null
     private var isVoiceDetectListening = false
     private var isClapDetectListening = false
-    private var proximitySensor: Sensor? = null
+
     private lateinit var passcode: String
     private var soundVolume: Int = 80
     private var soundTimePlay: Long = 15000
@@ -83,6 +88,8 @@ class MyService : Service(), SensorEventListener {
     private var selectedSoundPosition = 0
     private var isFromFoundPhone: Boolean = false
     private var isInPocket = false
+    private var runningService = ""
+    private var proximityValue = -1f
 
     companion object {
         private const val CHANNEL_ID = "clap_service_channel"
@@ -148,26 +155,21 @@ class MyService : Service(), SensorEventListener {
             SharePreferenceUtils.setIsFoundPhone(true)
             if (soundStatus) {
                 soundController?.playSoundInLoop(
-                    soundList[selectedSoundPosition].soundType,
-                    soundVolume.toFloat(),
-                    soundTimePlay
+                    soundList[selectedSoundPosition].soundType, soundVolume.toFloat(), soundTimePlay
                 )
             }
             if (flashlightStatus) {
                 flashlightController?.startPattern(
-                    flashlightList.get(selectedFlashlightPosition).flashlightMode,
-                    Long.MAX_VALUE
+                    flashlightList.get(selectedFlashlightPosition).flashlightMode, Long.MAX_VALUE
                 )
             }
             if (vibrateStatus) {
                 vibrateController?.startPattern(
-                    vibrateList.get(selectedVibratePosition).vibrateMode,
-                    Long.MAX_VALUE
+                    vibrateList.get(selectedVibratePosition).vibrateMode, Long.MAX_VALUE
                 )
             }
         } else {
-            val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
-            Log.d("sdfasf", "onStartCommand:${runningService} ")
+            runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE).toString()
             if (runningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
                 clapAndWhistleDetect()
             } else if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
@@ -175,14 +177,12 @@ class MyService : Service(), SensorEventListener {
             } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
                 mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
                 mSensorManager.registerListener(
-                    this,
-                    mAccelerometer,
-                    SensorManager.SENSOR_DELAY_NORMAL
+                    this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL
                 )
             } else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
-                chargerPhoneDetect()
+                chargeproximityValuehoneDetect()
             } else if (runningService == Constant.Service.POCKET_MODE_RUNNING) {
-                proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
+                proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
                 mSensorManager.registerListener(
                     this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL
                 )
@@ -207,11 +207,82 @@ class MyService : Service(), SensorEventListener {
     }
 
 
-    @SuppressLint("RemoteViewLayout")
+    @SuppressLint("RemoteViewLayout", "ObsoleteSdkInt")
     private fun createNotifyOff(): Notification {
         // Inflate the custom layout using RemoteViews
         val customView = RemoteViews(packageName, R.layout.custom_notify)
 
+        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            // Dark Mode
+            customView.setTextColor(R.id.txt_clap_noti, resources.getColor(android.R.color.white))
+            customView.setTextColor(R.id.txt_voice_passcode_noti,resources.getColor(android.R.color.white))
+            customView.setTextColor(R.id.txt_touch_phone_noti,resources.getColor(android.R.color.white))
+            customView.setTextColor(R.id.txt_pocket_mode_noti,resources.getColor(android.R.color.white))
+        } else {
+            // Light Mode
+            customView.setTextColor(R.id.txt_clap_noti, resources.getColor(android.R.color.black))
+            customView.setTextColor(R.id.txt_voice_passcode_noti,resources.getColor(android.R.color.black))
+            customView.setTextColor(R.id.txt_touch_phone_noti,resources.getColor(android.R.color.black))
+            customView.setTextColor(R.id.txt_pocket_mode_noti,resources.getColor(android.R.color.black))
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            customView.setOnClickPendingIntent(
+                R.id.imgView_clap_noti, PendingIntent.getActivity(
+                    this, 12, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.CLAP_TO_FIND_PHONE),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+            customView.setOnClickPendingIntent(
+                R.id.imgView_voice_passcode_noti, PendingIntent.getActivity(
+                    this, 13, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.VOICE_PASSCODE),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+
+            customView.setOnClickPendingIntent(
+                R.id.imgView_touch_phone_noti, PendingIntent.getActivity(
+                    this, 14, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.DONT_TOUCH_MY_PHONE),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+
+            customView.setOnClickPendingIntent(
+                R.id.imgView_pocket_mode_noti, PendingIntent.getActivity(
+                    this, 15, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.POCKET_MODE),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+            )
+
+        } else {
+            customView.setOnClickPendingIntent(
+                R.id.imgView_clap_noti, PendingIntent.getActivity(
+                    this, 123, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.CLAP_TO_FIND_PHONE),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+            customView.setOnClickPendingIntent(
+                R.id.imgView_voice_passcode_noti, PendingIntent.getActivity(
+                    this, 134, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.VOICE_PASSCODE),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+
+            customView.setOnClickPendingIntent(
+                R.id.imgView_touch_phone_noti, PendingIntent.getActivity(
+                    this, 145, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.DONT_TOUCH_MY_PHONE),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+
+            customView.setOnClickPendingIntent(
+                R.id.imgView_pocket_mode_noti, PendingIntent.getActivity(
+                    this, 156, Intent(this, SplashActivity::class.java).putExtra("mode",Constant.Service.POCKET_MODE),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
+        }
         // Build and return the notification
         return NotificationCompat.Builder(this, CHANNEL_ID).setSmallIcon(R.mipmap.ic_launcher)
             .setCustomContentView(customView).setCustomBigContentView(customView)
@@ -224,10 +295,22 @@ class MyService : Service(), SensorEventListener {
         // Inflate the custom layout using RemoteViews
         val customView = RemoteViews(packageName, R.layout.big_custom_notify2)
         val customView2 = RemoteViews(packageName, R.layout.custom_notifiy2)
+        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            // Dark Mode
+            customView2.setTextColor(R.id.txt_noti2, resources.getColor(android.R.color.white))
+            customView.setTextColor(R.id.txt_noti1,resources.getColor(android.R.color.white))
+        } else {
+            // Light Mode
+            customView.setTextColor(R.id.txt_noti2, resources.getColor(android.R.color.black))
+            customView.setTextColor(R.id.txt_noti1,resources.getColor(android.R.color.black))
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             customView.setOnClickPendingIntent(
                 R.id.power_button, PendingIntent.getActivity(
-                    this, 5000, Intent(this, HomeActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+                    this, 5000, Intent(this, SplashActivity::class.java).putExtra("turnOffService",true), PendingIntent.FLAG_IMMUTABLE
                 )
             )
         } else {
@@ -235,7 +318,7 @@ class MyService : Service(), SensorEventListener {
                 R.id.power_button, PendingIntent.getActivity(
                     this,
                     5000,
-                    Intent(this, HomeActivity::class.java),
+                    Intent(this, SplashActivity::class.java).putExtra("turnOffService",true),
                     PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
@@ -246,7 +329,7 @@ class MyService : Service(), SensorEventListener {
             .setContentTitle("Clap to find phone is running").setSmallIcon(R.mipmap.ic_launcher)
             .setCustomContentView(customView2).setCustomBigContentView(customView)
             .setPriority(NotificationCompat.PRIORITY_LOW).setOngoing(true).setSound(null)
-            .setVibrate(longArrayOf(0)).build()
+            .setVibrate(null).build()
     }
 
     // clap and whistle
@@ -340,7 +423,7 @@ class MyService : Service(), SensorEventListener {
 
 
     // charger phone
-    private fun chargerPhoneDetect() {
+    private fun chargeproximityValuehoneDetect() {
         // Kiểm tra ngay lập tức trạng thái pin khi gọi function này
         val batteryIntent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
@@ -390,44 +473,49 @@ class MyService : Service(), SensorEventListener {
     override fun onBind(intent: Intent?): IBinder? = null
 
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        Log.d("sensorsss", "onSensorChanged:${event?.sensor?.type} ")
-        // don't touch phone
-        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            // Xử lý cảm biến gia tốc (phát hiện rung lắc)
-            val x = event.values[0]
-            val y = event.values[1]
-            val z = event.values[2]
-
-            val acceleration = Math.sqrt(
-                Math.pow(x.toDouble(), 2.0) + Math.pow(y.toDouble(), 2.0) + Math.pow(
-                    z.toDouble(), 2.0
-                )
-            )
-            val currentTime = System.currentTimeMillis()
-            if (acceleration > 10 && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
-                mLastShakeTime = currentTime
-                foundPhone()
-                return
-            }
-        }
+    override fun onSensorChanged(p0: SensorEvent?) {
         // pocket mode
-        if (event?.sensor?.type == Sensor.TYPE_PROXIMITY) {
-            val proximityValue = event.values[0]
-            Log.d("sdfasf", "onSensorChanged:${proximityValue} ")
-            if (proximityValue.toInt() == 0) {
-                isInPocket = true
-            }
-            if (isInPocket) {
-                if (proximityValue == proximitySensor!!.maximumRange) {
-                    isInPocket = false
-                    mSensorManager.unregisterListener(this, proximitySensor)
-                    foundPhone()
+            if (p0?.sensor?.type == Sensor.TYPE_PROXIMITY) {
+                proximityValue = p0.values[0]
+                if ((proximityValue.toInt() != -1) ) {
+                    detectPocketMode(proximityValue);
                 }
             }
+        // don't touch phone
+
+            if (p0?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+                // Xử lý cảm biến gia tốc (phát hiện rung lắc)
+                val x = p0.values[0]
+                val y = p0.values[1]
+                val z = p0.values[2]
+
+                val acceleration = Math.sqrt(
+                    Math.pow(x.toDouble(), 2.0) + Math.pow(y.toDouble(), 2.0) + Math.pow(
+                        z.toDouble(), 2.0
+                    )
+                )
+                val currentTime = System.currentTimeMillis()
+                if (acceleration > 10 && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
+                    mLastShakeTime = currentTime
+                    foundPhone()
+                    return
+                }
         }
     }
 
+    private fun detectPocketMode(proximity: Float) {
+        if (proximity < 1) {
+            isInPocket = true
+            //IN POCKET
+        }
+        if (proximity >= 1) {
+            //OUT OF POCKET
+            if (isInPocket) {
+                isInPocket = false
+                foundPhone()
+            }
+        }
+    }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
@@ -440,7 +528,6 @@ class MyService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("sdfasf", "onDestroy: ")
         if (soundStatus) {
             soundController?.stopSound()
         }
@@ -472,7 +559,6 @@ class MyService : Service(), SensorEventListener {
         if (mAccelerometer != null) {
             mSensorManager.unregisterListener(this, mAccelerometer)
         }
-
         if (isFromFoundPhone) {
             val intent = Intent(this, SplashActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

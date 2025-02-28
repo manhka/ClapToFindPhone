@@ -16,6 +16,8 @@ activity = "1.10.0"
 constraintlayout = "2.2.0"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
+sensorflow = "1.0.0"
+sensorkit = "1.0.0"
 speech = "1.6.2"
 tensorflowLiteTaskAudio = "0.3.0"
 workRuntimeKtx = "2.8.0"
@@ -43,6 +45,8 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+sensorflow = { module = "com.github.davideas:sensorflow", version.ref = "sensorflow" }
+sensorkit = { module = "com.github.sensorkit:sensorkit", version.ref = "sensorkit" }
 speech = { module = "net.gotev:speech", version.ref = "speech" }
 tensorflow-lite-task-audio = { module = "org.tensorflow:tensorflow-lite-task-audio", version.ref = "tensorflowLiteTaskAudio" }
 work-runtime-ktx-v2100 = { module = "androidx.work:work-runtime-ktx", version.ref = "androidxWorkRuntimeKtx" }

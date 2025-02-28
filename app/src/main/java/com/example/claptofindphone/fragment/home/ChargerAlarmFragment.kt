@@ -71,26 +71,26 @@ class ChargerAlarmFragment() : Fragment() {
                     isChargerPhone = false
                 }
             }
-            batteryReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    if (intent?.action == Intent.ACTION_BATTERY_CHANGED) {
-                        val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
-                        // Lấy trạng thái pin
-                        when (status) {
-                            BatteryManager.BATTERY_STATUS_CHARGING -> {
-                                isChargerPhone = true
-                            }
-
-                            BatteryManager.BATTERY_STATUS_DISCHARGING -> {
-                                isChargerPhone = false
-                            }
-                        }
-                    }
-                }
-            }
-            // Đăng ký Receiver cho sự kiện pin
-            val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-            requireActivity().registerReceiver(batteryReceiver, intentFilter)
+//            batteryReceiver = object : BroadcastReceiver() {
+//                override fun onReceive(context: Context?, intent: Intent?) {
+//                    if (intent?.action == Intent.ACTION_BATTERY_CHANGED) {
+//                        val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+//                        // Lấy trạng thái pin
+//                        when (status) {
+//                            BatteryManager.BATTERY_STATUS_CHARGING -> {
+//                                isChargerPhone = true
+//                            }
+//
+//                            BatteryManager.BATTERY_STATUS_DISCHARGING -> {
+//                                isChargerPhone = false
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            // Đăng ký Receiver cho sự kiện pin
+//            val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+//            requireActivity().registerReceiver(batteryReceiver, intentFilter)
 
             // Kiểm tra quyền và các hành động tiếp theo
             if (permissionController.isOverlayPermissionGranted(requireActivity())) {

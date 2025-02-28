@@ -68,7 +68,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // Use only tensorflow-lite-task-audio
     implementation(libs.tensorflow.lite.task.audio)
-    implementation(libs.androidx.work.runtime.ktx)//lotties
+    implementation(libs.androidx.work.runtime.ktx)
+    //lotties
     implementation(libs.lottie)
     // speech
     implementation(libs.speech)

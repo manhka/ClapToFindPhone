@@ -2,7 +2,9 @@ package com.example.claptofindphone.activity
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.claptofindphone.utils.SharePreferenceUtils
@@ -22,7 +24,9 @@ open class BaseActivity : AppCompatActivity(){
         newBase.createContext(
             Locale(SharePreferenceUtils.getLanguageCode())
         )
+
     )
+
     protected fun changeBackPressCallBack(action: () -> Unit) {
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -30,5 +34,19 @@ open class BaseActivity : AppCompatActivity(){
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
+    }
+    private fun hideNavigationBar() {
+        val decorView: View = window.decorView
+
+        val uiOptions: Int =
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+
+        decorView.systemUiVisibility = uiOptions
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        hideNavigationBar()
     }
 }
