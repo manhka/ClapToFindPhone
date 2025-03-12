@@ -19,6 +19,7 @@ class Constant {
         const val POCKET_MODE = "pocket_mode"
         const val RUNNING_SERVICE = "running_service"
         const val CLAP_AND_WHISTLE_RUNNING = "clap_and_whistle_running"
+        const val TURN_OFF_SOUND = "TURN_OFF_SOUND"
         const val VOICE_PASSCODE_RUNNING = "voice_passcode_running"
         const val POCKET_MODE_RUNNING = "pocket_mode_running"
         const val TOUCH_PHONE_RUNNING = "touch_phone_running"
@@ -106,8 +107,13 @@ class Constant {
         const val DefaultTheme4 = "default theme 4"
     }
 
+object Notification{
+   val CHANNEL_ID = "clap_service_channel"
+    val CHANNEL_NAME = "Clap Detection Service"
+}
 
     companion object {
+        val DEFAULT_PASSCODE="12ASF3456SFSA789MNASHDNSJSDF"
         val CHANNEL_NAME: CharSequence="ClapFindPhone_Notification"
         val CHANNEL_ID: String= "ClapFindPhone_Notification_ID"
         val URL_PRIVACY = "https://sites.google.com/view/nksoftpolicy/home"

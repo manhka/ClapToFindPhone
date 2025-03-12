@@ -62,6 +62,7 @@ class SettingActivity : BaseActivity() {
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog = AlertDialog.Builder(this)
                 .setView(dialogBinding.root)
+                .setCancelable(false)
                 .create()
 
             customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)

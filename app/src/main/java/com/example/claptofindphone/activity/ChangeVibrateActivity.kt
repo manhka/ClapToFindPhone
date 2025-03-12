@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.VibrateAdapter
 import com.example.claptofindphone.databinding.ActivityChangeVibrateBinding
-import com.example.claptofindphone.databinding.VibrateItemBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Vibrate
 import com.example.claptofindphone.service.VibrateController
@@ -25,7 +24,6 @@ class ChangeVibrateActivity : BaseActivity() {
     private lateinit var vibrateAdapter: VibrateAdapter
     private lateinit var vibrateList: List<Vibrate>
     private lateinit var selectedVibrateName: String
-    private lateinit var vibrateController: VibrateController
     private var vibrateStatus: Boolean = true
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -39,7 +37,7 @@ class ChangeVibrateActivity : BaseActivity() {
             insets
         }
         getVibrateList()
-        vibrateController = VibrateController(this)
+
 
         // vibrate share pres
 
@@ -50,18 +48,18 @@ class ChangeVibrateActivity : BaseActivity() {
         updateOnOffToggle(vibrateStatus)
         var selectedPosition = vibrateList.indexOfFirst { it.vibrateName == selectedVibrateName }
         val vibrate = vibrateList[selectedPosition]
-        vibrateController.startPattern(vibrate.vibrateMode, 3000)
+        VibrateController.startPattern(vibrate.vibrateMode, 3000)
         changeVibrateItemBinding.rcvChangeVibrate.layoutManager = GridLayoutManager(this, 2)
         vibrateAdapter = VibrateAdapter(this, vibrateList) { vibrate ->
             selectedVibrateName = vibrate.vibrateName
-            vibrateController.startPattern(vibrate.vibrateMode, 3000)
+            VibrateController.startPattern(vibrate.vibrateMode, 3000)
         }
+        changeVibrateItemBinding.txtCustomVibrate.isSelected = true
         changeVibrateItemBinding.rcvChangeVibrate.adapter = vibrateAdapter
         changeVibrateItemBinding.saveButton.setOnClickListener {
-
+            VibrateController.stopVibrating()
             SharePreferenceUtils.setVibrateName(selectedVibrateName)
             SharePreferenceUtils.setOnVibrate(vibrateStatus)
-
             finish()
         }
         changeVibrateItemBinding.onOffLayout.setOnClickListener {
@@ -69,6 +67,7 @@ class ChangeVibrateActivity : BaseActivity() {
             updateOnOffToggle(vibrateStatus)
         }
         changeVibrateItemBinding.backButton.setOnClickListener {
+            VibrateController.stopVibrating()
             finish()
         }
     }
@@ -179,8 +178,4 @@ class ChangeVibrateActivity : BaseActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        vibrateController.stopVibrating()
-    }
 }

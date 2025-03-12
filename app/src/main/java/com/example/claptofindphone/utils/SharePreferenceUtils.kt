@@ -111,6 +111,7 @@ object SharePreferenceUtils {
 
         return volume
     }
+
     fun setVolumeSound(value: Int) = saveKey("getVolumeSound", value)
 
 
@@ -148,7 +149,7 @@ object SharePreferenceUtils {
 
 
     // Voice passcode
-    fun getVoicePasscode(): String = getString("getVoicePasscode", "")
+    fun getVoicePasscode(): String = getString("getVoicePasscode", Constant.DEFAULT_PASSCODE)
     fun setVoicePasscode(value: String) = saveKey("getVoicePasscode", value)
 
     // notification
@@ -157,7 +158,7 @@ object SharePreferenceUtils {
 
 
     // wait screen
-    fun isWaited(): Boolean = getBoolean("isWaited", true)
+    fun isWaited(): Boolean = getBoolean("isWaited", false)
     fun setIsWaited(value: Boolean) = saveKey("isWaited", value)
 
     // service
@@ -181,8 +182,26 @@ object SharePreferenceUtils {
     // noti
     fun getIndexNoty(): Int = getInt("getIndexNoty", 0)
     fun setIndexNoty(value: Int) = saveKey("getIndexNoty", value)
+    fun isShowNotyWhenComeToHome(): Boolean = getBoolean("isShowNotyWhenComeToHome", true)
+    fun setIsShowNotyWhenComeToHome(value: Boolean) = saveKey("isShowNotyWhenComeToHome", value)
+
     // permision
-    fun getTimeDeniRecordPermission():Int= getInt("getTimeDeniRecordPermission",0)
-    fun setTimeDeniRecordPermission(value: Int)= saveKey("getTimeDeniRecordPermission",value)
+    fun getTimeDeniRecordPermission(): Int = getInt("getTimeDeniRecordPermission", 0)
+    fun setTimeDeniRecordPermission(value: Int) = saveKey("getTimeDeniRecordPermission", value)
+
+    // navigateToChange passcode
+    fun isNavigateToChangePasscode(): Boolean = getBoolean("isNavigateToChangePasscode", false)
+    fun setIsNavigateToChangePasscode(value: Boolean) = saveKey("isNavigateToChangePasscode", value)
+
+    // navigateToChange passcode
+    fun isNavigateFromSplash(): Boolean = getBoolean("isNavigateFromSplash", false)
+    fun setIsNavigateFromSplash(value: Boolean) = saveKey("isNavigateFromSplash", value)
+
+    // is ON notify
+    fun isOnNotify(): Boolean = getBoolean("isOnNotify", false)
+    fun setIsOnNotify(value: Boolean) = saveKey("isOnNotify", value)
+// service
+    fun isOnService():Boolean= getBoolean("isOnService",false)
+    fun setIsOnService(value: Boolean)= saveKey("isOnService",value)
 
 }

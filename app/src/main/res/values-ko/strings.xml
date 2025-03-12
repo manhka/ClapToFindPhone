@@ -45,8 +45,8 @@
   <string name="clap">박수...</string>  
   <string name="voice_passcode_notify">음성 및 패스 ...</string>  
   <string name="touch_phone_notify">만지지 마 ...</string>  
-  <string name="clap_to_find_phone_is_running">전화를 찾기 위해 박수가 실행 중입니다</string>  
-  <string name="touch_button_power_to_stop_alarm">알람을 중지하려면 버튼 전원을 터치합니다</string>  
+  <string name="clap_to_find_phone_is_running">내 휴대 전화가 실행중인 것을 찾기 위해 박수</string>  
+  <string name="touch_button_power_to_stop_alarm">여기를 탭하여 비활성화하십시오</string>  
   <string name="default_theme">기본 테마</string>  
   <string name="call_theme">호출 테마</string>  
   <string name="name">이름</string>  
@@ -204,7 +204,9 @@
   <string name="dialog_calltheme_content">편안한 호출 테마를 잠금 해제하기 위해 짧은 비디오 추가를 시청하십시오</string>  
   <string name="turn_off">끄기</string>  
   <string name="noti_clap">박수</string>
-  <string name="noti_voice">목소리 &amp;...</string>
-  <string name="noti_touch">하지 말아야 ...</string>
-  <string name="noti_pocket_mode">포켓...</string>
+  <string name="noti_voice">음성 및 암호></string>
+  <string name="noti_touch">내 전화를 만지지 마십시오</string>
+  <string name="noti_pocket_mode">포켓 모드</string>
+  <string name="charger_alram_intro_sub">누군가가 연결하는 동안 장치의 충전 케이블을 뽑을 때 경고를 켜십시오.</string>
+  <string name="noti_charger_alarm">충전기 알람</string>
 </resources>

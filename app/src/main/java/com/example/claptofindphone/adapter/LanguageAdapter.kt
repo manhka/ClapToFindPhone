@@ -1,5 +1,6 @@
 package com.example.claptofindphone.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -61,5 +62,11 @@ class LanguageAdapter(
         } else {
             null
         }
+    }
+    fun clickCurrentLanguage(){
+        val previousPosition = selectedPosition
+        selectedPosition = -1
+        notifyItemChanged(previousPosition)
+        notifyItemChanged(selectedPosition)
     }
 }

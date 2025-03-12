@@ -1,24 +1,25 @@
 package com.example.claptofindphone.service
 
+import android.app.Application
 import android.content.Context
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 
-class SoundController(private val context: Context) {
-
+object SoundController {
     private var mediaPlayer: MediaPlayer? = null
-
 
     fun playSound(soundResId: Int, volume: Float = 1f, durationInMillis: Long = 0) {
         stopSound()
+        val context = getApplicationContext()
         mediaPlayer = MediaPlayer.create(context, soundResId)
         mediaPlayer?.apply {
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
             val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            val volumeToSet = (maxVolume * volume/100f).toInt()
-            setVolume( volume/100f, volume/100f)
+            val volumeToSet = (maxVolume * volume / 100f).toInt()
+
+            setVolume(volume / 100f, volume / 100f)
             start()
 
             setOnCompletionListener {
@@ -35,6 +36,7 @@ class SoundController(private val context: Context) {
 
     fun startMediaSilently(soundResId: Int, durationInMillis: Long = 0) {
         stopSound()
+        val context = getApplicationContext()
         mediaPlayer = MediaPlayer.create(context, soundResId)
         mediaPlayer?.apply {
             setVolume(0f, 0f)
@@ -68,6 +70,7 @@ class SoundController(private val context: Context) {
 
     fun playSoundInLoop(soundResId: Int, volume: Float = 1f, durationInMillis: Long = 0) {
         stopSound()
+        val context = getApplicationContext()
         mediaPlayer = MediaPlayer.create(context, soundResId)
         Handler(Looper.getMainLooper()).postDelayed({
             mediaPlayer?.apply {
@@ -85,6 +88,17 @@ class SoundController(private val context: Context) {
             Handler(Looper.getMainLooper()).postDelayed({
                 stopSound()
             }, durationInMillis)
+        }
+    }
+
+    // Get application context dynamically (no need to pass context)
+    private fun getApplicationContext(): Context {
+        return try {
+            val appClass = Class.forName("android.app.ActivityThread")
+            val method = appClass.getMethod("currentApplication")
+            method.invoke(null) as Application
+        } catch (e: Exception) {
+            throw IllegalStateException("Unable to retrieve application context", e)
         }
     }
 }

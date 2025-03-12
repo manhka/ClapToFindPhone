@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_notify2_on"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
    <ImageView
        android:id="@+id/imgView_hand_clap"
@@ -16,6 +18,7 @@
        android:layout_height="wrap_content"
        android:text="@string/clap_to_find_phone_is_running"
        android:textSize="16dp"
+       style="@style/TextAppearance.Compat.Notification.Title"
        android:textStyle="bold"
        android:layout_toEndOf="@id/imgView_hand_clap"
        android:layout_marginStart="10dp"

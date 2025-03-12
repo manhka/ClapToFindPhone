@@ -49,4 +49,5 @@ open class BaseActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         hideNavigationBar()
     }
+
 }

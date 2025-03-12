@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.introduction.VoicePasscodeFragment">
+    tools:context=".fragment.introduction.ChargerAlarmFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,25 +12,29 @@
         android:gravity="center_horizontal"
         android:background="@color/white"
         >
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="330dp"
-            android:src="@drawable/voice_passcode_intro"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/charger_alarm_intro" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/voice_passcode"
+            android:text="@string/charger_alarm"
             android:gravity="center_horizontal"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             />
         <TextView
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/record_voice_to_find_phone"
+            android:text="@string/charger_alram_intro_sub"
             android:gravity="center"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"

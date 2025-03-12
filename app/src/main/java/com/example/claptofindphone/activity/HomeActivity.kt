@@ -1,11 +1,14 @@
 package com.example.claptofindphone.activity
 
 import android.app.AlertDialog
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -32,10 +35,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeActivity : BaseActivity() {
+
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var soundAdapter: SoundAdapter
     private lateinit var soundList: List<Sound>
     private val REQUEST_CODE_POST_NOTIFICATION = 101
+    private var mLastClickTime: Long = 0
+
     private lateinit var permissionController: PermissionController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +80,6 @@ class HomeActivity : BaseActivity() {
         permissionController = PermissionController()
 
         handleNotificationPermission()
-        val myService = MyService()
-        myService.handleBackPress(this)
         soundList = InstallData.getListSound(this)
         soundAdapter = SoundAdapter(this, soundList)
         homeBinding.rcvHomeSound.layoutManager = GridLayoutManager(this, 3)
@@ -144,18 +148,34 @@ class HomeActivity : BaseActivity() {
             startActivity(intent)
         }
         homeBinding.cardViewFlashlight.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             val intent = Intent(this, ChangeFlashlightActivity::class.java)
             startActivity(intent)
         }
         homeBinding.cardViewVibrate.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             val intent = Intent(this, ChangeVibrateActivity::class.java)
             startActivity(intent)
         }
         homeBinding.cardViewHowToUse.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             val intent = Intent(this, HowToUseActivity::class.java)
             startActivity(intent)
         }
         homeBinding.settingButton.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
@@ -195,6 +215,7 @@ class HomeActivity : BaseActivity() {
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog = AlertDialog.Builder(this)
                 .setView(dialogBinding.root)
+                .setCancelable(false)
                 .create()
             customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             customDialog.show()
@@ -214,8 +235,17 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    // create list of sound
+    override fun onResume() {
+        super.onResume()
+        if (SharePreferenceUtils.isShowNotyWhenComeToHome() ) {
+            SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
+            if (checkNotificationPermission(this)) {
+                val intent = Intent(this, MyService::class.java)
+                startService(intent)
+            }
+        }
 
+    }
 
     private fun checkNotificationPermission(context: Context): Boolean {
         return NotificationManagerCompat.from(context).areNotificationsEnabled()
@@ -254,9 +284,5 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 }
 

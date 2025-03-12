@@ -4,22 +4,28 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import androidx.annotation.RequiresApi
+import android.app.Application
 
-class VibrateController(context: Context) {
+object VibrateController {
+    private val vibrator: Vibrator by lazy {
+        getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    }
 
-    private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     private var isVibrating = false
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun startPattern(pattern: List<Long>, duration: Long) {
+        if (!vibrator.hasVibrator()) return // Ensure device supports vibration
         isVibrating = true
 
         val vibrationThread = Thread {
             val vibrationPattern = pattern.toLongArray()
-            val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, 0) // Repeat indefinitely
-            vibrator.vibrate(vibrationEffect)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, 0) // Repeat indefinitely
+                vibrator.vibrate(vibrationEffect)
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(vibrationPattern, 0) // Deprecated but works for old devices
+            }
 
             // Stop vibration after the specified duration
             Thread.sleep(duration)
@@ -28,11 +34,19 @@ class VibrateController(context: Context) {
         vibrationThread.start()
     }
 
-    /**
-     * Stop the vibration.
-     */
     fun stopVibrating() {
         isVibrating = false
         vibrator.cancel() // Stops any ongoing vibration
+    }
+
+    // Get application context dynamically (no need to pass context)
+    private fun getApplicationContext(): Context {
+        return try {
+            val appClass = Class.forName("android.app.ActivityThread")
+            val method = appClass.getMethod("currentApplication")
+            method.invoke(null) as Application
+        } catch (e: Exception) {
+            throw IllegalStateException("Unable to retrieve application context", e)
+        }
     }
 }

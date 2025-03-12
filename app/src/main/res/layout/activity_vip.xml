@@ -78,7 +78,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="32dp"
-            app:cardBackgroundColor="#99FFFFFF"
+            app:cardBackgroundColor="#D1FFFFFF"
             app:cardCornerRadius="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/remove_ads"
+                    android:layout_marginStart="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,8 +127,9 @@
                     android:id="@+id/horizontal1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:src="@drawable/horizontal_ic"
+                    android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="@id/remove_ads"
                     app:layout_constraintTop_toBottomOf="@id/txt_remove_ads_content" />
 
@@ -135,6 +137,7 @@
                     android:id="@+id/unlock_theme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/unlock_theme"
                     app:layout_constraintStart_toStartOf="parent"
@@ -169,6 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:scaleType="fitXY"
                     android:src="@drawable/horizontal_ic"
                     app:layout_constraintStart_toStartOf="@id/remove_ads"
                     app:layout_constraintTop_toBottomOf="@id/txt_unlock_theme_content" />
@@ -179,6 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/unlock_sound"
+                    android:layout_marginStart="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/horizontal2" />
 
@@ -210,8 +215,9 @@
                     android:id="@+id/horizontal3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:src="@drawable/horizontal_ic"
+                    android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="@id/remove_ads"
                     app:layout_constraintTop_toBottomOf="@id/txt_unlock_sound_content" />
 
@@ -220,6 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/unlock_flashlight"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/horizontal3" />
@@ -252,8 +259,9 @@
                     android:id="@+id/horizontal4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:src="@drawable/horizontal_ic"
+                    android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="@id/remove_ads"
                     app:layout_constraintTop_toBottomOf="@id/txt_unlock_flashlight_content" />
 
@@ -261,7 +269,8 @@
                     android:id="@+id/unlock_vibrate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/unlock_vibrate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/horizontal4" />

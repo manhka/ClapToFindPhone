@@ -2,6 +2,7 @@ package com.example.claptofindphone.activity
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -31,49 +32,81 @@ class SplashActivity : BaseActivity() {
         enableEdgeToEdge()
         changeBackPressCallBack { }
         setContentView(R.layout.activity_splash)
-        val turnOffServiceFromNoty=intent.getBooleanExtra("turnOffService",false)
-        if (turnOffServiceFromNoty){
-            SharePreferenceUtils.setRunningService("")
-            val intent = Intent(this,MyService::class.java)
-            stopService(intent)
+        if (isNotificationEnabled(this)) {
+            showAlarmNotification()
         }
+
         val modeFromNoty = intent.getStringExtra("mode")
+        var navigateFromOffNoty = false
         when (modeFromNoty) {
             Constant.Service.CLAP_TO_FIND_PHONE -> {
+                SharePreferenceUtils.setIsNavigateFromSplash(true)
+                navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
                 SharePreferenceUtils.setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
             }
 
             Constant.Service.VOICE_PASSCODE -> {
-                SharePreferenceUtils.setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
+                SharePreferenceUtils.setIsNavigateFromSplash(true)
+                navigateFromOffNoty = true
+                if (SharePreferenceUtils.getVoicePasscode() != Constant.DEFAULT_PASSCODE) {
+                    SharePreferenceUtils.setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
+                    SharePreferenceUtils.setIsNavigateToChangePasscode(false)
+                } else {
+                    SharePreferenceUtils.setRunningService("")
+                    SharePreferenceUtils.setIsNavigateToChangePasscode(true)
+                }
                 SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
             }
 
             Constant.Service.POCKET_MODE -> {
+                SharePreferenceUtils.setIsNavigateFromSplash(true)
+                navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.POCKET_MODE_RUNNING)
                 SharePreferenceUtils.setOpenHomeFragment(Constant.Service.POCKET_MODE)
             }
 
             Constant.Service.DONT_TOUCH_MY_PHONE -> {
+                SharePreferenceUtils.setIsNavigateFromSplash(true)
+                navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.TOUCH_PHONE_RUNNING)
                 SharePreferenceUtils.setOpenHomeFragment(Constant.Service.DONT_TOUCH_MY_PHONE)
             }
-        }
 
-        if (isNotificationEnabled(this)) {
-            showAlarmNotification()
-        }
-        val myService = MyService()
-        myService.handleBackPress(this)
-        Handler(Looper.getMainLooper()).postDelayed({
-            lifecycleScope.launchWhenResumed {
-                navigate()
-                finish()
+            Constant.Service.CHARGER_PHONE -> {
+                SharePreferenceUtils.setIsNavigateFromSplash(true)
+                navigateFromOffNoty = true
+                SharePreferenceUtils.setRunningService(Constant.Service.CHARGER_ALARM_RUNNING)
+                SharePreferenceUtils.setOpenHomeFragment(Constant.Service.CHARGER_PHONE)
             }
+        }
+        val action = intent.action
+        Log.d(TAG, "action: ${action}")
+        if (action == null) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                lifecycleScope.launchWhenResumed {
+                    if (navigateFromOffNoty) {
+                        navigateToHome()
+                    } else {
+                        navigate()
+                    }
+                }
+            }, 2000)
+        } else
+            if (action.toBoolean()) {
+                val intent = Intent(this, FoundPhoneActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intentService=Intent(this,MyService::class.java)
+                stopService(intentService)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    lifecycleScope.launchWhenResumed {
+                       navigateToIntro()
+                    }
+                }, 2000)
 
-        }, 2000)
-
-
+            }
     }
 
     private fun navigate() {
@@ -82,13 +115,23 @@ class SplashActivity : BaseActivity() {
             val intent = Intent(this, LanguageActivity::class.java)
             startActivity(intent)
             finish()
-
         } else {
+            SharePreferenceUtils.setIsFoundPhone(false)
             val intent = Intent(this, InstallingLanguageActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
 
+    private fun navigateToHome() {
+        val intentToHome = Intent(this, HomeActivity::class.java)
+        startActivity(intentToHome)
+        finishAffinity()
+    }
+    private fun navigateToIntro() {
+        val intentToHome = Intent(this, IntroductionActivity::class.java)
+        startActivity(intentToHome)
+        finishAffinity()
     }
 
     private fun showAlarmNotification() {

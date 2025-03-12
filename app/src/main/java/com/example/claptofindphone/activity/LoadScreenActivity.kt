@@ -25,8 +25,7 @@ class LoadScreenActivity : BaseActivity() {
         if (isFromFoundPhone) {
             val intent = Intent(this, FoundPhoneActivity::class.java)
             startActivity(intent)
-        }
-        else{
+        }else{
             val intent = Intent(this, SplashActivity::class.java)
             startActivity(intent)
         }

@@ -22,7 +22,7 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -145,6 +145,8 @@
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
+            android:launchMode="singleTask"
+            android:clearTaskOnLaunch="true"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/Theme.ClapToFindPhone"/>
@@ -157,7 +159,7 @@
             android:name=".service.MyService"
             android:enabled="true"
             android:exported="true"
-            android:foregroundServiceType="microphone" />
+            android:foregroundServiceType="microphone"/>
 
         <receiver
             android:name=".noti.TimeChangeReceiverNeko2"

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/big_custom_notify2_on"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal">
     <ImageView
         android:id="@+id/imgView_hand_clap"
         android:layout_width="35dp"
@@ -17,22 +19,24 @@
         android:text="@string/clap_to_find_phone_is_running"
         android:textSize="16dp"
         android:textStyle="bold"
+        style="@style/TextAppearance.Compat.Notification.Title"
         android:layout_toEndOf="@id/imgView_hand_clap"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
         />
     <Button
-        android:id="@+id/power_button"
-        android:layout_width="260dp"
+        android:id="@+id/power_button_noti"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/power_ic"
         android:layout_below="@id/imgView_hand_clap"
         android:text="@string/touch_button_power_to_stop_alarm"
         android:background="@drawable/bg_active_btn"
         app:backgroundTint="@null"
-        android:textSize="12dp"
+        android:textSize="14dp"
         android:textColor="@color/white"
         android:padding="10dp"
         android:textAllCaps="false"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 </RelativeLayout>

@@ -20,6 +20,7 @@ import com.example.claptofindphone.activity.GrantPermissionActivity
 import com.example.claptofindphone.databinding.DialogInitalRequestPermissionBinding
 import com.example.claptofindphone.databinding.DialogRequestPermissionBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class PermissionController {
 
@@ -85,12 +86,13 @@ class PermissionController {
     }
 
 
-    fun showInitialDialog(activity: Activity, typeOfPermission: String) {
+    fun showInitialDialog(activity: Activity, typeOfPermission: String,typeOfService:String,typeOfRunningService:String) {
+        SharePreferenceUtils.setOpenHomeFragment(typeOfService)
         val layoutInflater = LayoutInflater.from(activity)
         val dialogBinding = DialogInitalRequestPermissionBinding.inflate(layoutInflater)
         val customDialog = AlertDialog.Builder(activity)
             .setView(dialogBinding.root)
-            .setCancelable(false)
+            .setCancelable(true)
             .create()
         customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         customDialog.show()
@@ -100,6 +102,7 @@ class PermissionController {
             if (!isOverlayPermissionGranted(activity) || !hasAudioPermission(activity)) {
                 val intent = Intent(activity, GrantPermissionActivity::class.java)
                 intent.putExtra("typeOfPermission", typeOfPermission)
+                intent.putExtra("typeOfRunningService",typeOfRunningService)
                 activity.startActivity(intent)
             }
         }

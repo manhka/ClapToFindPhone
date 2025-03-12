@@ -19,6 +19,7 @@ class IntroductionActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         introductionBinding=ActivityIntroductionBinding.inflate(layoutInflater)
         setContentView(introductionBinding.root)
+        changeBackPressCallBack {  }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.introduction_activity)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -53,8 +54,7 @@ class IntroductionActivity : BaseActivity() {
 
     }
 
-    override fun onBackPressed() {
-    }
+
 
     private fun onChangeDot() {
         when (introductionBinding.viewPager2Intro.currentItem) {
@@ -63,6 +63,7 @@ class IntroductionActivity : BaseActivity() {
                 introductionBinding.dot2Button.setImageResource(R.drawable.dot)
                 introductionBinding.dot3Button.setImageResource(R.drawable.dot)
                 introductionBinding.dot4Button.setImageResource(R.drawable.dot)
+                introductionBinding.dot5Button.setImageResource(R.drawable.dot)
             }
 
             1 -> {
@@ -70,6 +71,7 @@ class IntroductionActivity : BaseActivity() {
                 introductionBinding.dot2Button.setImageResource(R.drawable.dot_active)
                 introductionBinding.dot3Button.setImageResource(R.drawable.dot)
                 introductionBinding.dot4Button.setImageResource(R.drawable.dot)
+                introductionBinding.dot5Button.setImageResource(R.drawable.dot)
             }
 
             2 -> {
@@ -77,6 +79,7 @@ class IntroductionActivity : BaseActivity() {
                 introductionBinding.dot2Button.setImageResource(R.drawable.dot)
                 introductionBinding.dot3Button.setImageResource(R.drawable.dot_active)
                 introductionBinding.dot4Button.setImageResource(R.drawable.dot)
+                introductionBinding.dot5Button.setImageResource(R.drawable.dot)
             }
 
             3 -> {
@@ -84,7 +87,16 @@ class IntroductionActivity : BaseActivity() {
                 introductionBinding.dot2Button.setImageResource(R.drawable.dot)
                 introductionBinding.dot3Button.setImageResource(R.drawable.dot)
                 introductionBinding.dot4Button.setImageResource(R.drawable.dot_active)
+                introductionBinding.dot5Button.setImageResource(R.drawable.dot)
             }
+            4 -> {
+                introductionBinding.dot5Button.setImageResource(R.drawable.dot_active)
+                introductionBinding.dot2Button.setImageResource(R.drawable.dot)
+                introductionBinding.dot3Button.setImageResource(R.drawable.dot)
+                introductionBinding.dot4Button.setImageResource(R.drawable.dot)
+                introductionBinding.dot1Button.setImageResource(R.drawable.dot)
+            }
+
         }
     }
 

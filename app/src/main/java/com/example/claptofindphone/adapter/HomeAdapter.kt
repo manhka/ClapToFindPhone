@@ -16,6 +16,7 @@ class HomeAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
         PocketModeFragment(),
         ChargerAlarmFragment(),
         DontTouchMyPhoneFragment()
+
     )
 
     override fun getItemCount(): Int {

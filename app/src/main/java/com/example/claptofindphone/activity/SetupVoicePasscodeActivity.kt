@@ -1,5 +1,6 @@
 package com.example.claptofindphone.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySetupPasscodeBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.utils.SharePreferenceUtils
+import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import net.gotev.speech.GoogleVoiceTypingDisabledException
 import net.gotev.speech.Speech
 import net.gotev.speech.SpeechDelegate
@@ -30,6 +32,7 @@ class SetupVoicePasscodeActivity : BaseActivity() {
     private lateinit var setupPasscodeBinding: ActivitySetupPasscodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "startVoicePasscodeService:${getRunningService()} ")
         setupPasscodeBinding = ActivitySetupPasscodeBinding.inflate(layoutInflater)
         setContentView(setupPasscodeBinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.setup_voice_passcode_activity)) { v, insets ->
@@ -62,7 +65,6 @@ class SetupVoicePasscodeActivity : BaseActivity() {
         }
         setupPasscodeBinding.voiceButton.setOnClickListener {
             textToSpeech.speak(passcode, TextToSpeech.QUEUE_FLUSH, null, null)
-            Log.d("sfasdf",passcode)
         }
         setupPasscodeBinding.saveButton.setOnClickListener {
             SharePreferenceUtils.setVoicePasscode(passcode)
@@ -147,16 +149,8 @@ class SetupVoicePasscodeActivity : BaseActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
-
-        // Check if Speech instance is initialized and stop listening
-        if (Speech.getInstance().isListening) {
-            Speech.getInstance().stopListening()
-        }
-
-        // Check if Speech instance is not null before shutting down
-        if (Speech.getInstance() != null) {
+            Speech.init(this)
             Speech.getInstance().shutdown()
-        }
 
         // Stop and shut down textToSpeech if initialized
         if (::textToSpeech.isInitialized) {

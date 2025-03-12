@@ -27,12 +27,11 @@ class ChangeSoundActivity : BaseActivity() {
     private lateinit var changeSoundBinding: ActivityChangeSoundBinding
     private lateinit var soundList: List<Sound>
     private lateinit var changeSoundAdapter: SoundAdapter2
-    private lateinit var soundController: SoundController
     private lateinit var audioManager: AudioManager
-    private  var selectedSoundId: Int=1
+    private var selectedSoundId: Int = 1
     private var timeSoundPlay: Long = 15000
     private var soundStatus: Boolean = true
-    private  var soundVolume:Int=50
+    private var soundVolume: Int = 50
     private lateinit var contentObserver: ContentObserver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,61 +42,55 @@ class ChangeSoundActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        soundList=InstallData.getListSound(this)
+        soundList = InstallData.getListSound(this)
 
         audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
 
-        soundController = SoundController(this)
 
-        soundStatus =SharePreferenceUtils.isOnSound()
+        soundStatus = SharePreferenceUtils.isOnSound()
         timeSoundPlay = SharePreferenceUtils.getTimeSoundPlay()
-        soundVolume=SharePreferenceUtils.getVolumeSound(this)
+        soundVolume = SharePreferenceUtils.getVolumeSound(this)
 
-        changeSoundBinding.seekbarVolume.max=audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        changeSoundBinding.seekbarVolume.progress=soundVolume
+        changeSoundBinding.seekbarVolume.max =
+            audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        changeSoundBinding.seekbarVolume.progress = soundVolume
         audioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC,
-            (soundVolume) ,
-            0
+            AudioManager.STREAM_MUSIC, (soundVolume), 0
         )
         contentObserver = object : ContentObserver(Handler()) {
             override fun onChange(self: Boolean) {
                 val newCurrentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                changeSoundBinding.seekbarVolume.progress = (newCurrentVolume )
+                changeSoundBinding.seekbarVolume.progress = (newCurrentVolume)
             }
         }
         contentResolver.registerContentObserver(
-            Settings.System.CONTENT_URI,
-            true,
-            contentObserver
+            Settings.System.CONTENT_URI, true, contentObserver
         )
-
-        changeSoundBinding.seekbarVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        changeSoundBinding.txtCustomSound.isSelected = true
+        changeSoundBinding.seekbarVolume.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 audioManager.setStreamVolume(
-                    AudioManager.STREAM_MUSIC,
-                    (progress ),
-                    0
+                    AudioManager.STREAM_MUSIC, (progress), 0
                 )
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                soundVolume=changeSoundBinding.seekbarVolume.progress
+                soundVolume = changeSoundBinding.seekbarVolume.progress
             }
         })
         updateOnOffToggle(soundStatus)
         // sound from home
         val soundType = intent.getIntExtra("sound_type", R.raw.cat_meowing)
-        val soundId = intent.getIntExtra("sound_id",1)
+        val soundId = intent.getIntExtra("sound_id", 1)
         if (soundId != 1) {
-            selectedSoundId=soundId
+            selectedSoundId = soundId
         }
-        soundController.playSound(soundType, 30f, 3000)
+        SoundController.playSound(soundType, 30f, 3000)
         changeSoundAdapter = SoundAdapter2(this, soundList, soundId) { sound ->
-
             selectedSoundId = sound.id
-            soundController.playSound(sound.soundType, 30f, 3000)
+            SoundController.playSound(sound.soundType, 30f, 3000)
         }
         changeSoundBinding.rcvCustomSoundLayout.layoutManager = GridLayoutManager(this, 3)
         changeSoundBinding.rcvCustomSoundLayout.adapter = changeSoundAdapter
@@ -113,7 +106,7 @@ class ChangeSoundActivity : BaseActivity() {
             SharePreferenceUtils.setSoundId(selectedSoundId)
             SharePreferenceUtils.setOnSound(soundStatus)
             SharePreferenceUtils.setTimeSoundPlay(timeSoundPlay)
-            soundVolume=changeSoundBinding.seekbarVolume.progress
+            soundVolume = changeSoundBinding.seekbarVolume.progress
             SharePreferenceUtils.setVolumeSound(soundVolume)
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
@@ -126,11 +119,11 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
             timeSoundPlay = 15 * 1000
         }
         changeSoundBinding.btnTime2.setOnClickListener {
@@ -139,11 +132,11 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
             timeSoundPlay = 30 * 1000
 
         }
@@ -153,11 +146,11 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
             timeSoundPlay = 60 * 1000
 
         }
@@ -167,11 +160,11 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
             timeSoundPlay = 120 * 1000
 
         }
@@ -181,11 +174,11 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
             timeSoundPlay = 1000 * 1000
         }
         updateTimeSoundPlay()
@@ -198,60 +191,56 @@ class ChangeSoundActivity : BaseActivity() {
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
 
-        }
-       else if (timeSoundPlay.toInt() == 30 * 1000) {
+        } else if (timeSoundPlay.toInt() == 30 * 1000) {
             changeSoundBinding.btnTime2.setBackgroundResource(R.drawable.bg_active_btn)
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
-        }
-      else  if (timeSoundPlay.toInt() == 60 * 1000) {
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
+        } else if (timeSoundPlay.toInt() == 60 * 1000) {
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_active_btn)
             changeSoundBinding.btnTime2.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
-        }
-       else if (timeSoundPlay.toInt() == 120 * 1000) {
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
+        } else if (timeSoundPlay.toInt() == 120 * 1000) {
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_active_btn)
             changeSoundBinding.btnTime2.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.black))
-        }
-       else{
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.black))
+        } else {
             changeSoundBinding.btnTime5.setBackgroundResource(R.drawable.bg_active_btn)
             changeSoundBinding.btnTime2.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime3.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime4.setBackgroundResource(R.drawable.bg_passive_item)
             changeSoundBinding.btnTime1.setBackgroundResource(R.drawable.bg_passive_item)
-            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this,R.color.white))
-            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this,R.color.black))
-            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this,R.color.black))
+            changeSoundBinding.btnTime5.setTextColor(ContextCompat.getColor(this, R.color.white))
+            changeSoundBinding.btnTime2.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime3.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime4.setTextColor(ContextCompat.getColor(this, R.color.black))
+            changeSoundBinding.btnTime1.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
     }
 
@@ -274,6 +263,6 @@ class ChangeSoundActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        soundController.stopSound()
+        SoundController.stopSound()
     }
 }

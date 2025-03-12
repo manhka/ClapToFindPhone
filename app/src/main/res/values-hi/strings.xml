@@ -45,8 +45,8 @@
   <string name="clap">ताली</string>  
   <string name="voice_passcode_notify">आवाज और पास ...</string>  
   <string name="touch_phone_notify">स्पर्श मत करो ...</string>  
-  <string name="clap_to_find_phone_is_running">फोन खोजने के लिए ताली चल रहा है</string>  
-  <string name="touch_button_power_to_stop_alarm">अलार्म को रोकने के लिए बटन पावर को टच करें</string>  
+  <string name="clap_to_find_phone_is_running">मेरे फोन को खोजने के लिए ताली चल रही है</string>  
+  <string name="touch_button_power_to_stop_alarm">यहां निष्क्रिय करने के लिए टैप करें</string>  
   <string name="default_theme">पूर्व निर्धारित विषय</string>  
   <string name="call_theme">कॉल थीम</string>  
   <string name="name">नाम</string>  
@@ -204,7 +204,9 @@
   <string name="dialog_calltheme_content">कॉल थीम को अनलॉक करने के लिए एक छोटा वीडियो जोड़ें</string>  
   <string name="turn_off">बंद करें</string>  
   <string name="noti_clap">ताली</string>
-  <string name="noti_voice">आवाज़ &amp;...</string>
-  <string name="noti_touch">करने के लिए नहीं ...</string>
-  <string name="noti_pocket_mode">जेब ...</string>
+  <string name="noti_voice">आवाज और पासकोड></string>
+  <string name="noti_touch">मेरे फोन को मत छुओ</string>
+  <string name="noti_pocket_mode">पॉकेट मोड</string>
+  <string name="charger_alram_intro_sub">एक चेतावनी चालू करें जब कोई आपके डिवाइस के चार्जिंग केबल को अनप्लग कर देता है, जबकि आप प्लग इन करते हैं</string>
+  <string name="noti_charger_alarm">चार्जर अलार्म</string>
 </resources>

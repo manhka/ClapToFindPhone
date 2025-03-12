@@ -1,11 +1,8 @@
 package com.example.claptofindphone.activity
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.hardware.camera2.CameraManager
+
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,7 +19,6 @@ class ChangeFlashlightActivity : BaseActivity() {
     private lateinit var changeFlashlightAdapter: FlashlightAdapter
     private lateinit var flashlightList: List<Flashlight>
     private lateinit var selectedFlashlightName: String
-    private lateinit var  flashlightController:FlashlightController
     private var flashlightStatus: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,28 +30,23 @@ class ChangeFlashlightActivity : BaseActivity() {
             insets
         }
         // flashlight list
-       flashlightList = InstallData.getFlashlightList()
+        flashlightList = InstallData.getFlashlightList()
         // flashlight share pres
-        selectedFlashlightName =SharePreferenceUtils.getFlashName()
+        selectedFlashlightName = SharePreferenceUtils.getFlashName()
         flashlightStatus = SharePreferenceUtils.isOnFlash()
         // on off toggle
         updateOnOffToggle(flashlightStatus)
-        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
-            val characteristics = cameraManager.getCameraCharacteristics(id)
-            characteristics.get(android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
-        }
-         flashlightController = FlashlightController(cameraManager, cameraId)
         var selectedPosition =
             flashlightList.indexOfFirst { it.flashlightName == selectedFlashlightName }
         val flashlight = flashlightList[selectedPosition]
-        flashlightController.startPattern(flashlight.flashlightMode, 3000)
+        FlashlightController.startPattern(flashlight.flashlightMode, 3000)
 
         changeFlashlightAdapter = FlashlightAdapter(this, flashlightList) { flashlight ->
-            selectedFlashlightName = flashlight.flashlightName
-            flashlightController.startPattern(flashlight.flashlightMode, 3000)
-        }
 
+            selectedFlashlightName = flashlight.flashlightName
+            FlashlightController.startPattern(flashlight.flashlightMode, 3000)
+        }
+        changeFlashlightBinding.txtCustomFlashlight.isSelected = true
         changeFlashlightBinding.rcvChangeFlashlight.layoutManager = GridLayoutManager(this, 2)
         changeFlashlightBinding.rcvChangeFlashlight.adapter = changeFlashlightAdapter
         changeFlashlightBinding.saveButton.setOnClickListener {
@@ -74,8 +65,7 @@ class ChangeFlashlightActivity : BaseActivity() {
     }
 
 
-
-    private fun updateOnOffToggle(flashlightStatus:Boolean) {
+    private fun updateOnOffToggle(flashlightStatus: Boolean) {
         if (!flashlightStatus) {
             changeFlashlightBinding.offButton.visibility = View.VISIBLE
             changeFlashlightBinding.onButton.visibility = View.GONE
@@ -93,6 +83,6 @@ class ChangeFlashlightActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        flashlightController.stopFlashing()
+        FlashlightController.stopFlashing()
     }
 }

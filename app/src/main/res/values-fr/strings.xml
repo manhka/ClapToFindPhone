@@ -45,8 +45,8 @@
   <string name="clap">Taper...</string>  
   <string name="voice_passcode_notify">Voix et pass ...</string>  
   <string name="touch_phone_notify">Ne touchez pas ...</string>  
-  <string name="clap_to_find_phone_is_running">Applaudir pour trouver le téléphone est en cours d\'exécution</string>  
-  <string name="touch_button_power_to_stop_alarm">L\'alimentation du bouton tactile pour arrêter l\'alarme</string>  
+  <string name="clap_to_find_phone_is_running">Applaudir pour trouver mon téléphone en cours d\'exécution</string>  
+  <string name="touch_button_power_to_stop_alarm">Appuyez ici pour désactiver</string>  
   <string name="default_theme">Thème par défaut</string>  
   <string name="call_theme">Thème d\'appel</string>  
   <string name="name">Nom</string>  
@@ -204,7 +204,9 @@
   <string name="dialog_calltheme_content">Regardez une courte vidéo ajouter pour déverrouiller le thème de l\'appel</string>  
   <string name="turn_off">Éteindre</string>  
   <string name="noti_clap">Taper</string>
-  <string name="noti_voice">Voix &amp;...</string>
-  <string name="noti_touch">Ne pas ...</string>
-  <string name="noti_pocket_mode">Poche...</string>
+  <string name="noti_voice">Voix et moto de passe></string>
+  <string name="noti_touch">Ne touchez pas mon téléphone</string>
+  <string name="noti_pocket_mode">Mode de poche</string>
+  <string name="charger_alram_intro_sub">Allumez un avertissement lorsque quelqu\'un débranche le câble de charge de votre appareil pendant que vous êtes branché</string>
+  <string name="noti_charger_alarm">Alarme du chargeur</string>
 </resources>

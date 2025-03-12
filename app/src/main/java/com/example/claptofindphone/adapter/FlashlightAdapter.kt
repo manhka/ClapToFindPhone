@@ -10,6 +10,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
 import com.example.claptofindphone.databinding.FlashlightItemBinding
 import com.example.claptofindphone.model.Flashlight
+import com.example.claptofindphone.service.FlashlightController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class FlashlightAdapter(
@@ -21,7 +22,6 @@ class FlashlightAdapter(
 
     val selectedFlashlight = SharePreferenceUtils.getFlashName()
     var selectedPosition = flashlightList.indexOfFirst { it.flashlightName == selectedFlashlight }
-
     class FlashlightViewHolder(itemFlashlightItemBinding: FlashlightItemBinding) :
         RecyclerView.ViewHolder(itemFlashlightItemBinding.root) {
         val itemFlashlightItemBinding: FlashlightItemBinding = itemFlashlightItemBinding
@@ -63,6 +63,7 @@ class FlashlightAdapter(
         }
 
         holder.itemView.setOnClickListener {
+            FlashlightController.stopFlashing()
             if (flashlightItem.flashlightPremium!=0){
                 val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
                 // Create an AlertDialog with the inflated ViewBinding root

@@ -12,11 +12,13 @@
         android:gravity="center_horizontal"
         android:background="@color/white"
         >
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="330dp"
-            android:src="@drawable/touch_phone_intro"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/touch_phone_intro" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,6 +34,9 @@
             android:layout_height="wrap_content"
             android:text="@string/turn_on_the_alert_when_someone_touchs_your_phone"
             android:gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:paddingHorizontal="12dp"
             android:textSize="16dp"/>
     </LinearLayout>
 

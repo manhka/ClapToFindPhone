@@ -35,6 +35,9 @@
             android:text="@string/to_find_the_lost_phone"
             android:textColor="@color/black"
             android:gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:paddingHorizontal="12dp"
             android:textSize="16dp"/>
     </LinearLayout>
 

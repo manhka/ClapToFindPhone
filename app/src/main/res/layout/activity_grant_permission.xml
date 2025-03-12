@@ -35,10 +35,10 @@
 
     <TextView
         android:id="@+id/txt_permission_hint"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
         android:text="@string/grant_permission_sub_tittle"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +77,7 @@
                 android:textSize="14dp"
                 android:maxLines="2"
                 android:layout_below="@id/txt_record_permission"
-                android:layout_marginEnd="150dp"
+                android:layout_marginEnd="110dp"
                 android:layout_alignParentStart="true"
                  />
 
@@ -125,10 +125,9 @@
                 android:id="@+id/txt_overlay_permission_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintDimensionRatio="202:30"
                 android:text="@string/overlay_permission_sub"
                 android:textSize="14dp"
-                android:layout_marginEnd="150dp"
+                android:layout_marginEnd="110dp"
                 android:layout_below="@id/txt_overlay_permission"
                  />
 

@@ -14,7 +14,11 @@ class VoicePasscodeActivity : BaseActivity() {
     private lateinit var voicePasscodeBinding: ActivityVoicePasscodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
+        changeBackPressCallBack {
+            val intent= Intent(this,HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         voicePasscodeBinding = ActivityVoicePasscodeBinding.inflate(layoutInflater)
         setContentView(voicePasscodeBinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.voice_passcode_activity)) { v, insets ->
@@ -22,6 +26,8 @@ class VoicePasscodeActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
+
         voicePasscodeBinding.voiceButton.setOnClickListener {
             val intent = Intent(this, SetupVoicePasscodeActivity::class.java)
             startActivity(intent)

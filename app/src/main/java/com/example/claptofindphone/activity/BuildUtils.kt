@@ -25,6 +25,8 @@ fun buildMinVersion24(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.
 fun buildMinVersionT(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 fun buildMinVersion33(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
+fun buildMinVersion34(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+
 fun buildMaxVersionN(): Boolean = Build.VERSION.SDK_INT <= Build.VERSION_CODES.N
 fun buildMaxVersion24(): Boolean = Build.VERSION.SDK_INT <= Build.VERSION_CODES.N
 

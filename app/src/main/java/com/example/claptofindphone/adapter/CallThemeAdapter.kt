@@ -3,6 +3,7 @@ package com.example.claptofindphone.adapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ class CallThemeAdapter(val context: Context,
         val callThemeItemBinding: CallThemeItemBinding = callThemeItemBinding
     }
     val callThemeName = SharePreferenceUtils.getThemeName()
+    private var mLastClickTime:Long = 0
     val name=SharePreferenceUtils.getName()
     val phone=SharePreferenceUtils.getPhone()
     var selectedPosition = callThemeList.indexOfFirst { it.themeName == callThemeName }
@@ -68,6 +70,10 @@ class CallThemeAdapter(val context: Context,
             holder.callThemeItemBinding.premiumButton.visibility = View.VISIBLE
         }
         holder.itemView.setOnClickListener {
+            if (SystemClock.elapsedRealtime()-mLastClickTime<1000){
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             if (callThemeItem.callThemePremium!=0){
                 val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
                 // Create an AlertDialog with the inflated ViewBinding root

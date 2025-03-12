@@ -1,17 +1,11 @@
 package com.example.claptofindphone.activity
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,27 +14,21 @@ import com.example.claptofindphone.databinding.ActivityFoundPhoneBinding
 import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.DefaultTheme
-import com.example.claptofindphone.model.Flashlight
-import com.example.claptofindphone.model.Sound
-import com.example.claptofindphone.model.Vibrate
 import com.example.claptofindphone.service.AnimationUtils
-import com.example.claptofindphone.service.FlashlightController
 import com.example.claptofindphone.service.MyService
-import com.example.claptofindphone.service.SoundController
-import com.example.claptofindphone.service.VibrateController
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
+
 class FoundPhoneActivity : BaseActivity() {
     private lateinit var foundPhoneBinding: ActivityFoundPhoneBinding
-
     private lateinit var name: String
     private lateinit var phone: String
     private lateinit var themeName: String
     private lateinit var defaultThemeList: List<DefaultTheme>
     private lateinit var callThemeList: List<CallTheme>
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +39,10 @@ class FoundPhoneActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val intent = Intent(this, MyService::class.java)
-        intent.putExtra("is_from_found_phone", true)
-        startService(intent)
+        changeBackPressCallBack { }
         SharePreferenceUtils.setIsWaited(false)
         val typeOfService = SharePreferenceUtils.getRunningService()
-
-        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING || typeOfService == "") {
+        if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.VOICE_PASSCODE_RUNNING) {
             SharePreferenceUtils.setRunningService("")
@@ -68,7 +53,7 @@ class FoundPhoneActivity : BaseActivity() {
         } else if (typeOfService == Constant.Service.CHARGER_ALARM_RUNNING) {
             SharePreferenceUtils.setRunningService("")
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.charger_alert)
-            foundPhoneBinding.iFoundItButton.text=getString(R.string.turn_off)
+            foundPhoneBinding.iFoundItButton.text = getString(R.string.turn_off)
         } else if (typeOfService == Constant.Service.TOUCH_PHONE_RUNNING) {
             SharePreferenceUtils.setRunningService("")
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.dont_touch_my_phone)
@@ -84,8 +69,7 @@ class FoundPhoneActivity : BaseActivity() {
             val defaultTheme = defaultThemeList.get(selectedPosition)
             foundPhoneBinding.txtTitleFoundPhone.setTextColor(
                 ContextCompat.getColor(
-                    this,
-                    R.color.black
+                    this, R.color.black
                 )
             )
             // default theme
@@ -99,7 +83,6 @@ class FoundPhoneActivity : BaseActivity() {
             foundPhoneBinding.bigRightDfTheme.visibility = View.VISIBLE
             foundPhoneBinding.notifyBell.visibility = View.VISIBLE
             foundPhoneBinding.iFoundItButton.visibility = View.VISIBLE
-
 
             // call theme
             foundPhoneBinding.imgViewCallThemeRound1.visibility = View.GONE
@@ -123,22 +106,15 @@ class FoundPhoneActivity : BaseActivity() {
             foundPhoneBinding.round3.postDelayed({
                 AnimationUtils.applyWaveAnimation(foundPhoneBinding.round4)
             }, 500)
-            foundPhoneBinding.iFoundItButton.setOnClickListener {
-                AnimationUtils.stopAnimations(foundPhoneBinding.round3)
-                AnimationUtils.stopAnimations(foundPhoneBinding.round4)
-                val intent = Intent(this, MyService::class.java)
-                stopService(intent)
-            }
+
         } else {
             val callTheme = callThemeList.get(selectedPosition)
             foundPhoneBinding.txtTitleFoundPhone.setTextColor(
                 ContextCompat.getColor(
-                    this,
-                    R.color.white
+                    this, R.color.white
                 )
             )
             // default theme
-
             foundPhoneBinding.round4.visibility = View.GONE
             foundPhoneBinding.round3.visibility = View.GONE
             foundPhoneBinding.round2.visibility = View.GONE
@@ -161,16 +137,16 @@ class FoundPhoneActivity : BaseActivity() {
             foundPhoneBinding.activityFoundPhone.setBackgroundResource(callTheme.callThemeBg)
             foundPhoneBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
 
-            if (name==""){
-             foundPhoneBinding.txtName.text=getString(R.string.name)
+            if (name == "") {
+                foundPhoneBinding.txtName.text = getString(R.string.name)
 
-            }else{
-                foundPhoneBinding.txtName.text=name
+            } else {
+                foundPhoneBinding.txtName.text = name
             }
-            if (phone==""){
-                foundPhoneBinding.txtPhone.text=getString(R.string.phone)
+            if (phone == "") {
+                foundPhoneBinding.txtPhone.text = getString(R.string.phone)
 
-            }else{
+            } else {
                 foundPhoneBinding.txtPhone.text = phone
             }
 
@@ -178,24 +154,61 @@ class FoundPhoneActivity : BaseActivity() {
             AnimationUtils.applyWaveAnimation(foundPhoneBinding.imgViewCallThemeRound2)
             AnimationUtils.applyShakeAnimation(foundPhoneBinding.rejectButton)
             AnimationUtils.applyShakeAnimation(foundPhoneBinding.responseButton)
-            foundPhoneBinding.rejectButton.setOnClickListener {
-                SharePreferenceUtils.setIsFoundPhone(false)
-                AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
-                AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
-                val intent = Intent(this, MyService::class.java)
-                stopService(intent)
-                finish()
-            }
-        }
-        foundPhoneBinding.responseButton.setOnClickListener {
-            SharePreferenceUtils.setIsFoundPhone(false)
-            AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
-            AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
 
-            val intent = Intent(this, MyService::class.java)
-            stopService(intent)
-            finish()
         }
+//        foundPhoneBinding.rejectButton.setOnClickListener {
+//            SharePreferenceUtils.setIsFoundPhone(false)
+//            AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
+//            AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
+//            if (SharePreferenceUtils.isShowRateDialog() == 0) {
+//                SharePreferenceUtils.setIsShowRateDialog(1)
+//            }
+//            if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+//                val stopService = Intent(this, MyService::class.java)
+//                stopService(stopService)
+//                finish()
+//            } else {
+//                val stopIntent = Intent(this, MyService::class.java)
+//                stopService(stopIntent)
+//                finish()
+//                val startIntent = Intent(this, MyService::class.java)
+//                startIntent.putExtra(
+//                    Constant.Service.RUNNING_SERVICE, Constant.Service.CLAP_AND_WHISTLE_RUNNING
+//                )
+//                startService(startIntent)
+//                finish()
+//            }
+//            val navigateToSplash = Intent(this, SplashActivity::class.java)
+//            startActivity(navigateToSplash)
+//            finish()
+//        }
+//        foundPhoneBinding.responseButton.setOnClickListener {
+//
+//            SharePreferenceUtils.setIsFoundPhone(false)
+//            AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound1)
+//            AnimationUtils.stopAnimations(foundPhoneBinding.imgViewCallThemeRound2)
+//            if (SharePreferenceUtils.isShowRateDialog() == 0) {
+//                SharePreferenceUtils.setIsShowRateDialog(1)
+//            }
+//            if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+//                val stopService = Intent(this, MyService::class.java)
+//                stopService(stopService)
+//                finish()
+//            } else {
+//                val stopIntent = Intent(this, MyService::class.java)
+//                stopService(stopIntent)
+//                finish()
+//                val startIntent = Intent(this, MyService::class.java)
+//                startIntent.putExtra(
+//                    Constant.Service.RUNNING_SERVICE, Constant.Service.CLAP_AND_WHISTLE_RUNNING
+//                )
+//                startService(startIntent)
+//                finish()
+//            }
+//            val navigateToSplash = Intent(this, SplashActivity::class.java)
+//            startActivity(navigateToSplash)
+//            finish()
+//        }
 
         foundPhoneBinding.iFoundItButton.setOnClickListener {
             SharePreferenceUtils.setIsFoundPhone(false)
@@ -204,12 +217,29 @@ class FoundPhoneActivity : BaseActivity() {
             if (SharePreferenceUtils.isShowRateDialog() == 0) {
                 SharePreferenceUtils.setIsShowRateDialog(1)
             }
-            val intent = Intent(this, MyService::class.java)
-            stopService(intent)
+//            val stopIntent = Intent(this, MyService::class.java)
+//            stopService(stopIntent)
+//
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                if (SharePreferenceUtils.getRunningService() == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+//                    val startIntent = Intent(this, MyService::class.java)
+//                    startIntent.putExtra(
+//                        Constant.Service.RUNNING_SERVICE, Constant.Service.CLAP_AND_WHISTLE_RUNNING
+//                    )
+//
+//                        startService(startIntent)
+//
+//                }
+//            }, 500)
+
+            val startIntent = Intent(this, MyService::class.java)
+            startIntent.putExtra(
+                Constant.Service.RUNNING_SERVICE, Constant.Service.TURN_OFF_SOUND
+            )
+            startService(startIntent)
+            val navigateToSplash = Intent(this, SplashActivity::class.java)
+            startActivity(navigateToSplash)
             finish()
         }
-    }
-
-    override fun onBackPressed() {
     }
 }

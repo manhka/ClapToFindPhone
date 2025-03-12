@@ -17,16 +17,18 @@ import com.example.claptofindphone.service.MyService
 
 class WaitActivity : BaseActivity() {
     private lateinit var waitBinding: ActivityWaitBinding
+    private var runningService: String? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         waitBinding = ActivityWaitBinding.inflate(layoutInflater)
         setContentView(waitBinding.root)
+        changeBackPressCallBack {  }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
+        runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
         if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
             waitBinding.txtTitleWait.text = getString(R.string.dont_touch_my_phone)
             waitBinding.content.text=getString(R.string.wait_touch_phone_content)
@@ -45,14 +47,11 @@ class WaitActivity : BaseActivity() {
                 timeCountDown.text = time.toString();
             }
             override fun onFinish() {
-                val intent = Intent(this@WaitActivity, MyService::class.java)
-                intent.putExtra(
-                    Constant.Service.RUNNING_SERVICE,
-                    runningService
-                )
-                startService(intent)
                 finish()
             }
         }.start()
     }
+
+
+
 }

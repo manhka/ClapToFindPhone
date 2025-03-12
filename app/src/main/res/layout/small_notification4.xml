@@ -12,6 +12,7 @@
         android:layout_marginTop="10dp"
         android:textSize="16dp"
         android:textStyle="bold"
+        style="@style/TextAppearance.Compat.Notification.Title"
         android:text="@string/dontTouchMyPhone" />
 
     <LinearLayout
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            style="@style/TextAppearance.Compat.Notification.Info"
             android:text="@string/create_an_alert_to_protect_your_phone"
             android:textSize="16dp" />
     </LinearLayout>

@@ -19,7 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/record_permission"
+            android:text="@string/request_permission"
             android:textStyle="bold"
             android:textSize="16dp"/>
         <TextView

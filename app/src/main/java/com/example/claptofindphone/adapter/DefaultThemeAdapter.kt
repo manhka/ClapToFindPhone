@@ -2,6 +2,7 @@ package com.example.claptofindphone.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,10 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 class DefaultThemeAdapter(
     val context: Context,
     val defaultThemeList: List<DefaultTheme>
+
 ) : RecyclerView.Adapter<DefaultThemeAdapter.DefaultThemeViewHolder>() {
+    private var mLastClickTime:Long = 0
+
     class DefaultThemeViewHolder(defaultThemeItemBinding: DefaultThemeItemBinding) :
         RecyclerView.ViewHolder(defaultThemeItemBinding.root) {
         val defaultThemeItemBinding: DefaultThemeItemBinding = defaultThemeItemBinding
@@ -51,6 +55,10 @@ class DefaultThemeAdapter(
             holder.defaultThemeItemBinding.activeThemeButton.setImageResource(0)
         }
         holder.itemView.setOnClickListener {
+            if (SystemClock.elapsedRealtime()-mLastClickTime<1000){
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             val intent = Intent(context, EditThemeActivity::class.java)
             intent.putExtra("default_theme", defaultThemeItem)
             context.startActivity(intent)

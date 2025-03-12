@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="16dp"
+        style="@style/TextAppearance.Compat.Notification.Title"
         android:textStyle="bold"
         android:text="@string/do_you_often_forget_your_phone" />
 
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            style="@style/TextAppearance.Compat.Notification.Info"
             android:text="@string/activate_clapping_for_quick_search"
             android:textSize="16dp" />
     </LinearLayout>

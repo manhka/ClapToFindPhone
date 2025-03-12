@@ -11,38 +11,41 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
 import com.example.claptofindphone.databinding.VibrateItemBinding
 import com.example.claptofindphone.model.Vibrate
+import com.example.claptofindphone.service.VibrateController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class VibrateAdapter(
     val context: Context,
-    val vibrateList: List<Vibrate>
-,val onItemSelected: (Vibrate) -> Unit):RecyclerView.Adapter<VibrateAdapter.VibrateViewHolder>() {
-
+    val vibrateList: List<Vibrate>, val onItemSelected: (Vibrate) -> Unit
+) : RecyclerView.Adapter<VibrateAdapter.VibrateViewHolder>() {
     val selectedVibrate = SharePreferenceUtils.getVibrateName()
     var selectedPosition = vibrateList.indexOfFirst { it.vibrateName == selectedVibrate }
-    class VibrateViewHolder(vibrateItemBinding: VibrateItemBinding):RecyclerView.ViewHolder(vibrateItemBinding.root){
-        val vibrateItemBinding:VibrateItemBinding=vibrateItemBinding
+
+    class VibrateViewHolder(vibrateItemBinding: VibrateItemBinding) :
+        RecyclerView.ViewHolder(vibrateItemBinding.root) {
+        val vibrateItemBinding: VibrateItemBinding = vibrateItemBinding
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VibrateViewHolder {
-        val vibrateItemBinding=VibrateItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val vibrateItemBinding =
+            VibrateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VibrateViewHolder(vibrateItemBinding)
     }
 
     override fun getItemCount(): Int {
-       return vibrateList.size
+        return vibrateList.size
     }
 
     override fun onBindViewHolder(holder: VibrateViewHolder, position: Int) {
-       val vibrate=vibrateList[position]
+        val vibrate = vibrateList[position]
         val isPremiumVisible = SharePreferenceUtils.isVibratePremiumVisible(position)
         holder.vibrateItemBinding.vibrateBg.setBackgroundResource(vibrate.vibrateBg)
-        holder.vibrateItemBinding.txtVibrateName.text=vibrate.vibrateName
+        holder.vibrateItemBinding.txtVibrateName.text = vibrate.vibrateName
         holder.vibrateItemBinding.selectedIc.setImageResource(vibrate.vibrateSelected)
         if (isPremiumVisible) {
             holder.vibrateItemBinding.premiumButton.setImageResource(vibrate.vibratePremium)
         } else {
-            vibrate.vibratePremium=0
+            vibrate.vibratePremium = 0
             holder.vibrateItemBinding.premiumButton.setImageResource(0)
         }
 
@@ -55,7 +58,8 @@ class VibrateAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            if (vibrate.vibratePremium!=0){
+            VibrateController.stopVibrating()
+            if (vibrate.vibratePremium != 0) {
                 val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
                 // Create an AlertDialog with the inflated ViewBinding root
                 val customDialog = AlertDialog.Builder(context)
@@ -65,10 +69,11 @@ class VibrateAdapter(
                 customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
                 // Show the dialog
                 customDialog.show()
-                dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_vibrate_title)
-                dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_vibrate_content)
+                dialogBinding.watchAdTitle.text = context.getString(R.string.dialog_vibrate_title)
+                dialogBinding.watchAdsContent.text =
+                    context.getString(R.string.dialog_vibrate_content)
                 dialogBinding.watchAdsButton.setOnClickListener {
-                   SharePreferenceUtils.setIsVibratePremiumVisible(position,false)
+                    SharePreferenceUtils.setIsVibratePremiumVisible(position, false)
 //                    holder.vibrateItemBinding.premiumButton.setImageResource(0)
                     selectedPosition = position
                     notifyDataSetChanged()
@@ -78,10 +83,11 @@ class VibrateAdapter(
                 dialogBinding.exitButton.setOnClickListener {
                     customDialog.dismiss()
                 }
-            }else{
+            } else {
+                onItemSelected(vibrate)
                 selectedPosition = position
                 notifyDataSetChanged()
-                onItemSelected(vibrate)
+
             }
 
         }

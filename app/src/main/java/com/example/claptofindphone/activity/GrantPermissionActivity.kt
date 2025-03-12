@@ -23,7 +23,7 @@ class GrantPermissionActivity : BaseActivity() {
     private lateinit var typeOfPermission: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        changeBackPressCallBack {  }
+
         grantPermissionBinding = ActivityGrantPermissionBinding.inflate(layoutInflater)
         setContentView(grantPermissionBinding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -54,7 +54,6 @@ class GrantPermissionActivity : BaseActivity() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         checkAllPermission()
@@ -63,10 +62,7 @@ class GrantPermissionActivity : BaseActivity() {
             if (permissionController.isOverlayPermissionGranted(this)) {
                 grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_allow)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = true
-                grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                }
+
             } else {
                 grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = false
@@ -78,14 +74,16 @@ class GrantPermissionActivity : BaseActivity() {
             ) {
                 grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_allow)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = true
-                grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                }
             } else {
                 grantPermissionBinding.btnContinueInGrantPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
                 grantPermissionBinding.btnContinueInGrantPermission.isEnabled = false
             }
+        }
+        grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
+            val typeOfRunningService=intent.getStringExtra("typeOfRunningService")
+            SharePreferenceUtils.setRunningService(typeOfRunningService!!)
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
     }
 

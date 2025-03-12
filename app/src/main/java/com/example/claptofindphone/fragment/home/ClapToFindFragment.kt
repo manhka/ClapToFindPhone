@@ -1,124 +1,116 @@
 package com.example.claptofindphone.fragment.home
+
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogClapAndWhistleBinding
 import com.example.claptofindphone.databinding.FragmentClapToFindInHomeBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.PermissionController
-import com.example.claptofindphone.utils.SharePreferenceUtils
+import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
+import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
+import com.example.claptofindphone.utils.SharePreferenceUtils.isOnService
+import com.example.claptofindphone.utils.SharePreferenceUtils.isShowClapAndWhistleDialog
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsNavigateFromSplash
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsOnNotify
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsOnService
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsShowClapAndWhistleDialog
+import com.example.claptofindphone.utils.SharePreferenceUtils.setOpenHomeFragment
+import com.example.claptofindphone.utils.SharePreferenceUtils.setRunningService
 
 class ClapToFindFragment : Fragment() {
-    private lateinit var clapToFindInHomeBinding: FragmentClapToFindInHomeBinding
-    private lateinit var permissionController: PermissionController
+    private var binding: FragmentClapToFindInHomeBinding? = null
+    private var permissionController: PermissionController? = null
     private var anim: ScaleAnimation? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionController = PermissionController()
     }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        clapToFindInHomeBinding =
-            FragmentClapToFindInHomeBinding.inflate(inflater, container, false)
-        return clapToFindInHomeBinding.root
+        binding = FragmentClapToFindInHomeBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupAnim()
-        clapToFindInHomeBinding.handClapButton.setOnClickListener {
-            if (permissionController.hasAudioPermission(requireActivity()) && permissionController.isOverlayPermissionGranted(
-                    requireActivity()
-                )
-            ) {
-                val runningService = SharePreferenceUtils.getRunningService()
-                if (runningService=="") {
-                    SharePreferenceUtils.setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
-                    onService(
-                        Constant.Service.CLAP_AND_WHISTLE_RUNNING,
-                    )
-                }
-                else if (runningService != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-                    // check if other service running
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.other_service_running,
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    SharePreferenceUtils.setRunningService("")
-                    clapToFindInHomeBinding.txtActionStatus.text = getString(R.string.tap_to_active)
-                    clapToFindInHomeBinding.handIc.visibility = View.VISIBLE
-                    clapToFindInHomeBinding.round2.setImageResource(R.drawable.round2_passive)
-                    SharePreferenceUtils.setRunningService("")
-                    clapToFindInHomeBinding.handIc.startAnimation(anim)
-                    val intent = Intent(requireContext(), MyService::class.java)
-                    requireContext().stopService(intent)
-                }
-            } else {
-                permissionController.showInitialDialog(
-                    requireActivity(),
-                    Constant.Permission.BOTH_PERMISSION
-                )
-            }
-        }
+        setupAnimation()
+        binding!!.handClapButton.setOnClickListener { v -> handleClapButtonClick() }
     }
 
     override fun onResume() {
         super.onResume()
-        val isOnClapService =SharePreferenceUtils.getRunningService()
-        if (isOnClapService==Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-            onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
-
+        if (isNavigateFromSplash()) {
+            setIsNavigateFromSplash(false)
+            checkPermissionToRun()
         } else {
-            clapToFindInHomeBinding.handIc.startAnimation(anim)
+            handleServiceState()
+            showClapAndWhistleDialog()
         }
-        val isFirstTimeGetInClap =  SharePreferenceUtils.isShowClapAndWhistleDialog()
-        if (isFirstTimeGetInClap) {
-            val dialogBinding = DialogClapAndWhistleBinding.inflate(layoutInflater)
-            // Create an AlertDialog with the inflated ViewBinding root
-            val customDialog = AlertDialog.Builder(this.requireActivity())
-                .setView(dialogBinding.root)
-                .setCancelable(false)
-                .create()
-            customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            // Show the dialog
-            customDialog.show()
-            SharePreferenceUtils.setIsShowClapAndWhistleDialog(false)
-            dialogBinding.yesButton.setOnClickListener {
-                customDialog.dismiss()
+    }
+
+    private fun handleClapButtonClick() {
+        setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
+        val runningService = getRunningService()
+        if (runningService=="") {
+            checkPermissionToRun()
+        } else if (runningService != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+            if (isOnService()){
+                checkPermissionToRun()
+            }else{
+                Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } else {
+            Log.d(TAG, "handleClapButtonClick: 12345678")
+            if (isOnService()){
+                stopService()
             }
         }
-
     }
 
+    private fun stopService() {
+        setRunningService("")
+        setIsOnService(false)
+        binding!!.txtActionStatus.setText(R.string.tap_to_active)
+        binding!!.handIc.visibility = View.VISIBLE
+        binding!!.round2.setImageResource(R.drawable.round2_passive)
+        binding!!.handIc.startAnimation(anim)
+        requireContext().stopService(Intent(requireContext(), MyService::class.java))
+    }
+
+    @SuppressLint("NewApi")
     private fun onService(runningService: String) {
-        stopAnim()
-        clapToFindInHomeBinding.txtActionStatus.text =
-            getString(R.string.tap_to_deactive)
-        clapToFindInHomeBinding.handIc.visibility = View.GONE
-        clapToFindInHomeBinding.round2.setImageResource(R.drawable.round2_active)
-        SharePreferenceUtils.setRunningService(runningService)
-        val intent = Intent(requireContext(), MyService::class.java)
-        intent.putExtra(
-            Constant.Service.RUNNING_SERVICE,
-            runningService
-        )
-        requireContext().startService(intent)
+        stopAnimation()
+        binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
+        binding!!.handIc.visibility = View.GONE
+        binding!!.round2.setImageResource(R.drawable.round2_active)
+        if (!isOnService()){
+            setRunningService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
+            val intent = Intent(requireContext(), MyService::class.java)
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
+            requireContext().startService(intent)
+        }
+
     }
 
-    private fun setupAnim() {
+    private fun setupAnimation() {
         anim = ScaleAnimation(
             1.0f,
             1.3f,
@@ -129,11 +121,58 @@ class ClapToFindFragment : Fragment() {
             Animation.RELATIVE_TO_SELF,
             0.5f
         )
-        anim?.duration = 600
-        anim?.repeatCount = 10000
-        anim?.repeatMode = Animation.REVERSE
+        anim!!.duration = 600
+        anim!!.repeatCount = Animation.INFINITE
+        anim!!.repeatMode = Animation.REVERSE
     }
-    private fun stopAnim() {
-        anim?.cancel()
+
+    private fun stopAnimation() {
+        if (anim != null) anim!!.cancel()
+    }
+
+    private fun handleServiceState() {
+        val isOnClapService = getRunningService()
+        if (isOnClapService=="") {
+            binding!!.handIc.startAnimation(anim)
+            setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
+        } else if (isOnClapService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+            onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
+        } else {
+            binding!!.handIc.startAnimation(anim)
+        }
+    }
+
+    private fun showClapAndWhistleDialog() {
+        if (isShowClapAndWhistleDialog()) {
+            val dialogBinding = DialogClapAndWhistleBinding.inflate(
+                layoutInflater
+            )
+            val customDialog = AlertDialog.Builder(requireActivity())
+                .setView(dialogBinding.root)
+                .setCancelable(true)
+                .create()
+            customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+            customDialog.show()
+            setIsShowClapAndWhistleDialog(false)
+            dialogBinding.yesButton.setOnClickListener { v -> customDialog.dismiss() }
+        }
+    }
+
+    private fun checkPermissionToRun() {
+        if (permissionController!!.hasAudioPermission(requireActivity()) && permissionController!!.isOverlayPermissionGranted(
+                requireActivity()
+            )
+        ) {
+
+            setIsOnNotify(true)
+            onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
+        } else {
+            permissionController!!.showInitialDialog(
+                requireActivity(),
+                Constant.Permission.BOTH_PERMISSION,
+                Constant.Service.CLAP_TO_FIND_PHONE,
+                Constant.Service.CLAP_AND_WHISTLE_RUNNING
+            )
+        }
     }
 }

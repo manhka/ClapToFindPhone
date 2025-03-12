@@ -45,8 +45,8 @@
   <string name="clap">Bertepuk tangan...</string>  
   <string name="voice_passcode_notify">Voice &amp; Pass ...</string>
   <string name="touch_phone_notify">Jangan menyentuh ...</string>  
-  <string name="clap_to_find_phone_is_running">Bertepuk tangan untuk menemukan telepon sedang berjalan</string>  
-  <string name="touch_button_power_to_stop_alarm">Sentuh daya tombol untuk menghentikan alarm</string>  
+  <string name="clap_to_find_phone_is_running">Bertepuk tangan untuk menemukan ponsel saya sedang berjalan</string>  
+  <string name="touch_button_power_to_stop_alarm">Ketuk di sini untuk melakukan deactive</string>  
   <string name="default_theme">Tema default</string>  
   <string name="call_theme">Tema panggilan</string>  
   <string name="name">Nama</string>  
@@ -203,8 +203,10 @@
   <string name="dialog_calltheme_title">Tambahkan Tema Panggilan Anda</string>  
   <string name="dialog_calltheme_content">Tonton video pendek tambahkan untuk membuka kunci tema panggilan</string>  
   <string name="turn_off">Mematikan</string>  
-  <string name="noti_clap">Bertepuk tangan</string>
-  <string name="noti_voice">Suara &amp;...</string>
-  <string name="noti_touch">Jangan sampai ...</string>
-  <string name="noti_pocket_mode">Saku...</string>
+  <string name="noti_clap">Bertepuk tangan untuk menemukan telepon</string>
+  <string name="noti_voice">Voice &amp; Passcode></string>
+  <string name="noti_touch">Jangan Sentuh Ponsel Saya</string>
+  <string name="noti_pocket_mode">Mode saku</string>
+  <string name="charger_alram_intro_sub">Nyalakan peringatan saat seseorang mencabut kabel pengisian daya perangkat Anda saat Anda dicolokkan</string>
+  <string name="noti_charger_alarm">Alarm pengisi daya</string>
 </resources>
