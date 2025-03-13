@@ -1,6 +1,7 @@
 package com.example.claptofindphone.activity
 
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,7 @@ import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
 import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.service.MyService_No_Micro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
@@ -144,11 +146,15 @@ class HomeActivity : BaseActivity() {
             homeViewPager.currentItem = 4
         }
         homeBinding.cardViewChangeTheme.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
             val intent = Intent(this, ChangeThemeActivity::class.java)
             startActivity(intent)
         }
         homeBinding.cardViewFlashlight.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
@@ -156,7 +162,7 @@ class HomeActivity : BaseActivity() {
             startActivity(intent)
         }
         homeBinding.cardViewVibrate.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
@@ -164,7 +170,7 @@ class HomeActivity : BaseActivity() {
             startActivity(intent)
         }
         homeBinding.cardViewHowToUse.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
@@ -172,7 +178,7 @@ class HomeActivity : BaseActivity() {
             startActivity(intent)
         }
         homeBinding.settingButton.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
                 return@setOnClickListener
             }
             mLastClickTime = SystemClock.elapsedRealtime()
@@ -238,9 +244,11 @@ class HomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         if (SharePreferenceUtils.isShowNotyWhenComeToHome() ) {
-            SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
             if (checkNotificationPermission(this)) {
-                val intent = Intent(this, MyService::class.java)
+                Log.d(TAG, "onResume: push noti")
+                SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
+                val intent = Intent(this, MyService_No_Micro::class.java)
+                intent.putExtra("turnOnNotifyFromHome",true)
                 startService(intent)
             }
         }

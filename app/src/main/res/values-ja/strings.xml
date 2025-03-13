@@ -203,10 +203,12 @@
   <string name="dialog_calltheme_title">コールテーマを追加します</string>  
   <string name="dialog_calltheme_content">コールテーマのロックを解除するために、短いビデオ追加をご覧ください</string>  
   <string name="turn_off">消す</string>  
-  <string name="noti_clap">拍手</string>
-  <string name="noti_voice">Voice＆PassCode></string>
-  <string name="noti_touch">私の電話に触れないでください</string>
-  <string name="noti_pocket_mode">ポケットモード</string>
-  <string name="charger_alram_intro_sub">接続中に誰かがデバイスの充電ケーブルを抜くときに警告をオンにします</string>
-  <string name="noti_charger_alarm">充電器アラーム</string>
+  <string name="noti_clap">拍手</string>  
+  <string name="noti_voice">Voice＆PassCode></string>  
+  <string name="noti_touch">私の電話に触れないでください</string>  
+  <string name="noti_pocket_mode">ポケットモード</string>  
+  <string name="charger_alram_intro_sub">接続中に誰かがデバイスの充電ケーブルを抜くときに警告をオンにします</string>  
+  <string name="noti_charger_alarm">充電器アラーム</string>  
+  <string name="tap_to_record">タップして記録します</string>
+  <string name="request_permission">要求権限</string>
 </resources>

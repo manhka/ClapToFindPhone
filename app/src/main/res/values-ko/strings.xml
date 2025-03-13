@@ -203,10 +203,12 @@
   <string name="dialog_calltheme_title">통화 테마를 추가하십시오</string>  
   <string name="dialog_calltheme_content">편안한 호출 테마를 잠금 해제하기 위해 짧은 비디오 추가를 시청하십시오</string>  
   <string name="turn_off">끄기</string>  
-  <string name="noti_clap">박수</string>
-  <string name="noti_voice">음성 및 암호></string>
-  <string name="noti_touch">내 전화를 만지지 마십시오</string>
-  <string name="noti_pocket_mode">포켓 모드</string>
-  <string name="charger_alram_intro_sub">누군가가 연결하는 동안 장치의 충전 케이블을 뽑을 때 경고를 켜십시오.</string>
-  <string name="noti_charger_alarm">충전기 알람</string>
+  <string name="noti_clap">박수</string>  
+  <string name="noti_voice">음성 및 암호></string>  
+  <string name="noti_touch">내 전화를 만지지 마십시오</string>  
+  <string name="noti_pocket_mode">포켓 모드</string>  
+  <string name="charger_alram_intro_sub">누군가가 연결하는 동안 장치의 충전 케이블을 뽑을 때 경고를 켜십시오.</string>  
+  <string name="noti_charger_alarm">충전기 알람</string>  
+  <string name="tap_to_record">녹음하려면 탭하십시오</string>
+  <string name="request_permission">요청 권한</string>
 </resources>

@@ -13,11 +13,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.WaitActivity
-import com.example.claptofindphone.activity.buildMinVersionO
 import com.example.claptofindphone.databinding.DialogTouchPhoneBinding
 import com.example.claptofindphone.databinding.FragmentDontTouchMyPhoneInHomeBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.service.MyService_No_Micro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
@@ -80,7 +79,7 @@ class DontTouchMyPhoneFragment : Fragment() {
         setRunningService("")
         setIsWaited(false)
 
-        val intent = Intent(requireContext(), MyService::class.java)
+        val intent = Intent(requireContext(), MyService_No_Micro::class.java)
         requireContext().stopService(intent)
     }
 
@@ -131,7 +130,7 @@ class DontTouchMyPhoneFragment : Fragment() {
         isOnWaitActivity = isWaited()
         if (isOnWaitActivity) {
             setIsWaited(false)
-            val intentService = Intent(requireContext(), MyService::class.java)
+            val intentService = Intent(requireContext(), MyService_No_Micro::class.java)
             intentService.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             requireContext().startService(intentService)
             val intent = Intent(

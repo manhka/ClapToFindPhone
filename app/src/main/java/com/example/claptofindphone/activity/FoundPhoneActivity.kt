@@ -16,6 +16,7 @@ import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.DefaultTheme
 import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.service.MyService_No_Micro
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
@@ -45,17 +46,13 @@ class FoundPhoneActivity : BaseActivity() {
         if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.VOICE_PASSCODE_RUNNING) {
-            SharePreferenceUtils.setRunningService("")
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.POCKET_MODE_RUNNING) {
-            SharePreferenceUtils.setRunningService("")
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.found_your_phone)
         } else if (typeOfService == Constant.Service.CHARGER_ALARM_RUNNING) {
-            SharePreferenceUtils.setRunningService("")
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.charger_alert)
             foundPhoneBinding.iFoundItButton.text = getString(R.string.turn_off)
         } else if (typeOfService == Constant.Service.TOUCH_PHONE_RUNNING) {
-            SharePreferenceUtils.setRunningService("")
             foundPhoneBinding.txtTitleFoundPhone.text = getString(R.string.dont_touch_my_phone)
         }
         name = SharePreferenceUtils.getName()
@@ -231,12 +228,23 @@ class FoundPhoneActivity : BaseActivity() {
 //
 //                }
 //            }, 500)
-
-            val startIntent = Intent(this, MyService::class.java)
-            startIntent.putExtra(
-                Constant.Service.RUNNING_SERVICE, Constant.Service.TURN_OFF_SOUND
-            )
-            startService(startIntent)
+            if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService() != Constant.Service.VOICE_PASSCODE_RUNNING) {
+                SharePreferenceUtils.setRunningService("")
+                val startIntent = Intent(this, MyService_No_Micro::class.java)
+                startIntent.putExtra(
+                    Constant.Service.RUNNING_SERVICE, Constant.Service.TURN_OFF_SOUND
+                )
+                startService(startIntent)
+            } else {
+                if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+                    SharePreferenceUtils.setRunningService("")
+                }
+                val startIntent = Intent(this, MyService::class.java)
+                startIntent.putExtra(
+                    Constant.Service.RUNNING_SERVICE, Constant.Service.TURN_OFF_SOUND
+                )
+                startService(startIntent)
+            }
             val navigateToSplash = Intent(this, SplashActivity::class.java)
             startActivity(navigateToSplash)
             finish()

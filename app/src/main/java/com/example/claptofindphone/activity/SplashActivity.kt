@@ -20,6 +20,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.noti.AlarmWorkerNeko2
 import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.service.MyService_No_Micro
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -86,20 +87,30 @@ class SplashActivity : BaseActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 lifecycleScope.launchWhenResumed {
                     if (navigateFromOffNoty) {
-                        navigateToHome()
+                        if (SharePreferenceUtils.isNavigateToChangePasscode()){
+                            navigateToChangePasscode()
+                        }else{
+                            navigateToHome()
+                        }
+
                     } else {
                         navigate()
                     }
                 }
             }, 2000)
-        } else
-            if (action.toBoolean()) {
+        } else if (action.toBoolean()) {
                 val intent = Intent(this, FoundPhoneActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
-                val intentService=Intent(this,MyService::class.java)
-                stopService(intentService)
+                if (SharePreferenceUtils.getRunningService()!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService()!=Constant.Service.VOICE_PASSCODE_RUNNING ){
+                    val intentService=Intent(this,MyService_No_Micro::class.java)
+                    stopService(intentService)
+                }else{
+                    val intentService=Intent(this,MyService::class.java)
+                    stopService(intentService)
+                }
+
                 Handler(Looper.getMainLooper()).postDelayed({
                     lifecycleScope.launchWhenResumed {
                        navigateToIntro()
@@ -108,7 +119,6 @@ class SplashActivity : BaseActivity() {
 
             }
     }
-
     private fun navigate() {
         val timeComeToHome = SharePreferenceUtils.getTimeComeHome()
         if (timeComeToHome == 0) {
@@ -126,6 +136,11 @@ class SplashActivity : BaseActivity() {
     private fun navigateToHome() {
         val intentToHome = Intent(this, HomeActivity::class.java)
         startActivity(intentToHome)
+        finishAffinity()
+    }
+    private fun navigateToChangePasscode() {
+        val intent = Intent(this, VoicePasscodeActivity::class.java)
+        startActivity(intent)
         finishAffinity()
     }
     private fun navigateToIntro() {

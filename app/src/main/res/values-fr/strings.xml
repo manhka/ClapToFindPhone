@@ -203,10 +203,12 @@
   <string name="dialog_calltheme_title">Ajoutez votre thème d\'appel</string>  
   <string name="dialog_calltheme_content">Regardez une courte vidéo ajouter pour déverrouiller le thème de l\'appel</string>  
   <string name="turn_off">Éteindre</string>  
-  <string name="noti_clap">Taper</string>
-  <string name="noti_voice">Voix et moto de passe></string>
-  <string name="noti_touch">Ne touchez pas mon téléphone</string>
-  <string name="noti_pocket_mode">Mode de poche</string>
-  <string name="charger_alram_intro_sub">Allumez un avertissement lorsque quelqu\'un débranche le câble de charge de votre appareil pendant que vous êtes branché</string>
-  <string name="noti_charger_alarm">Alarme du chargeur</string>
+  <string name="noti_clap">Taper</string>  
+  <string name="noti_voice">Voix et moto de passe></string>  
+  <string name="noti_touch">Ne touchez pas mon téléphone</string>  
+  <string name="noti_pocket_mode">Mode de poche</string>  
+  <string name="charger_alram_intro_sub">Allumez un avertissement lorsque quelqu\'un débranche le câble de charge de votre appareil pendant que vous êtes branché</string>  
+  <string name="noti_charger_alarm">Alarme du chargeur</string>  
+  <string name="tap_to_record">Appuyez pour enregistrer</string>
+  <string name="request_permission">Demander des autorisations</string>
 </resources>

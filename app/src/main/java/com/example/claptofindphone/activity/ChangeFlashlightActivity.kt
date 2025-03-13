@@ -50,6 +50,7 @@ class ChangeFlashlightActivity : BaseActivity() {
         changeFlashlightBinding.rcvChangeFlashlight.layoutManager = GridLayoutManager(this, 2)
         changeFlashlightBinding.rcvChangeFlashlight.adapter = changeFlashlightAdapter
         changeFlashlightBinding.saveButton.setOnClickListener {
+            FlashlightController.stopFlashing()
             SharePreferenceUtils.setFlashName(selectedFlashlightName)
             SharePreferenceUtils.setOnFlash(flashlightStatus)
             finish()
@@ -60,6 +61,7 @@ class ChangeFlashlightActivity : BaseActivity() {
             updateOnOffToggle(flashlightStatus)
         }
         changeFlashlightBinding.backButton.setOnClickListener {
+            FlashlightController.stopFlashing()
             finish()
         }
     }
