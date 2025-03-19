@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vip_member_activity"
@@ -381,7 +382,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="21dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/unlock_theme_become_vip" />
 
             <TextView
@@ -397,7 +398,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="21dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/unlock_sound_become_vip" />
 
             <TextView
@@ -413,7 +414,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="21dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/unlock_flash_become_vip" />
 
             <TextView
@@ -429,7 +430,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="21dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/unlock_vibrate_become_vip" />
             <TextView
                 android:layout_width="wrap_content"
@@ -444,7 +445,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="21dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/remove_ads_become_vip" />
            <androidx.constraintlayout.widget.ConstraintLayout
                android:layout_width="match_parent"

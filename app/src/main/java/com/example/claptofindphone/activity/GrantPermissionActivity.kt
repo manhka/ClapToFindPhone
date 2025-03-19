@@ -1,5 +1,6 @@
 package com.example.claptofindphone.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -81,9 +82,20 @@ class GrantPermissionActivity : BaseActivity() {
         }
         grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
             val typeOfRunningService=intent.getStringExtra("typeOfRunningService")
+            if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING){
+                SharePreferenceUtils.setIsWaited(true)
+            }
             SharePreferenceUtils.setRunningService(typeOfRunningService!!)
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+            if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING){
+                val intent = Intent(this, VoicePasscodeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
         }
     }
 

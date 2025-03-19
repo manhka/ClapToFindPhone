@@ -7,6 +7,8 @@ import android.hardware.camera2.CameraManager
 import android.content.Context
 
 import android.app.Application
+import android.content.ContentValues.TAG
+import android.util.Log
 
 
 object FlashlightController {

@@ -17,7 +17,7 @@ import com.example.claptofindphone.activity.WaitActivity
 import com.example.claptofindphone.databinding.DialogChargerAlarmDialogBinding
 import com.example.claptofindphone.databinding.FragmentChargerAlarmInHomeBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.service.MyService_No_Micro
+import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
@@ -84,7 +84,7 @@ class ChargerAlarmFragment : Fragment() {
         setRunningService("")
         binding!!.handIc.startAnimation(anim)
         setIsWaited(false)
-        requireContext().stopService(Intent(requireContext(), MyService_No_Micro::class.java))
+        requireContext().stopService(Intent(requireContext(), MyServiceNoMicro::class.java))
     }
 
     private fun handleNavigationFromSplash() {
@@ -129,7 +129,7 @@ class ChargerAlarmFragment : Fragment() {
         binding!!.round2.setImageResource(R.drawable.round2_active)
         if (isWaited()) {
             setIsWaited(false)
-            val intent = Intent(requireContext(), MyService_No_Micro::class.java)
+            val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
             intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             requireContext().startService(intent)
             val waitIntent = Intent(
@@ -168,6 +168,7 @@ class ChargerAlarmFragment : Fragment() {
                 setIsOnNotify(true)
                 startChargerAlarmService(Constant.Service.CHARGER_ALARM_RUNNING)
             } else {
+                setRunningService("")
                 Toast.makeText(requireActivity(), R.string.plug_phone, Toast.LENGTH_SHORT)
                     .show()
             }

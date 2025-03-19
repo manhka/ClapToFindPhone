@@ -44,32 +44,6 @@ object MyNotification {
         // Inflate the custom layout using RemoteViews
         val customView_big = RemoteViews(context.packageName, R.layout.big_custom_notify2)
         val customView_small = RemoteViews(context.packageName, R.layout.custom_notifiy2)
-
-        val nightModeFlags =
-            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-
-        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-            // Dark Mode
-            customView_small.setTextColor(
-                R.id.txt_noti2,
-                context.resources.getColor(android.R.color.white)
-            )
-            customView_small.setTextColor(
-                R.id.txt_noti1,
-                context.resources.getColor(android.R.color.white)
-            )
-        } else {
-            // Light Mode
-            customView_big.setTextColor(
-                R.id.txt_noti2,
-                context.resources.getColor(android.R.color.black)
-            )
-            customView_big.setTextColor(
-                R.id.txt_noti1,
-                context.resources.getColor(android.R.color.black)
-            )
-        }
-
         val pendingIntent = getPendingIntent(context, false)
 
         // Cập nhật customView với PendingIntent mới
@@ -92,58 +66,9 @@ object MyNotification {
 
     @SuppressLint("RemoteViewLayout", "ObsoleteSdkInt")
     fun createNotifyOff(context: Context): Notification {
-        Log.d(TAG, "createNotifyOff: abcd")
         // Inflate the custom layout using RemoteViews
         val customView = RemoteViews(context.packageName, R.layout.custom_notify_big)
         val customView2 = RemoteViews(context.packageName, R.layout.custom_notify_small)
-        val nightModeFlags =
-            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-
-        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-            // Dark Mode
-            customView.setTextColor(
-                R.id.txt_clap_noti,
-                context.resources.getColor(android.R.color.white)
-            )
-            customView.setTextColor(
-                R.id.txt_voice_passcode_noti,
-                context.resources.getColor(android.R.color.white)
-            )
-            customView.setTextColor(
-                R.id.txt_touch_phone_noti,
-                context.resources.getColor(android.R.color.white)
-            )
-            customView.setTextColor(
-                R.id.txt_pocket_mode_noti,
-                context.resources.getColor(android.R.color.white)
-            )
-            customView.setTextColor(
-                R.id.txt_charger_alarm_noti,
-                context.resources.getColor(android.R.color.white)
-            )
-        } else {
-            // Light Mode
-            customView.setTextColor(
-                R.id.txt_clap_noti,
-                context.resources.getColor(android.R.color.black)
-            )
-            customView.setTextColor(
-                R.id.txt_voice_passcode_noti,
-                context.resources.getColor(android.R.color.black)
-            )
-            customView.setTextColor(
-                R.id.txt_touch_phone_noti,
-                context.resources.getColor(android.R.color.black)
-            )
-            customView.setTextColor(
-                R.id.txt_pocket_mode_noti,
-                context.resources.getColor(android.R.color.black)
-            )
-            customView.setTextColor(
-                R.id.txt_charger_alarm_noti,
-                context.resources.getColor(android.R.color.black)
-            )
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             customView.setOnClickPendingIntent(
                 R.id.imgView_clap_noti, PendingIntent.getActivity(

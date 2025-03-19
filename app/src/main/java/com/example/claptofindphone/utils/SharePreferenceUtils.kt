@@ -73,15 +73,15 @@ object SharePreferenceUtils {
     // Flashlight
     fun isOnFlash(): Boolean = getBoolean("isOnFlash", true)
     fun setOnFlash(value: Boolean) = saveKey("isOnFlash", value)
-    fun getFlashName(): String = getString("getFlashName", Constant.Flashlight.default)
-    fun setFlashName(value: String) = saveKey("getFlashName", value)
+    fun getFlashlightId(): Int = getInt("getFlashlightId", 1)
+    fun setFlashlightId(value: Int) = saveKey("getFlashlightId", value)
 
 
     // Vibrate
     fun isOnVibrate(): Boolean = getBoolean("isOnVibrate", true)
     fun setOnVibrate(value: Boolean) = saveKey("isOnVibrate", value)
-    fun getVibrateName(): String = getString("getVibrateName", Constant.Vibrate.default)
-    fun setVibrateName(value: String) = saveKey("getVibrateName", value)
+    fun getVibrateId(): Int = getInt("getVibrateId", 1)
+    fun setVibrateId(value: Int) = saveKey("getVibrateId", value)
     // Sound
 
     fun isOnSound(): Boolean = getBoolean("isOnSound", true)

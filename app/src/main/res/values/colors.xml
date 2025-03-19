@@ -19,7 +19,6 @@
     <color name="passive_color">#F6F6F6</color>
     <color name="green">#197D00</color>
     <color name="light_green">#66BF3C</color>
-    <color name="red">#9F0C00</color>
-    <color name="light_red">#FD4E32</color>
-
+    <color name="red">#D52747</color>
+    <color name="light_red">#FDFF3232</color>
 </resources>

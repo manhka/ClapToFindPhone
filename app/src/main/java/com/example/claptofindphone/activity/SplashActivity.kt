@@ -2,15 +2,12 @@ package com.example.claptofindphone.activity
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 
 import androidx.work.OneTimeWorkRequestBuilder
@@ -20,17 +17,16 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.noti.AlarmWorkerNeko2
 import com.example.claptofindphone.service.MyService
-import com.example.claptofindphone.service.MyService_No_Micro
+import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
-
+private var isVoicePasscode=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         changeBackPressCallBack { }
         setContentView(R.layout.activity_splash)
         if (isNotificationEnabled(this)) {
@@ -48,6 +44,7 @@ class SplashActivity : BaseActivity() {
             }
 
             Constant.Service.VOICE_PASSCODE -> {
+                isVoicePasscode=true
                 SharePreferenceUtils.setIsNavigateFromSplash(true)
                 navigateFromOffNoty = true
                 if (SharePreferenceUtils.getVoicePasscode() != Constant.DEFAULT_PASSCODE) {
@@ -82,12 +79,11 @@ class SplashActivity : BaseActivity() {
             }
         }
         val action = intent.action
-        Log.d(TAG, "action: ${action}")
         if (action == null) {
             Handler(Looper.getMainLooper()).postDelayed({
                 lifecycleScope.launchWhenResumed {
                     if (navigateFromOffNoty) {
-                        if (SharePreferenceUtils.isNavigateToChangePasscode()){
+                        if (SharePreferenceUtils.isNavigateToChangePasscode() && isVoicePasscode){
                             navigateToChangePasscode()
                         }else{
                             navigateToHome()
@@ -104,7 +100,7 @@ class SplashActivity : BaseActivity() {
                 finish()
             } else {
                 if (SharePreferenceUtils.getRunningService()!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService()!=Constant.Service.VOICE_PASSCODE_RUNNING ){
-                    val intentService=Intent(this,MyService_No_Micro::class.java)
+                    val intentService=Intent(this,MyServiceNoMicro::class.java)
                     stopService(intentService)
                 }else{
                     val intentService=Intent(this,MyService::class.java)

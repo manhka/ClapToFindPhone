@@ -5,6 +5,8 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.app.Application
+import android.content.ContentValues.TAG
+import android.util.Log
 
 object VibrateController {
     private val vibrator: Vibrator by lazy {
@@ -14,12 +16,15 @@ object VibrateController {
     private var isVibrating = false
 
     fun startPattern(pattern: List<Long>, duration: Long) {
-        if (!vibrator.hasVibrator()) return // Ensure device supports vibration
+        if (!vibrator.hasVibrator()){
+            return
+        } // Ensure device supports vibration
         isVibrating = true
 
         val vibrationThread = Thread {
             val vibrationPattern = pattern.toLongArray()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                 val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, 0) // Repeat indefinitely
                 vibrator.vibrate(vibrationEffect)
             } else {

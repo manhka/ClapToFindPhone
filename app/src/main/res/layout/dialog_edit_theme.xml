@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="12dp"
     app:cardBackgroundColor="@color/white"
-    >
+    app:cardCornerRadius="12dp">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        >
+        android:layout_margin="20dp">
 
         <TextView
             android:id="@+id/txt_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:inputType="text"
             android:hint="@string/name"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/txt_phone"
+            android:inputType="number"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etx_name" />
@@ -61,13 +62,15 @@
             app:layout_constraintEnd_toEndOf="@id/etx_phone"
             app:layout_constraintTop_toBottomOf="@id/etx_name" />
 
-        <Button
+        <TextView
             android:id="@+id/cancel_button"
-            android:layout_width="141dp"
-            android:layout_height="46dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@drawable/bg_btn_grey2"
             android:text="@string/cancel"
+            android:paddingHorizontal="36dp"
+            android:paddingVertical="12dp"
             android:textColor="@color/white"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -75,15 +78,17 @@
             app:layout_constraintStart_toStartOf="@id/etx_phone"
             app:layout_constraintTop_toBottomOf="@id/etx_phone" />
 
-        <Button
+        <TextView
             android:id="@+id/save_button"
-            android:layout_width="141dp"
-            android:layout_height="46dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@drawable/bg_btn_allow"
             android:text="@string/save"
-            android:textSize="16dp"
+            android:paddingHorizontal="36dp"
+            android:paddingVertical="12dp"
             android:textColor="@color/white"
+            android:textSize="16dp"
             android:textStyle="bold"
             app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="@id/etx_phone"

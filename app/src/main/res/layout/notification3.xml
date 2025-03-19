@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="16dp"
+        style="@style/TextAppearance.Compat.Notification.Title"
+
         android:textStyle="bold"
         android:text="@string/find_phone_by_nickname" />
 
@@ -35,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/black"
             android:text="@string/audio_passcode_for_secare_your_phone_search"
             android:textSize="16dp" />
     </LinearLayout>

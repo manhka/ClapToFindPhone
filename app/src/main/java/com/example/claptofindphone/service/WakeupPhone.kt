@@ -17,8 +17,8 @@ object WakeupPhone {
     private lateinit var soundList: List<Sound>
     private lateinit var flashlightList: List<Flashlight>
     private lateinit var vibrateList: List<Vibrate>
-    private lateinit var vibrateName: String
-    private lateinit var flashlightName: String
+    private var vibrateId: Int?=null
+    private  var flashlightId: Int?=null
     private var soundId: Int = 1
     private var selectedFlashlightPosition = 0
     private var selectedVibratePosition = 0
@@ -35,8 +35,8 @@ object WakeupPhone {
     private fun setupAndStartFoundPhoneMode(context: Context) {
         // Load danh sách âm thanh, đèn flash, rung
         soundList = InstallData.getListSound(context)
-        flashlightList = InstallData.getFlashlightList()
-        vibrateList = InstallData.getVibrateList()
+        flashlightList = InstallData.getFlashlightList(context)
+        vibrateList = InstallData.getVibrateList(context)
         // Lấy cài đặt từ SharedPreferences
         soundId = SharePreferenceUtils.getSoundId()
         selectedSoundPosition = soundList.indexOfFirst { it.id == soundId }
@@ -44,15 +44,16 @@ object WakeupPhone {
         soundTimePlay = SharePreferenceUtils.getTimeSoundPlay()
         soundStatus = SharePreferenceUtils.isOnSound()
 
-        flashlightName = SharePreferenceUtils.getFlashName()
+        flashlightId = SharePreferenceUtils.getFlashlightId()
         selectedFlashlightPosition =
-            flashlightList.indexOfFirst { it.flashlightName == flashlightName }
+            flashlightList.indexOfFirst { it.flashlightId == flashlightId }
         flashlightStatus = SharePreferenceUtils.isOnFlash()
 
-        vibrateName = SharePreferenceUtils.getVibrateName()
-        selectedVibratePosition = vibrateList.indexOfFirst { it.vibrateName == vibrateName }
+        vibrateId = SharePreferenceUtils.getVibrateId()
+        selectedVibratePosition = vibrateList.indexOfFirst { it.vibrateId == vibrateId }
         vibrateStatus = SharePreferenceUtils.isOnVibrate()
         SharePreferenceUtils.setIsFoundPhone(true)
+
         // Bắt đầu phát âm thanh nếu có
         if (soundStatus && selectedSoundPosition != -1) {
             SoundController.playSoundInLoop(

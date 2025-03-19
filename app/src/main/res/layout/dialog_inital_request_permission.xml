@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/request_permission"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="16dp"/>
         <TextView
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:gravity="center"
+            android:textColor="@color/black"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:text="@string/request_permission_content"

@@ -3,6 +3,7 @@ package com.example.claptofindphone.fragment.home
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -78,7 +79,6 @@ class ClapToFindFragment : Fragment() {
                     .show()
             }
         } else {
-            Log.d(TAG, "handleClapButtonClick: 12345678")
             if (isOnService()){
                 stopService()
             }
@@ -163,7 +163,6 @@ class ClapToFindFragment : Fragment() {
                 requireActivity()
             )
         ) {
-
             setIsOnNotify(true)
             onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
         } else {

@@ -1,5 +1,6 @@
 package com.example.claptofindphone.adapter
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup

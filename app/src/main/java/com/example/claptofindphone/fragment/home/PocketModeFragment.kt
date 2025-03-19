@@ -15,7 +15,7 @@ import com.example.claptofindphone.activity.WaitActivity
 import com.example.claptofindphone.databinding.DialogPocketModeBinding
 import com.example.claptofindphone.databinding.FragmentPocketModeInHomeBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.service.MyService_No_Micro
+import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
@@ -81,7 +81,7 @@ class PocketModeFragment : Fragment() {
         setRunningService("")
         binding!!.handIc.startAnimation(anim)
         setIsWaited(false)
-        requireContext().stopService(Intent(requireContext(), MyService_No_Micro::class.java))
+        requireContext().stopService(Intent(requireContext(), MyServiceNoMicro::class.java))
     }
 
     private fun handleNavigationFromSplash() {
@@ -130,7 +130,7 @@ class PocketModeFragment : Fragment() {
 
         if (isWaited()) {
             setIsWaited(false)
-            val intent = Intent(requireContext(), MyService_No_Micro::class.java)
+            val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
             intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             requireContext().startService(intent)
             val waitIntent = Intent(

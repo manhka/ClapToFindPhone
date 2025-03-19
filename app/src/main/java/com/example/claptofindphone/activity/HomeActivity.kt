@@ -1,5 +1,8 @@
 package com.example.claptofindphone.activity
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 
@@ -12,6 +15,8 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.BounceInterpolator
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
@@ -28,8 +33,7 @@ import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.databinding.ExitDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
-import com.example.claptofindphone.service.MyService
-import com.example.claptofindphone.service.MyService_No_Micro
+import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
@@ -75,6 +79,7 @@ class HomeActivity : BaseActivity() {
                 finishAffinity()
             }
         }
+        homeBinding.txtHomeTitle.isSelected = true
         val timeComeToHome = SharePreferenceUtils.getTimeComeHome()
         if (timeComeToHome in 0..3) {
             SharePreferenceUtils.setTimeComeHome(SharePreferenceUtils.getTimeComeHome() + 1)
@@ -241,14 +246,16 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
-        if (SharePreferenceUtils.isShowNotyWhenComeToHome() ) {
+
+        startDiamondAnimation(homeBinding.imgViewDiamond)
+        if (SharePreferenceUtils.isShowNotyWhenComeToHome()) {
             if (checkNotificationPermission(this)) {
-                Log.d(TAG, "onResume: push noti")
                 SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
-                val intent = Intent(this, MyService_No_Micro::class.java)
-                intent.putExtra("turnOnNotifyFromHome",true)
+                val intent = Intent(this, MyServiceNoMicro::class.java)
+                intent.putExtra("turnOnNotifyFromHome", true)
                 startService(intent)
             }
         }
@@ -292,5 +299,42 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    private fun startDiamondAnimation(imageView: ImageView) {
+        // Animation xoay 180 độ
+        val rotate = ObjectAnimator.ofFloat(imageView,  "rotationY", 0f, 180f).apply {
+            duration = 1500 // Xoay trong 1 giây
+        }
+
+        // Animation nẩy lên
+        val bounce = ObjectAnimator.ofFloat(imageView, "translationY", 0f, -3f,0f).apply {
+            duration = 1500
+            interpolator = BounceInterpolator() // Hiệu ứng nẩy
+        }
+
+        // Gộp animation
+        val animatorSet = AnimatorSet().apply {
+            playTogether(rotate, bounce)
+            startDelay = 1000 
+        }
+
+        // Lặp vô hạn
+        animatorSet.addListener(object : Animator.AnimatorListener {
+
+            override fun onAnimationStart(animation: Animator) {
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                animation.start()
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
+
+        animatorSet.start()
+    }
 }
 

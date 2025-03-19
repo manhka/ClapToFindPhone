@@ -18,7 +18,7 @@ class ChangeFlashlightActivity : BaseActivity() {
     private lateinit var changeFlashlightBinding: ActivityChangeFlashlightBinding
     private lateinit var changeFlashlightAdapter: FlashlightAdapter
     private lateinit var flashlightList: List<Flashlight>
-    private lateinit var selectedFlashlightName: String
+    private  var selectedFlashlightId: Int?=null
     private var flashlightStatus: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,20 +30,20 @@ class ChangeFlashlightActivity : BaseActivity() {
             insets
         }
         // flashlight list
-        flashlightList = InstallData.getFlashlightList()
+        flashlightList = InstallData.getFlashlightList(this)
         // flashlight share pres
-        selectedFlashlightName = SharePreferenceUtils.getFlashName()
+        selectedFlashlightId = SharePreferenceUtils.getFlashlightId()
         flashlightStatus = SharePreferenceUtils.isOnFlash()
         // on off toggle
         updateOnOffToggle(flashlightStatus)
         var selectedPosition =
-            flashlightList.indexOfFirst { it.flashlightName == selectedFlashlightName }
+            flashlightList.indexOfFirst { it.flashlightId == selectedFlashlightId }
         val flashlight = flashlightList[selectedPosition]
         FlashlightController.startPattern(flashlight.flashlightMode, 3000)
 
         changeFlashlightAdapter = FlashlightAdapter(this, flashlightList) { flashlight ->
 
-            selectedFlashlightName = flashlight.flashlightName
+            selectedFlashlightId = flashlight.flashlightId
             FlashlightController.startPattern(flashlight.flashlightMode, 3000)
         }
         changeFlashlightBinding.txtCustomFlashlight.isSelected = true
@@ -51,7 +51,7 @@ class ChangeFlashlightActivity : BaseActivity() {
         changeFlashlightBinding.rcvChangeFlashlight.adapter = changeFlashlightAdapter
         changeFlashlightBinding.saveButton.setOnClickListener {
             FlashlightController.stopFlashing()
-            SharePreferenceUtils.setFlashName(selectedFlashlightName)
+            SharePreferenceUtils.setFlashlightId(selectedFlashlightId!!)
             SharePreferenceUtils.setOnFlash(flashlightStatus)
             finish()
 

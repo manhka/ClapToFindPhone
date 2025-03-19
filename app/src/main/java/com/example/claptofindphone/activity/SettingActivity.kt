@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -12,6 +13,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySettingBinding
 import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.PermissionController
 
 class SettingActivity : BaseActivity() {
     private lateinit var settingActivityBinding: ActivitySettingBinding
@@ -39,23 +41,29 @@ class SettingActivity : BaseActivity() {
             policy()
         }
         settingActivityBinding.feedbackButton.setOnClickListener {
-            val deviceName = Build.MODEL // returns model name
-            val deviceManufacturer = Build.MANUFACTURER
+            val permissionController=PermissionController()
+            if (permissionController.isInternetAvailable(this)){
+                val deviceName = Build.MODEL // returns model name
+                val deviceManufacturer = Build.MANUFACTURER
 
-            val testIntent = Intent(Intent.ACTION_VIEW)
-            val data: Uri = Uri.parse(
-                """mailto:?subject=Clap To Find Phone &body=Device: $deviceManufacturer - $deviceName 
+                val testIntent = Intent(Intent.ACTION_VIEW)
+                val data: Uri = Uri.parse(
+                    """mailto:?subject=Clap To Find Phone &body=Device: $deviceManufacturer - $deviceName 
                         | ${getAndroidVersion()} 
                          &to=phuongculinh2015@gmail.com""".trimMargin()
-            )
-            testIntent.data = data
-            try {
-                startActivity(testIntent)
+                )
+                testIntent.data = data
+                try {
+                    startActivity(testIntent)
 
-            } catch (e: Exception) {
-                e.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
 
+                }
+            }else{
+                Toast.makeText(this,R.string.connect_internet_to_use_this_feature,Toast.LENGTH_SHORT).show()
             }
+
         }
         settingActivityBinding.rateUsButton.setOnClickListener {
             val dialogBinding = DialogRateUsBinding.inflate(layoutInflater)

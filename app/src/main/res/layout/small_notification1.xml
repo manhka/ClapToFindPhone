@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+
             android:text="@string/clap_tool_will_help_you_find"
             style="@style/TextAppearance.Compat.Notification.Info"
             android:textSize="16dp" />

@@ -1,12 +1,15 @@
 package com.example.claptofindphone.activity
 
 import android.app.AlertDialog
-import android.content.Intent
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.Spanned
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,6 +20,9 @@ import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.DefaultTheme
 import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.utils.SharePreferenceUtils
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 
 class EditThemeActivity : BaseActivity() {
     private lateinit var editThemeBinding: ActivityEditThemeBinding
@@ -126,38 +132,47 @@ class EditThemeActivity : BaseActivity() {
         phone=SharePreferenceUtils.getPhone()
         dialogBinding.etxPhone.setText(phone)
         dialogBinding.etxName.setText(name)
-        val nameFilter = InputFilter { source, start, end, dest, dstart, dend ->
-            // Kiểm tra nếu ký tự nhập vào không phải là chữ cái hoặc chữ số
-            if (source.matches("[^a-zA-Z0-9 ]".toRegex())) {
-                return@InputFilter ""
-            }
 
-            // Kiểm tra nếu tổng số ký tự trong EditText vượt quá 30
-            if ((dest.length + source.length) > 30) {
-                return@InputFilter ""
-            }
 
-            // Nếu không vi phạm điều kiện nào, trả về null (cho phép nhập)
-            return@InputFilter null
+        val alphanumericVietnameseFilter = object : InputFilter {
+            override fun filter(
+                source: CharSequence?, start: Int, end: Int,
+                dest: Spanned?, dstart: Int, dend: Int
+            ): CharSequence? {
+                val regex = Regex("[^\\p{L}\\p{N} ]") // Chặn tất cả ký tự không phải chữ cái, số hoặc dấu cách
+                return if (source != null && regex.containsMatchIn(source)) {
+                    "" // Chặn nhập ký tự không hợp lệ
+                } else {
+                    null // Cho phép nhập
+                }
+            }
         }
+
+// Áp dụng bộ lọc vào EditText
+        dialogBinding.etxName.filters = arrayOf(
+            InputFilter.LengthFilter(30), // Giới hạn tối đa 30 ký tự
+            alphanumericVietnameseFilter // Chặn ký tự đặc biệt, cho phép tiếng Việt
+        )
 
 
         val phoneFilter = InputFilter { source, start, end, dest, dstart, dend ->
-            // Kiểm tra nếu ký tự nhập vào không phải là chữ số
-            if (source.matches("[^0-9]".toRegex())) {
-                return@InputFilter ""
+            for (i in start until end) {
+                if (!Character.isDigit(source[i])) { // Kiểm tra từng ký tự có phải số hay không
+                    return@InputFilter ""
+                }
             }
 
             // Kiểm tra nếu tổng số ký tự trong EditText vượt quá 12
-            if ((dest.length + source.length) > 12) {
+            if ((dest.length + (end - start)) > 12) {
                 return@InputFilter ""
             }
-            // Nếu không vi phạm điều kiện nào, trả về null (cho phép nhập)
+
+            // Nếu không vi phạm điều kiện nào, cho phép nhập
             null
         }
 
         dialogBinding.etxPhone.filters= arrayOf(phoneFilter)
-        dialogBinding.etxName.filters= arrayOf(nameFilter)
+//        dialogBinding.etxName.filters= arrayOf(nameFilter)
 
         dialogBinding.deletePhoneButton.setOnClickListener {
             dialogBinding.etxPhone.setText("")

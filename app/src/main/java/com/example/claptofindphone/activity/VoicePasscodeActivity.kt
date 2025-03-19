@@ -1,7 +1,9 @@
 package com.example.claptofindphone.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,6 +39,11 @@ class VoicePasscodeActivity : BaseActivity() {
             startActivity(intent)
         }
         voicePasscodeBinding.backButton.setOnClickListener {
+            if (SharePreferenceUtils.getVoicePasscode()==Constant.DEFAULT_PASSCODE){
+                SharePreferenceUtils.setRunningService("")
+            }
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
             finish()
         }
     }

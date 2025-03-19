@@ -9,6 +9,7 @@
     android:background="#E7FFFE"
     android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:fitsSystemWindows="true"
     >
 <TextView
     android:id="@+id/txt_title_wait"
@@ -18,6 +19,7 @@
     android:textStyle="bold"
     android:textSize="24dp"
     android:gravity="center"
+    android:textColor="@color/black"
     android:layout_marginTop="40dp"/>
     <ImageView
         android:layout_width="wrap_content"

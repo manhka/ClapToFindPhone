@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="16dp"
+        style="@style/TextAppearance.Compat.Notification.Title"
         android:textStyle="bold"
         android:text="@string/anti_theft" />
 
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/black"
             android:text="@string/alert_when_phone_is_taken_out_of_pocket"
             android:textSize="16dp" />
     </LinearLayout>

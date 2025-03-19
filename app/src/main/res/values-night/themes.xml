@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!-- Base application theme. -->
-  <style name="Base.Theme.ClapToFindPhone" parent="Theme.Material3.DayNight.NoActionBar">
-    <item name="android:textColor">@color/black</item>
-  </style>
+<style name="Theme.ClapToFindPhone" parent="Base.Theme.ClapToFindPhone">
+  <!-- Transparent system bars for edge-to-edge. -->
+  <item name="android:navigationBarColor">@android:color/transparent</item>
+  <item name="android:statusBarColor">@android:color/transparent</item>
+  <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+  <item name="android:textColor">@color/white</item>
+</style>
 </resources>

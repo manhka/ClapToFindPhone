@@ -66,7 +66,7 @@ class VoicePasscodeFragment : Fragment() {
     private fun setupClickListeners() {
         binding!!.voicePasscodeButton.setOnClickListener { v ->
             val runningService = getRunningService()
-            if (runningService.isEmpty()) {
+            if (runningService=="") {
                 setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
                 checkPermissionToRun()
             } else if (runningService != Constant.Service.VOICE_PASSCODE_RUNNING) {
@@ -136,7 +136,8 @@ class VoicePasscodeFragment : Fragment() {
         binding!!.round2.setImageResource(R.drawable.round2_active)
         Log.d(TAG, "startVoicePasscodeService:${getRunningService()} ")
         if (!isOnService()){
-            Log.d(TAG, "startVoicePasscodeService1:${getRunningService()} ")
+            Log.d(TAG, "checkPermissionToRun: b")
+
             setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
             val intent = Intent(requireContext(), MyService::class.java)
             intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
@@ -166,7 +167,7 @@ class VoicePasscodeFragment : Fragment() {
         if (!permissionController!!.isInternetAvailable(requireActivity())) {
             showInternetRequiredToast()
             return
-        }
+        }else
 
         if (permissionController!!.hasAudioPermission(requireActivity()) &&
             permissionController!!.isOverlayPermissionGranted(requireActivity())
@@ -174,6 +175,7 @@ class VoicePasscodeFragment : Fragment() {
             if (getVoicePasscode() == Constant.DEFAULT_PASSCODE) {
                 navigateToVoicePasscodeActivity()
             } else {
+                Log.d(TAG, "checkPermissionToRun: a")
                 setIsOnNotify(true)
                 startVoicePasscodeService(Constant.Service.VOICE_PASSCODE_RUNNING)
             }

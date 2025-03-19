@@ -17,13 +17,14 @@ import com.example.claptofindphone.databinding.ActivityChangeVibrateBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Vibrate
 import com.example.claptofindphone.service.VibrateController
+import com.example.claptofindphone.utils.InstallData
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class ChangeVibrateActivity : BaseActivity() {
     private lateinit var changeVibrateItemBinding: ActivityChangeVibrateBinding
     private lateinit var vibrateAdapter: VibrateAdapter
     private lateinit var vibrateList: List<Vibrate>
-    private lateinit var selectedVibrateName: String
+    private  var selectedVibrateId: Int?=null
     private var vibrateStatus: Boolean = true
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -36,29 +37,28 @@ class ChangeVibrateActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        getVibrateList()
-
-
+       vibrateList= InstallData.getVibrateList(this)
         // vibrate share pres
 
-        selectedVibrateName = SharePreferenceUtils.getVibrateName()
+        selectedVibrateId = SharePreferenceUtils.getVibrateId()
 
         vibrateStatus = SharePreferenceUtils.isOnVibrate()
         // on off toggle
         updateOnOffToggle(vibrateStatus)
-        var selectedPosition = vibrateList.indexOfFirst { it.vibrateName == selectedVibrateName }
+        InstallData.getVibrateList(this)
+        var selectedPosition = vibrateList.indexOfFirst { it.vibrateId == selectedVibrateId }
         val vibrate = vibrateList[selectedPosition]
         VibrateController.startPattern(vibrate.vibrateMode, 3000)
         changeVibrateItemBinding.rcvChangeVibrate.layoutManager = GridLayoutManager(this, 2)
         vibrateAdapter = VibrateAdapter(this, vibrateList) { vibrate ->
-            selectedVibrateName = vibrate.vibrateName
+            selectedVibrateId = vibrate.vibrateId
             VibrateController.startPattern(vibrate.vibrateMode, 3000)
         }
         changeVibrateItemBinding.txtCustomVibrate.isSelected = true
         changeVibrateItemBinding.rcvChangeVibrate.adapter = vibrateAdapter
         changeVibrateItemBinding.saveButton.setOnClickListener {
             VibrateController.stopVibrating()
-            SharePreferenceUtils.setVibrateName(selectedVibrateName)
+            SharePreferenceUtils.setVibrateId(selectedVibrateId!!)
             SharePreferenceUtils.setOnVibrate(vibrateStatus)
             finish()
         }
@@ -72,94 +72,7 @@ class ChangeVibrateActivity : BaseActivity() {
         }
     }
 
-    private fun getVibrateList() {
-        vibrateList = listOf(
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.default,
-                0,
-                R.drawable.active_theme_ic,
-                listOf(0L, 100L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate1,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 200L, 100L, 300L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate2,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 300L, 100L, 500L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate3,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 400L, 200L, 400L, 200L, 600L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate4,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 500L, 100L, 300L, 200L, 500L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate5,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 600L, 200L, 400L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate6,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 700L, 100L, 100L, 100L, 700L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate7,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 200L, 300L, 200L, 300L, 400L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate8,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 300L, 100L, 200L, 100L, 300L, 200L, 500L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate9,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 400L, 100L, 300L, 100L, 400L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate10,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 500L, 100L, 200L, 300L, 600L)
-            ),
-            Vibrate(
-                R.drawable.bg_passive_item,
-                Constant.Vibrate.vibrate11,
-                R.drawable.ic_premium,
-                R.drawable.active_theme_ic,
-                listOf(0L, 600L, 200L, 400L, 200L, 300L)
-            ),
-        )
-    }
+
 
     private fun updateOnOffToggle(vibrateStatus: Boolean) {
 

@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".activity.StartActivity">
+    tools:context=".activity.StartActivity"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:layout_width="match_parent"
@@ -21,6 +22,8 @@
         android:gravity="center"
         android:text="@string/clap_to_find_the_phone"
         android:textSize="20dp"
+        android:textColor="@color/black"
+        android:paddingHorizontal="20dp"
         android:textStyle="bold" />
 
     <TextView
@@ -28,6 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/black"
         android:text="@string/wishing_you_a_great_application_experience"
         android:textSize="16dp" />
 

@@ -56,34 +56,34 @@ class Constant {
 
 
     object Flashlight {
-        const val default = "Default"
-        const val flashlight1 = "Flashlight 1"
-        const val flashlight2 = "Flashlight 2"
-        const val flashlight3 = "Flashlight 3"
-        const val flashlight4 = "Flashlight 4"
-        const val flashlight5 = "Flashlight 5"
-        const val flashlight6 = "Flashlight 6"
-        const val flashlight7 = "Flashlight 7"
-        const val flashlight8 = "Flashlight 8"
-        const val flashlight9 = "Flashlight 9"
-        const val flashlight10 = "Flashlight 10"
-        const val flashlight11 = "Flashlight 11"
+         val default = R.string.default_flash
+         val flashlight1 = R.string.flashlight1
+         val flashlight2 = R.string.flashlight2
+         val flashlight3 = R.string.flashlight3
+         val flashlight4 = R.string.flashlight4
+         val flashlight5 = R.string.flashlight5
+         val flashlight6 = R.string.flashlight6
+         val flashlight7 = R.string.flashlight7
+         val flashlight8 = R.string.flashlight8
+         val flashlight9 = R.string.flashlight9
+         val flashlight10 = R.string.flashlight10
+         val flashlight11 = R.string.flashlight11
 
     }
 
     object Vibrate {
-        const val default = "Default"
-        const val vibrate1 = "Vibrate 1"
-        const val vibrate2 = "Vibrate 2"
-        const val vibrate3 = "Vibrate 3"
-        const val vibrate4 = "Vibrate 4"
-        const val vibrate5 = "Vibrate 5"
-        const val vibrate6 = "Vibrate 6"
-        const val vibrate7 = "Vibrate 7"
-        const val vibrate8 = "Vibrate 8"
-        const val vibrate9 = "Vibrate 9"
-        const val vibrate10 = "Vibrate 10"
-        const val vibrate11 = "Vibrate 11"
+         val default = R.string.vibrate_default
+         val vibrate1 = R.string.vibrate1
+         val vibrate2 = R.string.vibrate2
+         val vibrate3 = R.string.vibrate3
+         val vibrate4 =R.string.vibrate4
+         val vibrate5 = R.string.vibrate5
+         val vibrate6 = R.string.vibrate6
+         val vibrate7 = R.string.vibrate7
+         val vibrate8 = R.string.vibrate8
+         val vibrate9 = R.string.vibrate9
+         val vibrate10 = R.string.vibrate10
+         val vibrate11 = R.string.vibrate11
 
     }
 

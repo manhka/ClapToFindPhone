@@ -1,3 +1,7 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import java.text.SimpleDateFormat
+import java.util.Calendar
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -15,6 +19,20 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        val date = Calendar.getInstance().time
+        val formattedDate = SimpleDateFormat("dd-MM").format(date)
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        applicationVariants.all {
+            val outputFileName =
+                "clap_to_find_phone" + "_verCode ${versionCode}" + "_${hour}h${minute}_$formattedDate.apk"
+            outputs.all {
+                val output = this as? BaseVariantOutputImpl
+                output?.outputFileName = outputFileName
+            }
+        }
     }
 
     buildTypes {

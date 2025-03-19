@@ -52,13 +52,11 @@ class MyService : Service() {
             Constant.Service.TURN_OFF_SOUND -> {
               WakeupPhone.turnOffEffects()
                 if (SharePreferenceUtils.getRunningService() == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-                    Log.d(TAG, "onStartCommand: b")
                     MyNotification.updateOnNotification(this,false)
                     if (isFoundPhoneInClap) {
                         isFoundPhoneInClap = false
                     }
                 } else {
-                    Log.d(TAG, "onStartCommand: c")
                     stopSelf()
                 }
             }
@@ -91,7 +89,6 @@ class MyService : Service() {
     }
     // clap and whistle
     private fun clapAndWhistleDetect() {
-        Log.d(TAG, "clapAndWhistleDetect: 123")
         if (!isClapDetectListening) {
             isClapDetectListening = true
         }
@@ -186,6 +183,7 @@ class MyService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+
         SharePreferenceUtils.setRunningService("")
         SharePreferenceUtils.setIsOnService(false)
         WakeupPhone.turnOffEffects()

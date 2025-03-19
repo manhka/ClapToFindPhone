@@ -2,15 +2,20 @@ package com.example.claptofindphone.adapter
 
 import android.app.AlertDialog
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
 import com.example.claptofindphone.databinding.FlashlightItemBinding
 import com.example.claptofindphone.model.Flashlight
 import com.example.claptofindphone.service.FlashlightController
+import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class FlashlightAdapter(
@@ -20,8 +25,9 @@ class FlashlightAdapter(
 ) : RecyclerView.Adapter<FlashlightAdapter.FlashlightViewHolder>() {
 
 
-    val selectedFlashlight = SharePreferenceUtils.getFlashName()
-    var selectedPosition = flashlightList.indexOfFirst { it.flashlightName == selectedFlashlight }
+    val selectedFlashlight = SharePreferenceUtils.getFlashlightId()
+    var selectedPosition = flashlightList.indexOfFirst { it.flashlightId == selectedFlashlight }
+    val permissionController = PermissionController()
     class FlashlightViewHolder(itemFlashlightItemBinding: FlashlightItemBinding) :
         RecyclerView.ViewHolder(itemFlashlightItemBinding.root) {
         val itemFlashlightItemBinding: FlashlightItemBinding = itemFlashlightItemBinding
@@ -65,27 +71,32 @@ class FlashlightAdapter(
         holder.itemView.setOnClickListener {
             FlashlightController.stopFlashing()
             if (flashlightItem.flashlightPremium!=0){
-                val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
-                // Create an AlertDialog with the inflated ViewBinding root
-                val customDialog = AlertDialog.Builder(context)
-                    .setView(dialogBinding.root)
-                    .setCancelable(false)
-                    .create()
-                customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                // Show the dialog
-                customDialog.show()
-                dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_flashlight_title)
-                dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_flashlight_content)
-                dialogBinding.watchAdsButton.setOnClickListener {
-                    SharePreferenceUtils.setIsFlashlightPremiumVisible(position,false)
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                    customDialog.dismiss()
-                    onItemSelected(flashlightItem)
+                if (permissionController.isInternetAvailable(context)){
+                    val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
+                    // Create an AlertDialog with the inflated ViewBinding root
+                    val customDialog = AlertDialog.Builder(context)
+                        .setView(dialogBinding.root)
+                        .setCancelable(false)
+                        .create()
+                    customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    // Show the dialog
+                    customDialog.show()
+                    dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_flashlight_title)
+                    dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_flashlight_content)
+                    dialogBinding.watchAdsButton.setOnClickListener {
+                        SharePreferenceUtils.setIsFlashlightPremiumVisible(position,false)
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                        customDialog.dismiss()
+                        onItemSelected(flashlightItem)
+                    }
+                    dialogBinding.exitButton.setOnClickListener {
+                        customDialog.dismiss()
+                    }
+                }else{
+                       showCustomToast()
                 }
-                dialogBinding.exitButton.setOnClickListener {
-                    customDialog.dismiss()
-                }
+
             }else{
                 selectedPosition = position
                 notifyDataSetChanged()
@@ -94,5 +105,16 @@ class FlashlightAdapter(
 
         }
         }
+    private fun showCustomToast() {
+        // Inflate layout custom_toast.xml
+        val layoutInflater = LayoutInflater.from(context)
+        val view: View = layoutInflater.inflate(R.layout.custom_toast, null)
+        // Tạo và hiển thị Toast
+        val toast = Toast(context)
+        toast.setGravity(Gravity.BOTTOM, 0, 100)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = view
+        toast.show()
+    }
 
 }

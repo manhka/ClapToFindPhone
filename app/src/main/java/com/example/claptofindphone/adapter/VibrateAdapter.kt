@@ -3,14 +3,17 @@ package com.example.claptofindphone.adapter
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
 import com.example.claptofindphone.databinding.VibrateItemBinding
 import com.example.claptofindphone.model.Vibrate
+import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.service.VibrateController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
@@ -18,9 +21,9 @@ class VibrateAdapter(
     val context: Context,
     val vibrateList: List<Vibrate>, val onItemSelected: (Vibrate) -> Unit
 ) : RecyclerView.Adapter<VibrateAdapter.VibrateViewHolder>() {
-    val selectedVibrate = SharePreferenceUtils.getVibrateName()
-    var selectedPosition = vibrateList.indexOfFirst { it.vibrateName == selectedVibrate }
-
+    val selectedVibrate = SharePreferenceUtils.getVibrateId()
+    var selectedPosition = vibrateList.indexOfFirst { it.vibrateId == selectedVibrate }
+val permissionController = PermissionController()
     class VibrateViewHolder(vibrateItemBinding: VibrateItemBinding) :
         RecyclerView.ViewHolder(vibrateItemBinding.root) {
         val vibrateItemBinding: VibrateItemBinding = vibrateItemBinding
@@ -60,29 +63,34 @@ class VibrateAdapter(
         holder.itemView.setOnClickListener {
             VibrateController.stopVibrating()
             if (vibrate.vibratePremium != 0) {
-                val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
-                // Create an AlertDialog with the inflated ViewBinding root
-                val customDialog = AlertDialog.Builder(context)
-                    .setView(dialogBinding.root)
-                    .setCancelable(false)
-                    .create()
-                customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                // Show the dialog
-                customDialog.show()
-                dialogBinding.watchAdTitle.text = context.getString(R.string.dialog_vibrate_title)
-                dialogBinding.watchAdsContent.text =
-                    context.getString(R.string.dialog_vibrate_content)
-                dialogBinding.watchAdsButton.setOnClickListener {
-                    SharePreferenceUtils.setIsVibratePremiumVisible(position, false)
+                if (permissionController.isInternetAvailable(context)){
+                    val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
+                    // Create an AlertDialog with the inflated ViewBinding root
+                    val customDialog = AlertDialog.Builder(context)
+                        .setView(dialogBinding.root)
+                        .setCancelable(false)
+                        .create()
+                    customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    // Show the dialog
+                    customDialog.show()
+                    dialogBinding.watchAdTitle.text = context.getString(R.string.dialog_vibrate_title)
+                    dialogBinding.watchAdsContent.text =
+                        context.getString(R.string.dialog_vibrate_content)
+                    dialogBinding.watchAdsButton.setOnClickListener {
+                        SharePreferenceUtils.setIsVibratePremiumVisible(position, false)
 //                    holder.vibrateItemBinding.premiumButton.setImageResource(0)
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                    customDialog.dismiss()
-                    onItemSelected(vibrate)
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                        customDialog.dismiss()
+                        onItemSelected(vibrate)
+                    }
+                    dialogBinding.exitButton.setOnClickListener {
+                        customDialog.dismiss()
+                    }
+                }else{
+                  showCustomToast()
                 }
-                dialogBinding.exitButton.setOnClickListener {
-                    customDialog.dismiss()
-                }
+
             } else {
                 onItemSelected(vibrate)
                 selectedPosition = position
@@ -91,6 +99,17 @@ class VibrateAdapter(
             }
 
         }
+    }
+    private fun showCustomToast() {
+        // Inflate layout custom_toast.xml
+        val layoutInflater = LayoutInflater.from(context)
+        val view: View = layoutInflater.inflate(R.layout.custom_toast, null)
+        // Tạo và hiển thị Toast
+        val toast = Toast(context)
+        toast.setGravity(Gravity.BOTTOM, 0, 100)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = view
+        toast.show()
     }
 
 }

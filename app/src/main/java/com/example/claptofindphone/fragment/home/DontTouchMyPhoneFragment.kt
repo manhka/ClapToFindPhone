@@ -1,6 +1,7 @@
 package com.example.claptofindphone.fragment.home
 
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +17,7 @@ import com.example.claptofindphone.activity.WaitActivity
 import com.example.claptofindphone.databinding.DialogTouchPhoneBinding
 import com.example.claptofindphone.databinding.FragmentDontTouchMyPhoneInHomeBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.service.MyService_No_Micro
+import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
@@ -79,12 +80,13 @@ class DontTouchMyPhoneFragment : Fragment() {
         setRunningService("")
         setIsWaited(false)
 
-        val intent = Intent(requireContext(), MyService_No_Micro::class.java)
+        val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
         requireContext().stopService(intent)
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
         if (isNavigateFromSplash()) {
             setIsNavigateFromSplash(false)
             checkPermissionToRun()
@@ -100,6 +102,7 @@ class DontTouchMyPhoneFragment : Fragment() {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.DONT_TOUCH_MY_PHONE)
         } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
+            Log.d(TAG, "handleServiceState: ")
             onService(runningService)
         } else {
             binding!!.handIc.startAnimation(anim)
@@ -124,13 +127,14 @@ class DontTouchMyPhoneFragment : Fragment() {
 
     private fun onService(runningService: String) {
         stopAnimation()
+        Log.d(TAG, "onService: abc")
         binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
         binding!!.handIc.visibility = View.GONE
         binding!!.round2.setImageResource(R.drawable.round2_active)
-        isOnWaitActivity = isWaited()
-        if (isOnWaitActivity) {
+        Log.d(TAG, "onService: ${isWaited()}")
+        if (isWaited()) {
             setIsWaited(false)
-            val intentService = Intent(requireContext(), MyService_No_Micro::class.java)
+            val intentService = Intent(requireContext(), MyServiceNoMicro::class.java)
             intentService.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             requireContext().startService(intentService)
             val intent = Intent(

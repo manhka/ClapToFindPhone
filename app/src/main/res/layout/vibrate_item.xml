@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_active_item"
     app:cardCornerRadius="10dp"
-    android:layout_margin="10dp"
+    android:layout_margin="8dp"
     android:id="@+id/vibrateBg"
     >
     <LinearLayout
@@ -24,6 +24,8 @@
             android:paddingStart="10dp"
             android:paddingEnd="5dp"
             android:textColor="@color/black"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="16dp"
             android:layout_gravity="center_vertical"
             />
@@ -33,7 +35,7 @@
             android:id="@+id/selected_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/active_theme_ic"
+            android:src="@drawable/tick_ic"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="20dp"
             android:visibility="gone"/>

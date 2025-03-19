@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".activity.GrantPermissionActivity">
+    tools:context=".activity.GrantPermissionActivity"
+    android:fitsSystemWindows="true">
 
 
     <ImageView
@@ -15,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="48dp"
         android:padding="4dp"
         android:src="@drawable/back_ic"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +29,7 @@
         android:text="@string/grant_permission"
         android:textSize="20dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/back_btn_in_grant_permission" />
@@ -39,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
         android:layout_marginHorizontal="16dp"
+        android:textColor="@color/black"
         android:text="@string/grant_permission_sub_tittle"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,6 +69,7 @@
                 app:layout_constraintDimensionRatio="202:22"
                 android:text="@string/recording_permission"
                 android:textSize="16dp"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_alignParentStart="true"
                 />
@@ -76,6 +80,7 @@
                 android:text="@string/recording_sub"
                 android:textSize="14dp"
                 android:maxLines="2"
+                android:textColor="@color/black"
                 android:layout_below="@id/txt_record_permission"
                 android:layout_marginEnd="110dp"
                 android:layout_alignParentStart="true"
@@ -116,6 +121,7 @@
                 android:id="@+id/txt_overlay_permission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@string/overlay_permission"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -127,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/overlay_permission_sub"
                 android:textSize="14dp"
+                android:textColor="@color/black"
                 android:layout_marginEnd="110dp"
                 android:layout_below="@id/txt_overlay_permission"
                  />

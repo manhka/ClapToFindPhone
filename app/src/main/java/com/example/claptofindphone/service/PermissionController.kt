@@ -108,9 +108,9 @@ class PermissionController {
         }
     }
 
-    fun isInternetAvailable(activity: Activity): Boolean {
+    fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager =
-            activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val network = connectivityManager.activeNetwork ?: return false
             val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false

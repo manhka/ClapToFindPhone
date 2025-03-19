@@ -24,9 +24,9 @@
             android:text="@string/clap_and_whistle"
             android:gravity="center_horizontal"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/black"
             />
         <TextView
             android:layout_marginTop="10dp"

@@ -14,88 +14,102 @@ import com.example.claptofindphone.model.Vibrate
 class InstallData {
     companion object {
 
-         fun getFlashlightList() :List<Flashlight>{
+         fun getFlashlightList(context:Context) :List<Flashlight>{
              return listOf(
                 Flashlight(
+                    1,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.default,
+                    context.getString(Constant.Flashlight.default)
+                    ,
                     0,
                     R.drawable.active_theme_ic,
-                    listOf(0L)
+                    listOf(200L,200L)
                 ),
                 Flashlight(
+                    2,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight1,
+                    context.getString(Constant.Flashlight.flashlight1)
+                    ,
                     R.drawable.ic_premium,
-                    R.drawable.active_theme_ic,
+                    R.drawable.tick_ic,
                     listOf(300L, 300L)
                 ),
                 Flashlight(
+                    3,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight2,
+                    context.getString(Constant.Flashlight.flashlight2),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(500L, 500L)
                 ),
                 Flashlight(
+                    4,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight3,
+                    context.getString(Constant.Flashlight.flashlight3),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(200L, 100L, 200L)
                 ),
                 Flashlight(
+                    5,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight4,
+                    context.getString(Constant.Flashlight.flashlight4),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(1000L, 500L)
                 ),
                 Flashlight(
+                    6,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight5,
+                    context.getString(Constant.Flashlight.flashlight5),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(300L, 300L, 600L, 300L)
                 ),
                 Flashlight(
+                    7,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight6,
+                    context.getString(Constant.Flashlight.flashlight6),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(150L, 150L)
                 ),
                 Flashlight(
+                    8,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight7,
+                    context.getString(Constant.Flashlight.flashlight7),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(700L, 300L, 100L)
                 ),
                 Flashlight(
+                    9,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight8,
+                    context.getString(Constant.Flashlight.flashlight8),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(500L, 100L, 200L, 300L)
                 ),
                 Flashlight(
+                    10,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight9,
+                    context.getString(Constant.Flashlight.flashlight9),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(1000L, 1000L)
                 ),
                 Flashlight(
+                    11,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight10,
+                    context.getString(Constant.Flashlight.flashlight10),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(100L, 100L, 100L)
                 ),
                 Flashlight(
+                    12,
                     R.drawable.bg_passive_item,
-                    Constant.Flashlight.flashlight11,
+                    context.getString(Constant.Flashlight.flashlight11),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(400L, 200L, 600L)
@@ -191,88 +205,101 @@ class InstallData {
                 )
             )
         }
-        fun getVibrateList():List<Vibrate> {
+        fun getVibrateList(context: Context):List<Vibrate> {
             return listOf(
                 Vibrate(
+                    1,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.default,
+                    context.getString(Constant.Vibrate.default)
+                    ,
                     0,
                     R.drawable.active_theme_ic,
                     listOf(0L, 100L)
                 ),
                 Vibrate(
+                    2,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate1,
+                    context.getString(Constant.Vibrate.vibrate1),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 200L, 100L, 300L)
                 ),
                 Vibrate(
+                    3,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate2,
+                    context.getString(Constant.Vibrate.vibrate2),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 300L, 100L, 500L)
                 ),
                 Vibrate(
+                    4,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate3,
+                    context.getString(Constant.Vibrate.vibrate3),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 400L, 200L, 400L, 200L, 600L)
                 ),
                 Vibrate(
+                    5,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate4,
+                    context.getString(Constant.Vibrate.vibrate4),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 500L, 100L, 300L, 200L, 500L)
                 ),
                 Vibrate(
+                    6,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate5,
+                    context.getString(Constant.Vibrate.vibrate5),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 600L, 200L, 400L)
                 ),
                 Vibrate(
+                    7,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate6,
+                    context.getString(Constant.Vibrate.vibrate6),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 700L, 100L, 100L, 100L, 700L)
                 ),
                 Vibrate(
+                    8,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate7,
+                    context.getString(Constant.Vibrate.vibrate7),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 200L, 300L, 200L, 300L, 400L)
                 ),
                 Vibrate(
+                    9,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate8,
+                    context.getString(Constant.Vibrate.vibrate8),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 300L, 100L, 200L, 100L, 300L, 200L, 500L)
                 ),
                 Vibrate(
+                    10,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate9,
+                    context.getString(Constant.Vibrate.vibrate9),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 400L, 100L, 300L, 100L, 400L)
                 ),
                 Vibrate(
+                    11,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate10,
+                    context.getString(Constant.Vibrate.vibrate10),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 500L, 100L, 200L, 300L, 600L)
                 ),
                 Vibrate(
+                    12,
                     R.drawable.bg_passive_item,
-                    Constant.Vibrate.vibrate11,
+                    context.getString(Constant.Vibrate.vibrate11),
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 600L, 200L, 400L, 200L, 300L)
@@ -481,7 +508,7 @@ class InstallData {
                 ),
                 Language(
                     Constant.Country.INDONESIA,
-                    "id",
+                    "su",
                     R.drawable.bg_btn_grey,
                     R.drawable.indonesia,
                     R.drawable.passive_radio

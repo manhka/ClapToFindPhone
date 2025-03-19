@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.ClapToFindPhone" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:textColor">@color/black</item>
+<!--    <style name="Theme.ClapToFindPhone" parent="Theme.AppCompat.NoActionBar">-->
+<!--        <item name="android:textColor">@color/black</item>-->
 
-    </style>
+<!--    </style>-->
   <!-- Base application theme. -->
     <style name="Base.Theme.ClapToFindPhone" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->

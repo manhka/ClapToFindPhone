@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_call_theme1"
-    tools:context=".activity.EditThemeActivity">
+    tools:context=".activity.EditThemeActivity"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/back_button"
@@ -15,14 +16,14 @@
         android:src="@drawable/back_ic"
         android:padding="4dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <ImageView
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="12dp"
         android:padding="4dp"
         android:src="@drawable/edit_ic"
@@ -37,7 +38,7 @@
         android:text="@string/edit_theme"
         android:textColor="@color/white"
         android:textSize="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

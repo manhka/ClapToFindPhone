@@ -13,7 +13,6 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 class LoadScreenActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         changeBackPressCallBack {  }
         setContentView(R.layout.activity_load_screen)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

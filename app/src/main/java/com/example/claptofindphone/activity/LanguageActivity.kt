@@ -1,5 +1,6 @@
     package com.example.claptofindphone.activity
 
+    import android.content.ContentValues.TAG
     import android.content.Intent
     import android.content.SharedPreferences
     import android.content.res.Configuration
@@ -56,6 +57,7 @@
                 }
             }
             languageAdapter = LanguageAdapter(newLanguageList) {
+
                 binding.layoutCurrentLanguage.setBackgroundResource(R.drawable.bg_btn_grey)
                 binding.selectedCurrentLanguage.setImageResource(R.drawable.passive_radio)
             }
@@ -113,7 +115,7 @@
                 "vi" -> Constant.Country.VIETNAM
                 "fr" -> Constant.Country.FRENCH
                 "hi" -> Constant.Country.INDIA
-                "id" -> Constant.Country.INDONESIA
+                "su" -> Constant.Country.INDONESIA
                 "ja" -> Constant.Country.JAPAN
                 "pt" -> Constant.Country.BRAZILIAN
                 "ko" -> Constant.Country.KOREAN
@@ -125,7 +127,7 @@
                 "vi" -> R.drawable.vietnam
                 "fr" -> R.drawable.france
                 "hi" -> R.drawable.india
-                "id" -> R.drawable.indonesia
+                "su" -> R.drawable.indonesia
                 "ja" -> R.drawable.japan
                 "pt" -> R.drawable.brazil
                 "ko" -> R.drawable.south_korea
@@ -138,10 +140,11 @@
         }
         private fun getLanguageAppList(): List<String> {
             val languageAppList = listOf(
+                "en",
                 "vi",
                 "fr",
                 "hi",
-                "id",
+                "su",
                 "ja",
                 "pt",
                 "ko",

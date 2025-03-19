@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.SettingActivity"
     android:background="@color/white"
-    >
+        >
 
     <ImageView
         android:id="@+id/back_button"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:padding="4dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="48dp"
        />
 
     <TextView
@@ -27,10 +27,11 @@
         android:text="@string/setting"
         android:textSize="16dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="50dp"/>
 
 
 
@@ -61,6 +62,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/language"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
             <ImageView
                 android:layout_width="wrap_content"
@@ -95,6 +97,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/rate"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
 
             <ImageView
@@ -130,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
+                android:textColor="@color/black"
                 android:text="@string/feedback"
                 android:textSize="16dp" />
 
@@ -166,6 +170,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/share"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
 
             <ImageView
@@ -202,6 +207,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:text="@string/policy"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
 
             <ImageView

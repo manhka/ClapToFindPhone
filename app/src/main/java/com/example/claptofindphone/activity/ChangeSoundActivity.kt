@@ -87,10 +87,10 @@ class ChangeSoundActivity : BaseActivity() {
         if (soundId != 1) {
             selectedSoundId = soundId
         }
-        SoundController.playSound(soundType, 30f, 3000)
+        SoundController.playSound(soundType, 30f)
         changeSoundAdapter = SoundAdapter2(this, soundList, soundId) { sound ->
             selectedSoundId = sound.id
-            SoundController.playSound(sound.soundType, 30f, 3000)
+            SoundController.playSound(sound.soundType, 30f)
         }
         changeSoundBinding.rcvCustomSoundLayout.layoutManager = GridLayoutManager(this, 3)
         changeSoundBinding.rcvCustomSoundLayout.adapter = changeSoundAdapter

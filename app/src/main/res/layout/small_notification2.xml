@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+
             style="@style/TextAppearance.Compat.Notification.Info"
             android:text="@string/activate_clapping_for_quick_search"
             android:textSize="16dp" />

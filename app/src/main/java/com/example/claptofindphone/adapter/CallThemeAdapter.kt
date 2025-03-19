@@ -4,15 +4,18 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.EditThemeActivity
 import com.example.claptofindphone.databinding.CallThemeItemBinding
 import com.example.claptofindphone.databinding.DialogWatchAdBinding
 import com.example.claptofindphone.model.CallTheme
+import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class CallThemeAdapter(val context: Context,
@@ -26,6 +29,7 @@ class CallThemeAdapter(val context: Context,
     val name=SharePreferenceUtils.getName()
     val phone=SharePreferenceUtils.getPhone()
     var selectedPosition = callThemeList.indexOfFirst { it.themeName == callThemeName }
+   val permissionController = PermissionController()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CallThemeViewHolder {
         val callThemeItemBinding= CallThemeItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return CallThemeViewHolder(callThemeItemBinding)
@@ -75,30 +79,35 @@ class CallThemeAdapter(val context: Context,
             }
             mLastClickTime = SystemClock.elapsedRealtime()
             if (callThemeItem.callThemePremium!=0){
-                val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
-                // Create an AlertDialog with the inflated ViewBinding root
-                val customDialog = AlertDialog.Builder(context)
-                    .setView(dialogBinding.root)
-                    .setCancelable(false)
-                    .create()
-                customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                // Show the dialog
-                customDialog.show()
-                dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_calltheme_title)
-                dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_calltheme_content)
-                dialogBinding.watchAdsButton.setOnClickListener {
-                    SharePreferenceUtils.setIsCallThemePremiumVisible(position,false)
+                if (permissionController.isInternetAvailable(context)){
+                    val dialogBinding = DialogWatchAdBinding.inflate(LayoutInflater.from(context))
+                    // Create an AlertDialog with the inflated ViewBinding root
+                    val customDialog = AlertDialog.Builder(context)
+                        .setView(dialogBinding.root)
+                        .setCancelable(false)
+                        .create()
+                    customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    // Show the dialog
+                    customDialog.show()
+                    dialogBinding.watchAdTitle.text=context.getString(R.string.dialog_calltheme_title)
+                    dialogBinding.watchAdsContent.text=context.getString(R.string.dialog_calltheme_content)
+                    dialogBinding.watchAdsButton.setOnClickListener {
+                        SharePreferenceUtils.setIsCallThemePremiumVisible(position,false)
 //                    holder.vibrateItemBinding.premiumButton.setImageResource(0)
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                    customDialog.dismiss()
-                    val intent= Intent(context,EditThemeActivity::class.java)
-                    intent.putExtra("call_theme",callThemeItem)
-                    context.startActivity(intent)
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                        customDialog.dismiss()
+                        val intent= Intent(context,EditThemeActivity::class.java)
+                        intent.putExtra("call_theme",callThemeItem)
+                        context.startActivity(intent)
+                    }
+                    dialogBinding.exitButton.setOnClickListener {
+                        customDialog.dismiss()
+                    }
+                }else{
+                  showCustomToast()
                 }
-                dialogBinding.exitButton.setOnClickListener {
-                    customDialog.dismiss()
-                }
+
             }else{
                 val intent= Intent(context,EditThemeActivity::class.java)
                 intent.putExtra("call_theme",callThemeItem)
@@ -106,4 +115,16 @@ class CallThemeAdapter(val context: Context,
             }
         }
     }
+    private fun showCustomToast() {
+        // Inflate layout custom_toast.xml
+        val layoutInflater = LayoutInflater.from(context)
+        val view: View = layoutInflater.inflate(R.layout.custom_toast, null)
+        // Tạo và hiển thị Toast
+        val toast = Toast(context)
+        toast.setGravity(Gravity.BOTTOM, 0, 100)
+        toast.duration = Toast.LENGTH_SHORT
+        toast.view = view
+        toast.show()
+    }
+
 }
