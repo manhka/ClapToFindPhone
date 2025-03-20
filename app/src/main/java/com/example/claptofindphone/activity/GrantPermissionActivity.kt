@@ -82,11 +82,12 @@ class GrantPermissionActivity : BaseActivity() {
         }
         grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
             val typeOfRunningService=intent.getStringExtra("typeOfRunningService")
-            if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING){
+
+             if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING && typeOfRunningService!=""){
                 SharePreferenceUtils.setIsWaited(true)
             }
             SharePreferenceUtils.setRunningService(typeOfRunningService!!)
-            if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING){
+            if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING || typeOfRunningService==""){
                 val intent = Intent(this, VoicePasscodeActivity::class.java)
                 startActivity(intent)
                 finish()

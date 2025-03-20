@@ -1,5 +1,6 @@
 package com.example.claptofindphone.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.ContentObserver
@@ -41,6 +42,11 @@ class ChangeSoundActivity : BaseActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        if (SharePreferenceUtils.getTimeComeHome()==0){
+            changeSoundBinding.backButton.visibility=View.GONE
+        }else{
+            changeSoundBinding.backButton.visibility=View.VISIBLE
         }
         soundList = InstallData.getListSound(this)
 
@@ -103,6 +109,7 @@ class ChangeSoundActivity : BaseActivity() {
             updateOnOffToggle(soundStatus)
         }
         changeSoundBinding.saveButton.setOnClickListener {
+            SharePreferenceUtils.setTimeComeHome(1)
             SharePreferenceUtils.setSoundId(selectedSoundId)
             SharePreferenceUtils.setOnSound(soundStatus)
             SharePreferenceUtils.setTimeSoundPlay(timeSoundPlay)

@@ -31,7 +31,6 @@ open class BaseActivity : AppCompatActivity(){
         newBase.createContext(
             Locale(SharePreferenceUtils.getLanguageCode())
         )
-
     )
 
     protected fun changeBackPressCallBack(action: () -> Unit) {

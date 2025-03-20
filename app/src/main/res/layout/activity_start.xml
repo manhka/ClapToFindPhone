@@ -49,5 +49,6 @@
         android:text="@string/start"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:foreground="@drawable/my_ripple"
         android:layout_marginBottom="30dp"/>
 </LinearLayout>

@@ -20,7 +20,9 @@
         android:padding="4dp"
         android:src="@drawable/back_ic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:foreground="@drawable/my_ripple"
+        />
 
     <TextView
         android:layout_width="match_parent"
@@ -39,7 +41,7 @@
         android:id="@+id/txt_permission_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/black"
         android:text="@string/grant_permission_sub_tittle"
@@ -99,6 +101,8 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:layout_centerVertical="true"
+                android:foreground="@drawable/my_ripple"
+
                 />
 
         </RelativeLayout>
@@ -150,7 +154,9 @@
                 android:paddingVertical="10dp"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:foreground="@drawable/my_ripple"
+                />
         </RelativeLayout>
 
 
@@ -169,7 +175,7 @@
         android:gravity="center"
         android:textColor="@color/white"
         android:textStyle="bold"
-
+        android:foreground="@drawable/my_ripple"
         app:layout_constraintTop_toBottomOf="@id/overlay_permission_layout"
          />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -81,7 +81,7 @@ class HomeActivity : BaseActivity() {
         }
         homeBinding.txtHomeTitle.isSelected = true
         val timeComeToHome = SharePreferenceUtils.getTimeComeHome()
-        if (timeComeToHome in 0..3) {
+        if (timeComeToHome in 1..3) {
             SharePreferenceUtils.setTimeComeHome(SharePreferenceUtils.getTimeComeHome() + 1)
         }
         permissionController = PermissionController()
@@ -195,17 +195,24 @@ class HomeActivity : BaseActivity() {
         homeBinding.changeAudioPasscodeButton.setOnClickListener {
 
             val isRunningService = SharePreferenceUtils.getRunningService()
-            if (permissionController.hasAudioPermission(this)) {
+            if (isRunningService != "") {
+                Toast.makeText(
+                    this,
+                    getString(R.string.deactive_all_feature_before_run),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 if (permissionController.isInternetAvailable(this)) {
-                    if (isRunningService != "") {
-                        Toast.makeText(
-                            this,
-                            getString(R.string.deactive_all_feature_before_run),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
+                    if (permissionController.hasAudioPermission(this)) {
                         val intent = Intent(this, VoicePasscodeActivity::class.java)
                         startActivity(intent)
+                    } else {
+                        permissionController.showInitialDialog(
+                            this,
+                            Constant.Permission.RECORDING_PERMISSION,
+                            Constant.Service.VOICE_PASSCODE,
+                            ""
+                        )
                     }
                 } else {
                     Toast.makeText(
@@ -214,9 +221,7 @@ class HomeActivity : BaseActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            } else {
-                Toast.makeText(this, R.string.active_audio_to_use_this_feature, Toast.LENGTH_SHORT)
-                    .show()
+
             }
         }
 
@@ -301,12 +306,12 @@ class HomeActivity : BaseActivity() {
 
     private fun startDiamondAnimation(imageView: ImageView) {
         // Animation xoay 180 độ
-        val rotate = ObjectAnimator.ofFloat(imageView,  "rotationY", 0f, 180f).apply {
+        val rotate = ObjectAnimator.ofFloat(imageView, "rotationY", 0f, 180f).apply {
             duration = 1500 // Xoay trong 1 giây
         }
 
         // Animation nẩy lên
-        val bounce = ObjectAnimator.ofFloat(imageView, "translationY", 0f, -3f,0f).apply {
+        val bounce = ObjectAnimator.ofFloat(imageView, "translationY", 0f, -3f, 0f).apply {
             duration = 1500
             interpolator = BounceInterpolator() // Hiệu ứng nẩy
         }
@@ -314,7 +319,7 @@ class HomeActivity : BaseActivity() {
         // Gộp animation
         val animatorSet = AnimatorSet().apply {
             playTogether(rotate, bounce)
-            startDelay = 1000 
+            startDelay = 1000
         }
 
         // Lặp vô hạn

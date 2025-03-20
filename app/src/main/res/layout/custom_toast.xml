@@ -6,7 +6,9 @@
     android:orientation="horizontal"
     android:background="@drawable/bg_custom_toast"
     android:paddingVertical="12dp"
-    android:paddingHorizontal="20dp">
+    android:paddingHorizontal="20dp"
+    android:foreground="@drawable/my_ripple"
+    >
 
     <ImageView
         android:id="@+id/toast_icon"

@@ -4,17 +4,20 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityVoicePasscodeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class VoicePasscodeActivity : BaseActivity() {
     private lateinit var voicePasscodeBinding: ActivityVoicePasscodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        val permissionController=PermissionController()
         super.onCreate(savedInstanceState)
         changeBackPressCallBack {
             val intent= Intent(this,HomeActivity::class.java)
@@ -31,17 +34,33 @@ class VoicePasscodeActivity : BaseActivity() {
         SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
 
         voicePasscodeBinding.voiceButton.setOnClickListener {
-            val intent = Intent(this, SetupVoicePasscodeActivity::class.java)
-            startActivity(intent)
+            if (permissionController.isInternetAvailable(this)){
+                val intent = Intent(this, SetupVoicePasscodeActivity::class.java)
+                startActivity(intent)
+            }else{
+                Toast.makeText(
+                    this,
+                    getString(R.string.connect_internet_to_use_this_feature),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
         voicePasscodeBinding.textButton.setOnClickListener {
-            val intent = Intent(this, SetupTextPasscodeActivity::class.java)
-            startActivity(intent)
+            if (permissionController.isInternetAvailable(this)){
+                val intent = Intent(this, SetupTextPasscodeActivity::class.java)
+                startActivity(intent)
+            }else{
+                Toast.makeText(
+                    this,
+                    getString(R.string.connect_internet_to_use_this_feature),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
         voicePasscodeBinding.backButton.setOnClickListener {
-            if (SharePreferenceUtils.getVoicePasscode()==Constant.DEFAULT_PASSCODE){
-                SharePreferenceUtils.setRunningService("")
-            }
+            SharePreferenceUtils.setIsNavigateToChangePasscode(false)
+            SharePreferenceUtils.setRunningService("")
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()

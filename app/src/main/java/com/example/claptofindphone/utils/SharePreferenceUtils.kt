@@ -50,7 +50,7 @@ object SharePreferenceUtils {
         return sharePref.getFloat(key, 0f)
     }
 
-    // First time get in App
+    // First time get in App 0: never get in home 
     fun getTimeComeHome(): Int = getInt("getTimeComeHome", 0)
     fun setTimeComeHome(value: Int) = saveKey("getTimeComeHome", value)
 
@@ -113,7 +113,6 @@ object SharePreferenceUtils {
     }
 
     fun setVolumeSound(value: Int) = saveKey("getVolumeSound", value)
-
 
     // is premium
 
@@ -190,7 +189,7 @@ object SharePreferenceUtils {
     fun setTimeDeniRecordPermission(value: Int) = saveKey("getTimeDeniRecordPermission", value)
 
     // navigateToChange passcode
-    fun isNavigateToChangePasscode(): Boolean = getBoolean("isNavigateToChangePasscode", false)
+    fun isNavigateToChangePasscode(): Boolean = getBoolean("isNavigateToChangePasscode", true)
     fun setIsNavigateToChangePasscode(value: Boolean) = saveKey("isNavigateToChangePasscode", value)
 
     // navigateToChange passcode
@@ -200,8 +199,9 @@ object SharePreferenceUtils {
     // is ON notify
     fun isOnNotify(): Boolean = getBoolean("isOnNotify", false)
     fun setIsOnNotify(value: Boolean) = saveKey("isOnNotify", value)
-// service
-    fun isOnService():Boolean= getBoolean("isOnService",false)
-    fun setIsOnService(value: Boolean)= saveKey("isOnService",value)
+
+    // service
+    fun isOnService(): Boolean = getBoolean("isOnService", false)
+    fun setIsOnService(value: Boolean) = saveKey("isOnService", value)
 
 }

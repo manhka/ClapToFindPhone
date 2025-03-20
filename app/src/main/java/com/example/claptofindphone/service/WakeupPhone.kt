@@ -1,7 +1,10 @@
 package com.example.claptofindphone.service
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
+import android.util.Log
 import com.example.claptofindphone.activity.FoundPhoneActivity
 import com.example.claptofindphone.model.Flashlight
 import com.example.claptofindphone.model.Sound
@@ -17,21 +20,22 @@ object WakeupPhone {
     private lateinit var soundList: List<Sound>
     private lateinit var flashlightList: List<Flashlight>
     private lateinit var vibrateList: List<Vibrate>
-    private var vibrateId: Int?=null
-    private  var flashlightId: Int?=null
+    private var vibrateId: Int? = null
+    private var flashlightId: Int? = null
     private var soundId: Int = 1
     private var selectedFlashlightPosition = 0
     private var selectedVibratePosition = 0
     private var flashlightStatus: Boolean = true
     private var vibrateStatus: Boolean = true
     private var selectedSoundPosition = 0
-     fun foundPhone(context: Context) {
-        MyNotification.updateOnNotification(context,true)
+    fun foundPhone(context: Context) {
+        MyNotification.updateOnNotification(context, true)
         setupAndStartFoundPhoneMode(context)
         val intent = Intent(context, FoundPhoneActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
+
     private fun setupAndStartFoundPhoneMode(context: Context) {
         // Load danh sách âm thanh, đèn flash, rung
         soundList = InstallData.getListSound(context)
@@ -56,6 +60,7 @@ object WakeupPhone {
 
         // Bắt đầu phát âm thanh nếu có
         if (soundStatus && selectedSoundPosition != -1) {
+            setDeviceVolume(context,soundVolume)
             SoundController.playSoundInLoop(
                 soundList[selectedSoundPosition].soundType,
                 soundVolume.toFloat(),
@@ -76,7 +81,8 @@ object WakeupPhone {
             )
         }
     }
-    fun turnOffEffects(){
+
+    fun turnOffEffects() {
         if (soundStatus) {
             SoundController.stopSound()
         }
@@ -86,5 +92,10 @@ object WakeupPhone {
         if (vibrateStatus) {
             VibrateController.stopVibrating()
         }
+    }
+
+    private fun setDeviceVolume(context: Context, volume: Int) {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_SHOW_UI)
     }
 }

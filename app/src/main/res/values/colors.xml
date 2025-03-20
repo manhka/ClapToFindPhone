@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#57A1E7</color>
     <color name="grey">#7C7C7C</color>
+    <color name="selected_color">#929292</color>
     <color name="start_grey">#F6F6F6</color>
     <color name="end_grey">#CFCFCF</color>
     <color name="bg_df_theme1">#E7F9FF</color>

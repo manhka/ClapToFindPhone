@@ -68,7 +68,9 @@
             android:paddingVertical="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_rate_us_content" />
+            app:layout_constraintTop_toBottomOf="@id/txt_rate_us_content"
+            android:foreground="@drawable/my_ripple"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

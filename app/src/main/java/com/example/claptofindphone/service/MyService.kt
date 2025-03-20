@@ -33,7 +33,7 @@ class MyService : Service() {
     private var isVoiceDetectListening = false
     private var isClapDetectListening = false
     private lateinit var passcode: String
-    private var isFoundPhoneInClap = false
+    private var isFoundPhone = false
     override fun onCreate() {
         super.onCreate()
         handlerClap = Handler()
@@ -51,14 +51,12 @@ class MyService : Service() {
         when (runningService) {
             Constant.Service.TURN_OFF_SOUND -> {
               WakeupPhone.turnOffEffects()
-                if (SharePreferenceUtils.getRunningService() == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+
                     MyNotification.updateOnNotification(this,false)
-                    if (isFoundPhoneInClap) {
-                        isFoundPhoneInClap = false
+                    if (isFoundPhone) {
+                        isFoundPhone = false
                     }
-                } else {
-                    stopSelf()
-                }
+
             }
             Constant.Service.CLAP_AND_WHISTLE_RUNNING -> {
                 Log.d(TAG, "onStartCommand:CLAP AND WHISTLE RUNNING")
@@ -115,8 +113,8 @@ class MyService : Service() {
 
                 if (filteredModelOutput.isNotEmpty()) {
                     if (filteredModelOutput[0].index == 56 || filteredModelOutput[0].index == 57 || filteredModelOutput[0].index == 58 || filteredModelOutput[0].index == 35) {
-                        if (!isFoundPhoneInClap) {
-                            isFoundPhoneInClap = true
+                        if (!isFoundPhone) {
+                            isFoundPhone = true
                             WakeupPhone.foundPhone(this@MyService)
                         }
                     } else if (filteredModelOutput[0].index == 426 || filteredModelOutput[0].index == 479 || filteredModelOutput[0].index == 396 || filteredModelOutput[0].index == 79 || filteredModelOutput[0].index == 35) {
@@ -160,12 +158,12 @@ class MyService : Service() {
                 override fun onSpeechResult(result: String) {
                     Log.i(TAG, "result: $result")
                     if (result == passcode) {
-                       WakeupPhone.foundPhone(this@MyService)
-
-                        runnable?.let { handler?.removeCallbacks(it) }
-                    } else {
-                        runnable?.let { handler?.postDelayed(it, 1000) }
+                        if (!isFoundPhone) {
+                            isFoundPhone = true
+                            WakeupPhone.foundPhone(this@MyService)
+                        }
                     }
+                        runnable?.let { handler?.postDelayed(it, 1000) }
                 }
             })
         } catch (exc: SpeechRecognitionNotAvailable) {

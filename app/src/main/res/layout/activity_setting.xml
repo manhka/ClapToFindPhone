@@ -19,13 +19,15 @@
         android:padding="4dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="48dp"
+        android:foreground="@drawable/my_ripple"
+
        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/setting"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +51,9 @@
             android:orientation="horizontal"
             android:background="@drawable/bg_item_setting"
             android:elevation="1.5dp"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:foreground="@drawable/my_ripple"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -84,7 +88,9 @@
             android:orientation="horizontal"
             android:background="@drawable/bg_item_setting"
             android:elevation="1.5dp"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:foreground="@drawable/my_ripple"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -121,7 +127,9 @@
             android:orientation="horizontal"
             android:elevation="1.5dp"
             android:background="@drawable/bg_item_setting"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:foreground="@drawable/my_ripple"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -157,7 +165,9 @@
             android:orientation="horizontal"
             android:background="@drawable/bg_item_setting"
             android:elevation="1.5dp"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:foreground="@drawable/my_ripple"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -194,7 +204,9 @@
             android:orientation="horizontal"
             android:background="@drawable/bg_item_setting"
             android:elevation="1.5dp"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:foreground="@drawable/my_ripple"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"

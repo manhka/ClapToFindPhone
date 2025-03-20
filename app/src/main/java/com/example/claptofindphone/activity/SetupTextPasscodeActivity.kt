@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,6 +17,7 @@ import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySetupPasscodeBinding
 import com.example.claptofindphone.databinding.ActivitySetupTextPasscodeBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
@@ -31,6 +33,7 @@ class SetupTextPasscodeActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val permissionController=PermissionController()
         setupTextPasscodeActivity.edtTextPasscode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // call before text change
@@ -65,24 +68,38 @@ class SetupTextPasscodeActivity : BaseActivity() {
         }
 
         setupTextPasscodeActivity.listenButton.setOnClickListener {
-            val passcode = setupTextPasscodeActivity.edtTextPasscode.text.toString().trim()
-            textToSpeech.speak(passcode, TextToSpeech.QUEUE_FLUSH, null, null)
+            if (permissionController.isInternetAvailable(this)){
+                val passcode = setupTextPasscodeActivity.edtTextPasscode.text.toString().trim()
+                textToSpeech.speak(passcode, TextToSpeech.QUEUE_FLUSH, null, null)
+            }else{
+                Toast.makeText(
+                    this,
+                    getString(R.string.connect_internet_to_use_this_feature),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
         setupTextPasscodeActivity.saveButton.setOnClickListener {
+            if (permissionController.isInternetAvailable(this)){
+                val passcode = setupTextPasscodeActivity.edtTextPasscode.text.toString().trim()
+                SharePreferenceUtils.setVoicePasscode(passcode)
+                val intent= Intent(this,HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                Toast.makeText(
+                    this,
+                    getString(R.string.connect_internet_to_use_this_feature),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
-            val passcode = setupTextPasscodeActivity.edtTextPasscode.text.toString().trim()
-            SharePreferenceUtils.setVoicePasscode(passcode)
-            val intent= Intent(this,HomeActivity::class.java)
-            startActivity(intent)
-            finish()
         }
-
         setupTextPasscodeActivity.backButton.setOnClickListener {
             finish()
         }
-
     }
-
     override fun onStop() {
         super.onStop()
         textToSpeech.stop()

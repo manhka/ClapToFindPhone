@@ -1,7 +1,9 @@
 package com.example.claptofindphone.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,6 +26,11 @@ class StartActivity : BaseActivity() {
         startActivityBinding.startButton.setOnClickListener {
 
             val timeComeToHome= SharePreferenceUtils.getTimeComeHome()
+            if (timeComeToHome==0){
+                val intent= Intent(this,ChangeSoundActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else
             if(timeComeToHome in 1..2){
                 val intent= Intent(this,VipActivity::class.java)
                 startActivity(intent)

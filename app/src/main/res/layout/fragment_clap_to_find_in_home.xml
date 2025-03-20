@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".fragment.home.ClapToFindFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clap_to_find_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="20dp"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/round3"
@@ -30,7 +28,9 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/anim_home"
             app:lottie_renderMode="hardware"
-            app:lottie_speed="1" />
+            app:lottie_speed="1"
+
+            />
 
         <ImageView
             android:id="@+id/round2"
@@ -40,7 +40,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -55,24 +57,25 @@
             android:id="@+id/hand_clap_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:src="@drawable/hand_clap"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:padding="10dp"/>
+            android:foreground="@drawable/selected_item"
+            />
 
         <ImageView
             android:id="@+id/hand_ic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="170dp"
-            android:src="@drawable/hand"
-           app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:padding="10dp"
-            />
+            android:src="@drawable/hand"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -87,9 +90,8 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/clap_to_find_container"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

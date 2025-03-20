@@ -24,6 +24,7 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.getVoicePasscode
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
+import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateToChangePasscode
 import com.example.claptofindphone.utils.SharePreferenceUtils.isOnService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isShowVoicePasscodeDialog
 import com.example.claptofindphone.utils.SharePreferenceUtils.setIsNavigateFromSplash
@@ -58,6 +59,7 @@ class VoicePasscodeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         handleNavigationFromSplash()
         handleVoicePasscodeService()
         showFirstTimeDialog()
@@ -65,6 +67,7 @@ class VoicePasscodeFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding!!.voicePasscodeButton.setOnClickListener { v ->
+            SharePreferenceUtils.setIsNavigateToChangePasscode(true)
             val runningService = getRunningService()
             if (runningService=="") {
                 setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
@@ -89,6 +92,7 @@ class VoicePasscodeFragment : Fragment() {
     }
 
     private fun handleNavigationFromSplash() {
+        Log.d(TAG, "handleNavigationFromSplash: ${isNavigateFromSplash()}")
         if (isNavigateFromSplash()) {
             setIsNavigateFromSplash(false)
             checkPermissionToRun()
@@ -105,7 +109,9 @@ class VoicePasscodeFragment : Fragment() {
                 if (getVoicePasscode() != Constant.DEFAULT_PASSCODE) {
                     startVoicePasscodeService(Constant.Service.VOICE_PASSCODE_RUNNING)
                 } else {
-                    navigateToVoicePasscodeActivity()
+                    if (isNavigateToChangePasscode()){
+                        navigateToVoicePasscodeActivity()
+                    }
                 }
             } else {
                 showInternetRequiredToast()
@@ -136,8 +142,6 @@ class VoicePasscodeFragment : Fragment() {
         binding!!.round2.setImageResource(R.drawable.round2_active)
         Log.d(TAG, "startVoicePasscodeService:${getRunningService()} ")
         if (!isOnService()){
-            Log.d(TAG, "checkPermissionToRun: b")
-
             setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
             val intent = Intent(requireContext(), MyService::class.java)
             intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
@@ -173,9 +177,10 @@ class VoicePasscodeFragment : Fragment() {
             permissionController!!.isOverlayPermissionGranted(requireActivity())
         ) {
             if (getVoicePasscode() == Constant.DEFAULT_PASSCODE) {
-                navigateToVoicePasscodeActivity()
+                if (SharePreferenceUtils.isNavigateToChangePasscode()){
+                    navigateToVoicePasscodeActivity()
+                }
             } else {
-                Log.d(TAG, "checkPermissionToRun: a")
                 setIsOnNotify(true)
                 startVoicePasscodeService(Constant.Service.VOICE_PASSCODE_RUNNING)
             }
@@ -190,6 +195,7 @@ class VoicePasscodeFragment : Fragment() {
     }
 
     private fun navigateToVoicePasscodeActivity() {
+
         startActivity(Intent(requireContext(), VoicePasscodeActivity::class.java))
     }
 

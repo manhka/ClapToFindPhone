@@ -61,8 +61,8 @@ class MyServiceNoMicro : Service(), SensorEventListener {
                 Constant.Service.TOUCH_PHONE_RUNNING -> {
                     Log.d(TAG, "onStartCommand:TOUCH PHONE RUNNING")
                     val handler = Handler()
+                    onService()
                     val runnable = Runnable {
-                        onService()
                         mAccelerometer =
                             mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
                         mSensorManager.registerListener(
@@ -76,8 +76,9 @@ class MyServiceNoMicro : Service(), SensorEventListener {
                 Constant.Service.CHARGER_ALARM_RUNNING -> {
                     Log.d(TAG, "onStartCommand:CHARGER ALARM RUNNING")
                     val handler = Handler()
+                    onService()
                     val runnable = Runnable {
-                        onService()
+
                         val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
                         registerReceiver(batteryReceiver, intentFilter)
                         isReceiverRegistered = true
@@ -88,8 +89,8 @@ class MyServiceNoMicro : Service(), SensorEventListener {
                 Constant.Service.POCKET_MODE_RUNNING -> {
                     Log.d(TAG, "onStartCommand:POCKET MODE RUNNING")
                     val handler = Handler()
+                    onService()
                     val runnable = Runnable {
-                        onService()
                         proximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
                         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
                         lightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)

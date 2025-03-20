@@ -79,7 +79,9 @@
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewPager2_intro" />
+        app:layout_constraintTop_toBottomOf="@id/viewPager2_intro"
+        android:foreground="@drawable/my_ripple"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

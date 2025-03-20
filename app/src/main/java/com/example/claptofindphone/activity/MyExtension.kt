@@ -3,6 +3,7 @@ package com.example.claptofindphone.activity
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 fun Context.createContext(newLocale: Locale): Context = if (buildMaxVersionN()) {

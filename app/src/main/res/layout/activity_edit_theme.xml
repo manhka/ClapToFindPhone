@@ -18,7 +18,9 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:foreground="@drawable/my_ripple"
+        />
     <ImageView
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
@@ -29,7 +31,9 @@
         android:src="@drawable/edit_ic"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:foreground="@drawable/my_ripple"
+        />
 
     <TextView
         android:id="@+id/txt_edit_theme"
@@ -37,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_theme"
         android:textColor="@color/white"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_marginTop="50dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -265,5 +269,7 @@
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:foreground="@drawable/my_ripple"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
