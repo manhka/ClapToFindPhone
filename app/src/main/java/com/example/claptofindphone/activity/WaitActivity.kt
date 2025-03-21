@@ -23,11 +23,6 @@ class WaitActivity : BaseActivity() {
         waitBinding = ActivityWaitBinding.inflate(layoutInflater)
         setContentView(waitBinding.root)
         changeBackPressCallBack {  }
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
         if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
             waitBinding.txtTitleWait.text = getString(R.string.dont_touch_my_phone)

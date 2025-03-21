@@ -19,11 +19,6 @@ class InstallingLanguageActivity : BaseActivity() {
         installingLanguageBinding = ActivityInstallingLanguageBinding.inflate(layoutInflater)
         val view = installingLanguageBinding.root
         setContentView(view)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         // list of language
         val languageList = listOf(
             Constant.Country.ENGLISH,

@@ -35,12 +35,8 @@ class FoundPhoneActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         foundPhoneBinding = ActivityFoundPhoneBinding.inflate(layoutInflater)
         setContentView(foundPhoneBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_found_phone)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         changeBackPressCallBack { }
+        foundPhoneBinding.txtName.isSelected=true
         SharePreferenceUtils.setIsWaited(false)
         val typeOfService = SharePreferenceUtils.getRunningService()
         if (typeOfService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {

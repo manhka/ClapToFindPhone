@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
@@ -18,11 +19,6 @@ class HowToUseActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         howToUseBinding = ActivityHowToUseBinding.inflate(layoutInflater)
         setContentView(howToUseBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.how_to_use_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         val tabLayout = howToUseBinding.tabHowToUse
         val viewPager = howToUseBinding.viewPager2HowToUse
         val viewPagerAdapter = HowToUseAdapter(this)

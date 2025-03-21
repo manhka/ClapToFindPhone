@@ -20,11 +20,6 @@ class IntroductionActivity : BaseActivity() {
         introductionBinding=ActivityIntroductionBinding.inflate(layoutInflater)
         setContentView(introductionBinding.root)
         changeBackPressCallBack {  }
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.introduction_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         val adapter = IntroViewPagerAdapter(this)
         introductionBinding.viewPager2Intro.adapter=adapter
         introductionBinding.nextButton.setOnClickListener{

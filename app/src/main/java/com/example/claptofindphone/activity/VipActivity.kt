@@ -20,11 +20,7 @@ class VipActivity : BaseActivity() {
         }
        vipBinding=ActivityVipBinding.inflate(layoutInflater)
         setContentView(vipBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.vip_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         vipBinding.backButton.setOnClickListener {
             val intent= Intent(this,HomeActivity::class.java)
             startActivity(intent)

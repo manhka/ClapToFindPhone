@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activity.ChangeThemeActivity">
+    tools:context=".activity.ChangeThemeActivity"
+    android:splitMotionEvents="false">
 
     <ImageView
         android:id="@+id/back_button"

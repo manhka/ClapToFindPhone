@@ -11,10 +11,12 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.SoundAdapter2
@@ -38,11 +40,6 @@ class ChangeSoundActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         changeSoundBinding = ActivityChangeSoundBinding.inflate(layoutInflater)
         setContentView(changeSoundBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.custom_sound_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         if (SharePreferenceUtils.getTimeComeHome()==0){
             changeSoundBinding.backButton.visibility=View.GONE
         }else{
@@ -93,7 +90,9 @@ class ChangeSoundActivity : BaseActivity() {
         if (soundId != 1) {
             selectedSoundId = soundId
         }
-        SoundController.playSound(soundType, 30f)
+        Handler().postDelayed({
+            SoundController.playSound(soundType, 30f)
+        },300)
         changeSoundAdapter = SoundAdapter2(this, soundList, soundId) { sound ->
             selectedSoundId = sound.id
             SoundController.playSound(sound.soundType, 30f)
@@ -102,6 +101,7 @@ class ChangeSoundActivity : BaseActivity() {
         changeSoundBinding.rcvCustomSoundLayout.adapter = changeSoundAdapter
         // back button
         changeSoundBinding.backButton.setOnClickListener {
+            SoundController.stopSound()
             finish()
         }
         changeSoundBinding.onOffLayout.setOnClickListener {
@@ -109,6 +109,7 @@ class ChangeSoundActivity : BaseActivity() {
             updateOnOffToggle(soundStatus)
         }
         changeSoundBinding.saveButton.setOnClickListener {
+            SoundController.stopSound()
             SharePreferenceUtils.setTimeComeHome(1)
             SharePreferenceUtils.setSoundId(selectedSoundId)
             SharePreferenceUtils.setOnSound(soundStatus)

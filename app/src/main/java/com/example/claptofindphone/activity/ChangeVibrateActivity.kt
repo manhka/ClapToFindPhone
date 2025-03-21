@@ -32,11 +32,6 @@ class ChangeVibrateActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         changeVibrateItemBinding = ActivityChangeVibrateBinding.inflate(layoutInflater)
         setContentView(changeVibrateItemBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.change_vibrate_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
        vibrateList= InstallData.getVibrateList(this)
         // vibrate share pres
 

@@ -24,12 +24,6 @@ class ChangeThemeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         changeThemeBinding = ActivityChangeThemeBinding.inflate(layoutInflater)
         setContentView(changeThemeBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_change_theme)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
 
     }
 

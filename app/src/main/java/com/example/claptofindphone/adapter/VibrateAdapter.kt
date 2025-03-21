@@ -21,6 +21,7 @@ class VibrateAdapter(
     val context: Context,
     val vibrateList: List<Vibrate>, val onItemSelected: (Vibrate) -> Unit
 ) : RecyclerView.Adapter<VibrateAdapter.VibrateViewHolder>() {
+    var isProcessingClick = false
     val selectedVibrate = SharePreferenceUtils.getVibrateId()
     var selectedPosition = vibrateList.indexOfFirst { it.vibrateId == selectedVibrate }
 val permissionController = PermissionController()
@@ -61,6 +62,10 @@ val permissionController = PermissionController()
         }
 
         holder.itemView.setOnClickListener {
+            if (isProcessingClick) return@setOnClickListener
+
+            isProcessingClick = true
+
             VibrateController.stopVibrating()
             if (vibrate.vibratePremium != 0) {
                 if (permissionController.isInternetAvailable(context)){
@@ -88,7 +93,7 @@ val permissionController = PermissionController()
                         customDialog.dismiss()
                     }
                 }else{
-                  showCustomToast()
+                    showCustomToast()
                 }
 
             } else {
@@ -97,6 +102,14 @@ val permissionController = PermissionController()
                 notifyDataSetChanged()
 
             }
+
+            // Reset sau 500ms hoặc khi xử lý xong
+            it.postDelayed({
+                isProcessingClick = false
+            }, 500)
+
+
+
 
         }
     }

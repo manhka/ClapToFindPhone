@@ -148,7 +148,8 @@
             android:clearTaskOnLaunch="true"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
-            android:theme="@style/Theme.ClapToFindPhone"/>
+            android:theme="@style/Theme.ClapToFindPhone"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true"

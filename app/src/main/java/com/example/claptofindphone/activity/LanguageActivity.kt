@@ -29,11 +29,6 @@
             super.onCreate(savedInstanceState)
             binding = ActivityLanguageBinding.inflate(layoutInflater)
             setContentView(binding.root)
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.language_activity)) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            }
             val isNavigateFromHome = intent.getBooleanExtra("navigate_from_home", false)
             if(isNavigateFromHome){
                 changeBackPressCallBack {

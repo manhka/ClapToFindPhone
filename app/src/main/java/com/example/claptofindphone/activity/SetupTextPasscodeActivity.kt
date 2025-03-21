@@ -28,11 +28,7 @@ class SetupTextPasscodeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setupTextPasscodeActivity = ActivitySetupTextPasscodeBinding.inflate(layoutInflater)
         setContentView(setupTextPasscodeActivity.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         val permissionController=PermissionController()
         setupTextPasscodeActivity.edtTextPasscode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

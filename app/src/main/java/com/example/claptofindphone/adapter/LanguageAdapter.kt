@@ -20,7 +20,7 @@ class LanguageAdapter(
         RecyclerView.ViewHolder(binding.root) {
         var languageItemBinding: LanguageItemBinding = binding
     }
-
+    var isProcessingClick = false
     private var selectedPosition: Int = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
         // Inflating the layout and returning the ViewHolder
@@ -48,6 +48,11 @@ class LanguageAdapter(
             holder.languageItemBinding.imgViewLanguageSelected.setImageResource(R.drawable.passive_radio)
         }
         holder.itemView.setOnClickListener {
+
+            if (isProcessingClick) return@setOnClickListener
+
+            isProcessingClick = true
+
             onClickItem()
             val previousPosition = selectedPosition
             selectedPosition = position
@@ -55,6 +60,10 @@ class LanguageAdapter(
             notifyItemChanged(previousPosition)
             notifyItemChanged(selectedPosition)
 
+            // Reset sau 500ms hoặc khi xử lý xong
+            it.postDelayed({
+                isProcessingClick = false
+            }, 500)
         }
     }
     fun getSelectedLanguage(): Language? {

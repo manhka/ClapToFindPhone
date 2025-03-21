@@ -13,14 +13,16 @@
     >
 <TextView
     android:id="@+id/txt_title_wait"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/dont_touch_my_phone"
     android:textStyle="bold"
     android:textSize="24dp"
     android:gravity="center"
     android:textColor="@color/black"
-    android:layout_marginTop="40dp"/>
+    android:layout_marginTop="40dp"
+    android:layout_marginHorizontal="36dp"
+   />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -13,7 +13,7 @@ class SoundAdapter2(
     val soundList: List<Sound>,
     val selectedSoundId:Int,
     val onItemSelected: (Sound) -> Unit):RecyclerView.Adapter<SoundAdapter2.SoundHolder>() {
-
+    var isProcessingClick = false
     var selectedPosition = soundList.indexOfFirst { it.id == selectedSoundId }
     class SoundHolder(soundItemBinding: SoundItemBinding) :
         RecyclerView.ViewHolder(soundItemBinding.root) {
@@ -44,9 +44,17 @@ class SoundAdapter2(
         }
 
         holder.itemView.setOnClickListener {
+            if (isProcessingClick) return@setOnClickListener
+
+            isProcessingClick = true
+
             selectedPosition = position
             notifyDataSetChanged()
             onItemSelected(sound)
+            // Reset sau 500ms hoặc khi xử lý xong
+            it.postDelayed({
+                isProcessingClick = false
+            }, 500)
         }
     }
 }

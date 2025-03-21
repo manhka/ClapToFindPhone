@@ -33,11 +33,6 @@ class EditThemeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         editThemeBinding = ActivityEditThemeBinding.inflate(layoutInflater)
         setContentView(editThemeBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_edit_theme)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         name=SharePreferenceUtils.getName()
         phone=SharePreferenceUtils.getPhone()
@@ -68,6 +63,7 @@ class EditThemeActivity : BaseActivity() {
         // call theme
         val callTheme= intent.getSerializableExtra("call_theme") as? CallTheme
         if(callTheme!=null){
+            editThemeBinding.txtName.isSelected=true
             editThemeBinding.defaultThemeLayout.visibility = View.GONE
             editThemeBinding.callThemeLayout.visibility = View.VISIBLE
             editThemeBinding.editButton.visibility = View.VISIBLE
@@ -77,6 +73,8 @@ class EditThemeActivity : BaseActivity() {
             editThemeBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
             editThemeBinding.imgViewCallThemeRound2.setImageResource(callTheme.callThemeRound2)
             editThemeBinding.imgViewCallThemeProfile.setImageResource(callTheme.callThemeProfile)
+            editThemeBinding.rejectButton.setImageResource(callTheme.callThemeReject)
+            editThemeBinding.responseButton.setImageResource(callTheme.callThemeResponse)
             if (name!=""){
                 editThemeBinding.txtName.text=name
             }

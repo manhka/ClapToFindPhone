@@ -15,11 +15,7 @@ class LoadScreenActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         changeBackPressCallBack {  }
         setContentView(R.layout.activity_load_screen)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         val isFromFoundPhone = SharePreferenceUtils.isFoundPhone()
         if (isFromFoundPhone) {
             val intent = Intent(this, FoundPhoneActivity::class.java)

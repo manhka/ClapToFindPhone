@@ -21,11 +21,7 @@ class SettingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         settingActivityBinding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(settingActivityBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         settingActivityBinding.languageButton.setOnClickListener {
             val intent = Intent(this, LanguageActivity::class.java)
             intent.putExtra("navigate_from_home", true)

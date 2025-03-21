@@ -5,55 +5,60 @@
     android:id="@+id/how_to_use_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.HowToUseActivity"
     android:background="@color/white"
-    >
-<ImageView
-    android:id="@+id/back_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/back_ic"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:padding="4dp"
-    android:layout_marginStart="12dp"
-    android:layout_marginTop="48dp"
-    android:foreground="@drawable/my_ripple"
-    />
+    tools:context=".activity.HowToUseActivity"
+    android:splitMotionEvents="false">
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
+        android:foreground="@drawable/my_ripple"
+        android:padding="4dp"
+        android:src="@drawable/back_ic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txt_how_to_use"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/black"
-        android:text="@string/how_to_use"
-        android:textStyle="bold"
         android:layout_marginTop="50dp"
+        android:text="@string/how_to_use"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-         />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_how_to_use"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_how_to_use"
-        app:tabMode="scrollable"
-        android:background="@color/white"
         app:tabIndicatorColor="@color/blue"
-        app:tabTextColor="@color/black"/>
+        app:tabMode="scrollable"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabBackground="@color/white"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/black"
+        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2_how_to_use"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_how_to_use"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="16dp"/>
+        app:layout_constraintTop_toBottomOf="@id/tab_how_to_use" />
 </androidx.constraintlayout.widget.ConstraintLayout>

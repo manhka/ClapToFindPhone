@@ -37,6 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/txt_clap1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
@@ -51,18 +52,18 @@
                 android:id="@+id/tap_to_active"
                 android:layout_width="104dp"
                 android:layout_height="106dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="32dp"
                 android:src="@drawable/tap_to_active"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/power_button" />
+                app:layout_constraintTop_toBottomOf="@id/txt_clap1" />
 
             <ImageView
                 android:id="@+id/clap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/ic_clapping_noti"
+                android:src="@drawable/ic_clapping"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tap_to_active" />
 
@@ -79,6 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tap_to_active" />
 
             <TextView
+                android:id="@+id/txt_clap2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
@@ -96,11 +98,11 @@
                 android:id="@+id/hand_clap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="32dp"
                 android:src="@drawable/clap_hand_htu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/clap" />
+                app:layout_constraintTop_toBottomOf="@id/txt_clap2" />
 
             <ImageView
                 android:id="@+id/phone"
@@ -124,6 +126,7 @@
                 app:layout_constraintTop_toBottomOf="@id/hand_clap" />
 
             <TextView
+                android:id="@+id/txt_clap3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
@@ -140,11 +143,11 @@
                 android:id="@+id/phone_detect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="32dp"
                 android:src="@drawable/phone_detect"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone" />
+                app:layout_constraintTop_toBottomOf="@id/txt_clap3" />
 
             <ImageView
                 android:id="@+id/setting"
@@ -168,6 +171,7 @@
                 app:layout_constraintTop_toBottomOf="@id/phone_detect" />
 
             <TextView
+                android:id="@+id/txt_clap4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
@@ -185,9 +189,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/detect_setting"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/setting" />
+                app:layout_constraintTop_toBottomOf="@id/txt_clap4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

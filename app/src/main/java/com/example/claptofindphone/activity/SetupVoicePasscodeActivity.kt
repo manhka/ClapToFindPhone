@@ -35,11 +35,6 @@ class SetupVoicePasscodeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setupPasscodeBinding = ActivitySetupPasscodeBinding.inflate(layoutInflater)
         setContentView(setupPasscodeBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.setup_voice_passcode_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         val permissionController = PermissionController()
         passcode = SharePreferenceUtils.getVoicePasscode()
         setupPasscodeBinding.micButton.setOnClickListener {

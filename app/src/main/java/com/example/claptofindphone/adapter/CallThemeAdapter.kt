@@ -46,6 +46,7 @@ class CallThemeAdapter(val context: Context,
         holder.callThemeItemBinding.profileCallTheme.setImageResource(callThemeItem.callThemeProfile)
         holder.callThemeItemBinding.rejectCallThemeButton.setImageResource(callThemeItem.callThemeReject)
         holder.callThemeItemBinding.responseCallThemeButton.setImageResource(callThemeItem.callThemeResponse)
+        holder.callThemeItemBinding.txtName.isSelected=true
         if (name==""){
             holder.callThemeItemBinding.txtName.text=context.getString(R.string.name)
 

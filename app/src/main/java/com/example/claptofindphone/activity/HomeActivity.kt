@@ -53,11 +53,6 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.home_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         changeBackPressCallBack {
             val dialogBinding = ExitDialogBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root

@@ -18,11 +18,7 @@ class StartActivity : BaseActivity() {
         changeBackPressCallBack {  }
         startActivityBinding= ActivityStartBinding.inflate(layoutInflater)
         setContentView(startActivityBinding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.start_activity)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         startActivityBinding.startButton.setOnClickListener {
 
             val timeComeToHome= SharePreferenceUtils.getTimeComeHome()

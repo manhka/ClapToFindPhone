@@ -2,12 +2,15 @@ package com.example.claptofindphone.activity
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 
 import androidx.work.OneTimeWorkRequestBuilder
@@ -32,7 +35,6 @@ private var isVoicePasscode=false
         if (isNotificationEnabled(this)) {
             showAlarmNotification()
         }
-
         val modeFromNoty = intent.getStringExtra("mode")
         var navigateFromOffNoty = false
         when (modeFromNoty) {

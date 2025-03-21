@@ -17,7 +17,7 @@ class SoundAdapter(
     private val context: Context,
     private val soundList: List<Sound>) :
     RecyclerView.Adapter<SoundAdapter.SoundHolder>() {
-
+    var isProcessingClick = false
     val selectedSoundId = SharePreferenceUtils.getSoundId()
     var selectedPosition = soundList.indexOfFirst { it.id == selectedSoundId }
     class SoundHolder(soundItemBinding: SoundItemBinding) :
@@ -46,10 +46,21 @@ class SoundAdapter(
             holder.soundItemBinding.customSoundBtn.setBackgroundResource(R.drawable.bg_sound_passive)
         }
         holder.itemView.setOnClickListener{
+            if (isProcessingClick) return@setOnClickListener
+
+            isProcessingClick = true
+
             val intent= Intent(context,ChangeSoundActivity::class.java)
             intent.putExtra("sound_type",sound.soundType)
             intent.putExtra("sound_id",sound.id)
             context.startActivity(intent)
+
+            // Reset sau 500ms hoặc khi xử lý xong
+            it.postDelayed({
+                isProcessingClick = false
+            }, 500)
+
         }
     }
+
 }
