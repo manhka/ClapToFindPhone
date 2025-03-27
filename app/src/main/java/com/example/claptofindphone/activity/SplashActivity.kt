@@ -21,6 +21,7 @@ import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.noti.AlarmWorkerNeko2
 import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.MyServiceNoMicro
+import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
 private var isVoicePasscode=false
+    private val permissionController=PermissionController()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         changeBackPressCallBack { }
@@ -86,11 +88,14 @@ private var isVoicePasscode=false
                 lifecycleScope.launchWhenResumed {
                     if (navigateFromOffNoty) {
                         if (SharePreferenceUtils.isNavigateToChangePasscode() && isVoicePasscode){
-                            navigateToChangePasscode()
+                            if (permissionController.isInternetAvailable(this@SplashActivity) && checkPermission()){
+                                navigateToChangePasscode()
+                            }else{
+                                navigateToHome()
+                            }
                         }else{
                             navigateToHome()
                         }
-
                     } else {
                         navigate()
                     }
@@ -214,5 +219,8 @@ private var isVoicePasscode=false
             true
         }
     }
-
+    private fun checkPermission(): Boolean {
+        return permissionController.hasAudioPermission(this) &&
+                permissionController.isOverlayPermissionGranted(this)
+    }
 }

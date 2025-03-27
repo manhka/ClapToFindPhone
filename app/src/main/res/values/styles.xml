@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="TabLayoutTextStyle">
-        <item name="android:textSize">16sp</item>
+    <style name="TabLayoutTextStyle" >
+        <item name="android:textSize">16dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>

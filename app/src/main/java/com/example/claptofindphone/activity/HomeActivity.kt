@@ -21,8 +21,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.claptofindphone.R
@@ -53,6 +51,9 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
+        if (SharePreferenceUtils.isShowRateDialog() == 0) {
+            SharePreferenceUtils.setIsShowRateDialog(1)
+        }
         changeBackPressCallBack {
             val dialogBinding = ExitDialogBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root
@@ -221,7 +222,7 @@ class HomeActivity : BaseActivity() {
         }
 
         // show rate dialog after first time use service
-        if (SharePreferenceUtils.isShowRateDialog() == 1) {
+        if (SharePreferenceUtils.isShowRateDialog() == 2) {
             val dialogBinding = DialogRateUsBinding.inflate(layoutInflater)
             // Create an AlertDialog with the inflated ViewBinding root
             val customDialog = AlertDialog.Builder(this)
@@ -232,7 +233,7 @@ class HomeActivity : BaseActivity() {
             customDialog.show()
 
             dialogBinding.yesButton.setOnClickListener {
-                SharePreferenceUtils.setIsShowRateDialog(2)
+                SharePreferenceUtils.setIsShowRateDialog(3)
                 customDialog.dismiss()
             }
             dialogBinding.noButton.setOnClickListener {
@@ -240,16 +241,15 @@ class HomeActivity : BaseActivity() {
                 customDialog.dismiss()
             }
             dialogBinding.exitButton.setOnClickListener {
+                SharePreferenceUtils.setIsShowRateDialog(1)
                 customDialog.dismiss()
             }
 
         }
     }
 
-
     override fun onResume() {
         super.onResume()
-
         startDiamondAnimation(homeBinding.imgViewDiamond)
         if (SharePreferenceUtils.isShowNotyWhenComeToHome()) {
             if (checkNotificationPermission(this)) {
@@ -336,5 +336,6 @@ class HomeActivity : BaseActivity() {
 
         animatorSet.start()
     }
+
 }
 

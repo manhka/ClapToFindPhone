@@ -50,11 +50,15 @@ object MyNotification {
         customView_big.setOnClickPendingIntent(R.id.big_custom_notify2_on, pendingIntent)
         customView_small.setOnClickPendingIntent(R.id.custom_notify2_on, pendingIntent)
         customView_big.setOnClickPendingIntent(R.id.power_button_noti, pendingIntent)
-
+        val iconRes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            R.drawable.logo2 // icon cho Android 13 trở lên
+        } else {
+            R.mipmap.ic_launcher// icon cho Android thấp hơn
+        }
         // Build and return the notification
         return NotificationCompat.Builder(context, Constant.Notification.CHANNEL_ID)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(iconRes)
             .setCustomContentView(customView_small)
             .setCustomBigContentView(customView_big)
             .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -303,9 +307,14 @@ object MyNotification {
                 )
             )
         }
+        val iconRes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            R.drawable.logo2 // icon cho Android 13 trở lên
+        } else {
+            R.mipmap.ic_launcher// icon cho Android thấp hơn
+        }
         // Build and return the notification
         return NotificationCompat.Builder(context, Constant.Notification.CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(iconRes)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(customView2).setCustomBigContentView(customView)
             .setContentTitle("Clap to find phone")
@@ -324,7 +333,7 @@ object MyNotification {
         // Tạo lại thông báo với PendingIntent đã thay đổi
         val notification = NotificationCompat.Builder(context, Constant.Notification.CHANNEL_ID)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.logo2)
             .setCustomContentView(customView_small).setCustomBigContentView(customView_big)
             .setPriority(NotificationCompat.PRIORITY_LOW).setOngoing(true).setSound(null)
             .setVibrate(null).build()

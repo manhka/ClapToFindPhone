@@ -19,8 +19,10 @@ import com.example.claptofindphone.databinding.FragmentDontTouchMyPhoneInHomeBin
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
+import com.example.claptofindphone.utils.SharePreferenceUtils
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
+import com.example.claptofindphone.utils.SharePreferenceUtils.isOnService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isShowTouchPhoneDialog
 import com.example.claptofindphone.utils.SharePreferenceUtils.isWaited
 import com.example.claptofindphone.utils.SharePreferenceUtils.setIsNavigateFromSplash
@@ -32,7 +34,6 @@ import com.example.claptofindphone.utils.SharePreferenceUtils.setRunningService
 
 class DontTouchMyPhoneFragment : Fragment() {
     private var binding: FragmentDontTouchMyPhoneInHomeBinding? = null
-    private var isOnWaitActivity = false
     private var anim: ScaleAnimation? = null
     private var permissionController: PermissionController? = null
 
@@ -51,45 +52,36 @@ class DontTouchMyPhoneFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("DontTouchMyPhone", "onViewCreated")
         setupAnimation()
-        setupClickListeners()
+        binding!!.touchPhoneButton.setOnClickListener { v -> handleTouchPhoneButtonClick() }
     }
 
-    private fun setupClickListeners() {
-        binding!!.touchPhoneButton.setOnClickListener { v ->
-            setOpenHomeFragment(Constant.Service.DONT_TOUCH_MY_PHONE)
-            val runningService = getRunningService()
-            if (runningService == "") {
-                checkPermissionToRun()
-            } else if (runningService != Constant.Service.TOUCH_PHONE_RUNNING) {
-                Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
-                    .show()
+    private fun handleTouchPhoneButtonClick() {
+        setOpenHomeFragment(Constant.Service.DONT_TOUCH_MY_PHONE)
+        val runningService = getRunningService()
+        if (runningService == "") {
+            if (permissionController!!.isOverlayPermissionGranted(requireActivity())) {
+                onService(Constant.Service.TOUCH_PHONE_RUNNING)
             } else {
-                deactivateService()
+                requestPermission()
             }
+        } else if (runningService != Constant.Service.TOUCH_PHONE_RUNNING) {
+            Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
+                .show()
+        } else {
+            stopService()
         }
-    }
-
-    private fun deactivateService() {
-        binding!!.txtActionStatus.setText(R.string.tap_to_active)
-        binding!!.handIc.visibility = View.VISIBLE
-        binding!!.round2.setImageResource(R.drawable.round2_passive)
-        binding!!.handIc.startAnimation(anim)
-
-        setRunningService("")
-        setIsWaited(false)
-
-        val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
-        requireContext().stopService(intent)
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume: ")
         if (isNavigateFromSplash()) {
             setIsNavigateFromSplash(false)
-            checkPermissionToRun()
+            if (permissionController!!.isOverlayPermissionGranted(requireActivity())) {
+                onService(Constant.Service.TOUCH_PHONE_RUNNING)
+            } else {
+                requestPermission()
+            }
         } else {
             handleServiceState()
             showFirstTimeDialog()
@@ -98,15 +90,60 @@ class DontTouchMyPhoneFragment : Fragment() {
 
     private fun handleServiceState() {
         val runningService = getRunningService()
-        if (runningService=="") {
+        if (runningService == "") {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.DONT_TOUCH_MY_PHONE)
         } else if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
-            Log.d(TAG, "handleServiceState: ")
-            onService(runningService)
+            if (permissionController!!.isOverlayPermissionGranted(requireActivity())) {
+                onService(Constant.Service.TOUCH_PHONE_RUNNING)
+            } else {
+                if (isOnService()) {
+                    stopService()
+                }
+            }
         } else {
             binding!!.handIc.startAnimation(anim)
         }
+    }
+
+
+    private fun onService(runningService: String) {
+        stopAnimation()
+        binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
+        binding!!.handIc.visibility = View.GONE
+        binding!!.round2.setImageResource(R.drawable.round2_active)
+        if (!isWaited()) {
+           setRunningService(runningService)
+            setIsWaited(true)
+            val intentService = Intent(requireContext(), MyServiceNoMicro::class.java)
+            intentService.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
+            requireContext().startService(intentService)
+            val intent = Intent(
+                requireContext(),
+                WaitActivity::class.java
+            )
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
+            startActivity(intent)
+        }
+    }
+
+    private fun stopService() {
+        binding!!.txtActionStatus.setText(R.string.tap_to_active)
+        binding!!.handIc.visibility = View.VISIBLE
+        binding!!.round2.setImageResource(R.drawable.round2_passive)
+        binding!!.handIc.startAnimation(anim)
+        setIsWaited(false)
+        val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
+        requireContext().stopService(intent)
+    }
+
+    private fun requestPermission() {
+        permissionController!!.showInitialDialog(
+            requireActivity(),
+            Constant.Permission.OVERLAY_PERMISSION,
+            Constant.Service.DONT_TOUCH_MY_PHONE,
+            Constant.Service.TOUCH_PHONE_RUNNING
+        )
     }
 
     private fun showFirstTimeDialog() {
@@ -125,27 +162,6 @@ class DontTouchMyPhoneFragment : Fragment() {
         }
     }
 
-    private fun onService(runningService: String) {
-        stopAnimation()
-        Log.d(TAG, "onService: abc")
-        binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
-        binding!!.handIc.visibility = View.GONE
-        binding!!.round2.setImageResource(R.drawable.round2_active)
-        Log.d(TAG, "onService: ${isWaited()}")
-        if (isWaited()) {
-            setIsWaited(false)
-            val intentService = Intent(requireContext(), MyServiceNoMicro::class.java)
-            intentService.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
-            requireContext().startService(intentService)
-            val intent = Intent(
-                requireContext(),
-                WaitActivity::class.java
-            )
-            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
-            startActivity(intent)
-        }
-    }
-
     private fun setupAnimation() {
         anim = ScaleAnimation(
             1.0f, 1.3f, 1.0f, 1.3f,
@@ -159,23 +175,5 @@ class DontTouchMyPhoneFragment : Fragment() {
 
     private fun stopAnimation() {
         if (anim != null) anim!!.cancel()
-    }
-
-    private fun checkPermissionToRun() {
-        if (permissionController!!.isOverlayPermissionGranted(requireActivity())) {
-            if (!isWaited()) {
-                setIsWaited(true)
-            }
-            setRunningService(Constant.Service.TOUCH_PHONE_RUNNING)
-            setIsOnNotify(true)
-            onService(Constant.Service.TOUCH_PHONE_RUNNING)
-        } else {
-            permissionController!!.showInitialDialog(
-                requireActivity(),
-                Constant.Permission.OVERLAY_PERMISSION,
-                Constant.Service.DONT_TOUCH_MY_PHONE,
-                Constant.Service.TOUCH_PHONE_RUNNING
-            )
-        }
     }
 }

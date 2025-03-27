@@ -18,9 +18,10 @@ class StartActivity : BaseActivity() {
         changeBackPressCallBack {  }
         startActivityBinding= ActivityStartBinding.inflate(layoutInflater)
         setContentView(startActivityBinding.root)
-
         startActivityBinding.startButton.setOnClickListener {
-
+            if (SharePreferenceUtils.isShowRateDialog() == 1) {
+                SharePreferenceUtils.setIsShowRateDialog(2)
+            }
             val timeComeToHome= SharePreferenceUtils.getTimeComeHome()
             if (timeComeToHome==0){
                 val intent= Intent(this,ChangeSoundActivity::class.java)

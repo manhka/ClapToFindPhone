@@ -5,11 +5,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".activity.GrantPermissionActivity"
     android:fitsSystemWindows="true"
-    android:splitMotionEvents="false">
+    android:orientation="vertical"
+    android:splitMotionEvents="false"
+    tools:context=".activity.GrantPermissionActivity">
 
 
     <ImageView
@@ -17,22 +17,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="35dp"
+        android:foreground="@drawable/my_ripple"
         android:padding="4dp"
         android:src="@drawable/back_ic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:foreground="@drawable/my_ripple"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/grant_permission"
+        android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/back_btn_in_grant_permission" />
@@ -42,123 +41,123 @@
         android:id="@+id/txt_permission_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
-        android:textColor="@color/black"
+        android:layout_marginTop="16dp"
         android:text="@string/grant_permission_sub_tittle"
+        android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_btn_in_grant_permission" />
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/record_permission_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_passive_item"
+        android:elevation="1dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_permission_hint">
 
-        <RelativeLayout
-            android:id="@+id/record_permission_layout"
+        <TextView
+            android:id="@+id/txt_record_permission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_passive_item"
-            android:layout_margin="16dp"
+            android:text="@string/recording_permission"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_permission_hint"
-            android:paddingVertical="12dp"
-            android:paddingHorizontal="16dp"
-            android:elevation="1dp"
-            >
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txt_record_permission"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintDimensionRatio="202:22"
-                android:text="@string/recording_permission"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_alignParentStart="true"
-                />
+        <TextView
+            android:id="@+id/txt_content_record_permission"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/recording_sub"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_allow_recording_permission"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_record_permission"
+            android:layout_marginEnd="16dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/recording_sub"
-                android:textSize="14dp"
-                android:maxLines="2"
-                android:textColor="@color/black"
-                android:layout_below="@id/txt_record_permission"
-                android:layout_marginEnd="110dp"
-                android:layout_alignParentStart="true"
-                 />
-
-            <TextView
-                android:id="@+id/btn_allow_recording_permission"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_btn_allow"
-                android:text="@string/allow"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="10dp"
-                android:layout_alignParentEnd="true"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:foreground="@drawable/my_ripple"
-
-                />
-
-        </RelativeLayout>
-
-
-
-        <RelativeLayout
-            android:id="@+id/overlay_permission_layout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/btn_allow_recording_permission"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="12dp"
-            android:paddingHorizontal="16dp"
-            android:elevation="1dp"
-            android:background="@drawable/bg_passive_item"
-            android:layout_margin="16dp"
+            android:background="@drawable/bg_btn_allow"
+            android:foreground="@drawable/my_ripple"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:text="@string/allow"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/overlay_permission_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_passive_item"
+        android:elevation="1dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/record_permission_layout">
+
+        <TextView
+            android:id="@+id/txt_overlay_permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overlay_permission"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt_overlay_permission_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_overlay_permission"
+            android:layout_marginEnd="16dp"
+            android:text="@string/overlay_permission_sub"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_allow_overlay_permission"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/record_permission_layout">
+            app:layout_constraintTop_toBottomOf="@id/txt_overlay_permission" />
 
-            <TextView
-                android:id="@+id/txt_overlay_permission"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="@string/overlay_permission"
-                android:textSize="16dp"
-                android:textStyle="bold"
-              />
-
-            <TextView
-                android:id="@+id/txt_overlay_permission_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/overlay_permission_sub"
-                android:textSize="14dp"
-                android:textColor="@color/black"
-                android:layout_marginEnd="110dp"
-                android:layout_below="@id/txt_overlay_permission"
-                 />
-
-            <TextView
-                android:id="@+id/btn_allow_overlay_permission"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_btn_allow"
-                android:text="@string/allow"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="10dp"
-                android:layout_alignParentEnd="true"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:foreground="@drawable/my_ripple"
-                />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/btn_allow_overlay_permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_btn_allow"
+            android:foreground="@drawable/my_ripple"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:text="@string/allow"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
@@ -169,14 +168,13 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_btn_grey2"
-        android:text="@string/continuee"
-        android:textSize="16dp"
-        android:paddingVertical="14dp"
-        android:paddingHorizontal="16dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
         android:foreground="@drawable/my_ripple"
-        app:layout_constraintTop_toBottomOf="@id/overlay_permission_layout"
-         />
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp"
+        android:text="@string/continuee"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/overlay_permission_layout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

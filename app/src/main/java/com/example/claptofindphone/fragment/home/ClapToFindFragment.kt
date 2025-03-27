@@ -25,8 +25,6 @@ import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSpla
 import com.example.claptofindphone.utils.SharePreferenceUtils.isOnService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isShowClapAndWhistleDialog
 import com.example.claptofindphone.utils.SharePreferenceUtils.setIsNavigateFromSplash
-import com.example.claptofindphone.utils.SharePreferenceUtils.setIsOnNotify
-import com.example.claptofindphone.utils.SharePreferenceUtils.setIsOnService
 import com.example.claptofindphone.utils.SharePreferenceUtils.setIsShowClapAndWhistleDialog
 import com.example.claptofindphone.utils.SharePreferenceUtils.setOpenHomeFragment
 import com.example.claptofindphone.utils.SharePreferenceUtils.setRunningService
@@ -57,29 +55,41 @@ class ClapToFindFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (isNavigateFromSplash()) {
-            setIsNavigateFromSplash(false)
-            checkPermissionToRun()
+        if (checkPermission()) {
+            if (isNavigateFromSplash()) {
+                setIsNavigateFromSplash(false)
+                onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
+            } else {
+                handleServiceState()
+                showClapAndWhistleDialog()
+            }
         } else {
-            handleServiceState()
-            showClapAndWhistleDialog()
+            if (isOnService()) {
+                stopService()
+            } else {
+                if (isNavigateFromSplash()) {
+                    setIsNavigateFromSplash(false)
+                    requestPermission()
+                }
+            }
+
         }
     }
 
     private fun handleClapButtonClick() {
         setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
         val runningService = getRunningService()
-        if (runningService=="") {
-            checkPermissionToRun()
-        } else if (runningService != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-            if (isOnService()){
-                checkPermissionToRun()
-            }else{
-                Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
-                    .show()
+        if (runningService == "") {
+            if (checkPermission()) {
+                onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
+            } else {
+                requestPermission()
             }
+        } else if (runningService != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+            Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
+                .show()
         } else {
-            if (isOnService()){
+            if (isOnService()) {
                 stopService()
             }
         }
@@ -87,7 +97,6 @@ class ClapToFindFragment : Fragment() {
 
     private fun stopService() {
         setRunningService("")
-        setIsOnService(false)
         binding!!.txtActionStatus.setText(R.string.tap_to_active)
         binding!!.handIc.visibility = View.VISIBLE
         binding!!.round2.setImageResource(R.drawable.round2_passive)
@@ -101,8 +110,8 @@ class ClapToFindFragment : Fragment() {
         binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
         binding!!.handIc.visibility = View.GONE
         binding!!.round2.setImageResource(R.drawable.round2_active)
-        if (!isOnService()){
-            setRunningService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
+        if (!isOnService()) {
+            setRunningService(runningService)
             val intent = Intent(requireContext(), MyService::class.java)
             intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             requireContext().startService(intent)
@@ -132,7 +141,7 @@ class ClapToFindFragment : Fragment() {
 
     private fun handleServiceState() {
         val isOnClapService = getRunningService()
-        if (isOnClapService=="") {
+        if (isOnClapService == "") {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
         } else if (isOnClapService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
@@ -158,20 +167,18 @@ class ClapToFindFragment : Fragment() {
         }
     }
 
-    private fun checkPermissionToRun() {
-        if (permissionController!!.hasAudioPermission(requireActivity()) && permissionController!!.isOverlayPermissionGranted(
-                requireActivity()
-            )
-        ) {
-            setIsOnNotify(true)
-            onService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
-        } else {
-            permissionController!!.showInitialDialog(
-                requireActivity(),
-                Constant.Permission.BOTH_PERMISSION,
-                Constant.Service.CLAP_TO_FIND_PHONE,
-                Constant.Service.CLAP_AND_WHISTLE_RUNNING
-            )
-        }
+    private fun checkPermission(): Boolean {
+        return permissionController!!.hasAudioPermission(requireActivity()) && permissionController!!.isOverlayPermissionGranted(
+            requireActivity()
+        )
+    }
+
+    private fun requestPermission() {
+        permissionController!!.showInitialDialog(
+            requireActivity(),
+            Constant.Permission.BOTH_PERMISSION,
+            Constant.Service.CLAP_TO_FIND_PHONE,
+            Constant.Service.CLAP_AND_WHISTLE_RUNNING
+        )
     }
 }

@@ -3,6 +3,7 @@ package com.example.claptofindphone.activity
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -43,11 +44,17 @@ class ChangeVibrateActivity : BaseActivity() {
         InstallData.getVibrateList(this)
         var selectedPosition = vibrateList.indexOfFirst { it.vibrateId == selectedVibrateId }
         val vibrate = vibrateList[selectedPosition]
-        VibrateController.startPattern(vibrate.vibrateMode, 3000)
+        Handler().postDelayed({
+            VibrateController.startPattern(vibrate.vibrateMode, 3000)
+
+        },300L)
         changeVibrateItemBinding.rcvChangeVibrate.layoutManager = GridLayoutManager(this, 2)
         vibrateAdapter = VibrateAdapter(this, vibrateList) { vibrate ->
             selectedVibrateId = vibrate.vibrateId
-            VibrateController.startPattern(vibrate.vibrateMode, 3000)
+            Handler().postDelayed({
+                VibrateController.startPattern(vibrate.vibrateMode, 3000)
+
+            },300L)
         }
         changeVibrateItemBinding.txtCustomVibrate.isSelected = true
         changeVibrateItemBinding.rcvChangeVibrate.adapter = vibrateAdapter

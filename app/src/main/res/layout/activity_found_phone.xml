@@ -5,7 +5,7 @@
     android:id="@+id/activity_found_phone"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_call_theme1"
+    android:background="@drawable/bg_call_theme3"
     tools:context=".activity.FoundPhoneActivity">
 
     <TextView
@@ -23,132 +23,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/round4"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/df_theme_lottie"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/round4_df_theme1"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
-
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/anim_df_lottie1"
+        app:lottie_renderMode="hardware"
+        app:lottie_speed="1" />
     <ImageView
-        android:id="@+id/round3"
+        android:id="@+id/bell_default_theme"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/round3_theme_df1"
         android:visibility="gone"
+        app:layout_constraintWidth_percent="0.8"
+        android:src="@drawable/bell_default_theme1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.65" />
-
-    <ImageView
-        android:id="@+id/round2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/round2_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.55" />
-
-    <ImageView
-        android:id="@+id/round_center"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/round_center_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.45" />
-
-    <ImageView
-        android:id="@+id/notify_bell"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/bell_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.23" />
-
-    <ImageView
-        android:id="@+id/small_left_df_theme"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/small_left_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.1" />
-
-    <ImageView
-        android:id="@+id/big_left_df_theme"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/big_left_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.15" />
-
-    <ImageView
-        android:id="@+id/small_right_df_theme"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/small_right_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.1" />
-
-    <ImageView
-        android:id="@+id/big_right_df_theme"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/big_right_theme_df1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.15" />
-
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/i_found_it_button"
         android:layout_width="wrap_content"
@@ -169,44 +69,23 @@
 
     <!--    call theme-->
 
-    <ImageView
-        android:id="@+id/imgView_call_theme_round2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="130dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/call_theme_round2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/txt_title_found_phone"
-        app:layout_constraintWidth_percent="0.6" />
 
-    <ImageView
-        android:id="@+id/imgView_call_theme_round1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/call_theme_round1"
-        app:layout_constraintBottom_toBottomOf="@id/imgView_call_theme_round2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgView_call_theme_round2"
-        app:layout_constraintWidth_percent="0.5" />
 
-    <ImageView
-        android:id="@+id/imgView_call_theme_profile"
-        android:layout_width="0dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/call_theme_lottie"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/profile_circle"
-        app:layout_constraintBottom_toBottomOf="@id/imgView_call_theme_round1"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgView_call_theme_round1"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/anim_avatar"
+        app:lottie_renderMode="hardware"
+        app:lottie_speed="1" />
 
     <TextView
         android:id="@+id/txt_name"
@@ -225,7 +104,8 @@
         android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgView_call_theme_round1" />
+        app:layout_constraintTop_toBottomOf="@id/call_theme_lottie"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/txt_phone"
@@ -238,34 +118,39 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_name" />
+        app:layout_constraintTop_toBottomOf="@id/txt_name"
+        android:visibility="gone"/>
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/reject_button"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="50dp"
-        android:src="@drawable/call_end_ic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.3"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="28dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/call_end"
+        app:lottie_renderMode="hardware"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="50dp"
-        app:layout_constraintWidth_percent="0.2"
-        android:foreground="@drawable/my_ripple"
-        />
-
-    <ImageView
+        app:lottie_speed="1" />
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/response_button"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="50dp"
-        android:src="@drawable/call_ic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.3"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="28dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/call"
+        app:lottie_renderMode="hardware"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="50dp"
-        app:layout_constraintWidth_percent="0.2"
-        android:foreground="@drawable/my_ripple"
-        />
+        app:lottie_speed="1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

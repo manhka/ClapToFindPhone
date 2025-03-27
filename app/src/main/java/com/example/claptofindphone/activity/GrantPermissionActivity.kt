@@ -43,6 +43,7 @@ class GrantPermissionActivity : BaseActivity() {
             permissionController.requestOverlayPermission(this)
         }
         grantPermissionBinding.backBtnInGrantPermission.setOnClickListener {
+            SharePreferenceUtils.setRunningService("")
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
@@ -76,9 +77,8 @@ class GrantPermissionActivity : BaseActivity() {
         }
         grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
             val typeOfRunningService=intent.getStringExtra("typeOfRunningService")
-
              if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING && typeOfRunningService!=""){
-                SharePreferenceUtils.setIsWaited(true)
+                SharePreferenceUtils.setIsWaited(false)
             }
             SharePreferenceUtils.setRunningService(typeOfRunningService!!)
             if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING || typeOfRunningService==""){

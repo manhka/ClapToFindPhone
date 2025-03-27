@@ -22,6 +22,9 @@ import com.example.claptofindphone.activity.buildMinVersion34
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.noti.MyNotification
 import com.example.claptofindphone.utils.SharePreferenceUtils
+import com.example.claptofindphone.utils.SharePreferenceUtils.isWaited
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsOnService
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsWaited
 import kotlin.math.acos
 import kotlin.math.sqrt
 
@@ -54,12 +57,14 @@ class MyServiceNoMicro : Service(), SensorEventListener {
             val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE).toString()
             when (runningService) {
                 Constant.Service.TURN_OFF_SOUND -> {
+
                     WakeupPhone.turnOffEffects()
                     stopSelf()
                 }
 
                 Constant.Service.TOUCH_PHONE_RUNNING -> {
                     Log.d(TAG, "onStartCommand:TOUCH PHONE RUNNING")
+                    setIsOnService(true)
                     val handler = Handler()
                     onService()
                     val runnable = Runnable {
@@ -75,6 +80,7 @@ class MyServiceNoMicro : Service(), SensorEventListener {
 
                 Constant.Service.CHARGER_ALARM_RUNNING -> {
                     Log.d(TAG, "onStartCommand:CHARGER ALARM RUNNING")
+                    setIsOnService(true)
                     val handler = Handler()
                     onService()
                     val runnable = Runnable {
@@ -88,6 +94,7 @@ class MyServiceNoMicro : Service(), SensorEventListener {
 
                 Constant.Service.POCKET_MODE_RUNNING -> {
                     Log.d(TAG, "onStartCommand:POCKET MODE RUNNING")
+                    setIsOnService(true)
                     val handler = Handler()
                     onService()
                     val runnable = Runnable {
@@ -188,6 +195,7 @@ class MyServiceNoMicro : Service(), SensorEventListener {
                 rl = event.values[0]
             }
 
+
             if (rp != -1f && rl != -1f && inclination != -1) {
                 detectPocketMode(rp, rl, g, inclination)
             }
@@ -206,7 +214,7 @@ class MyServiceNoMicro : Service(), SensorEventListener {
                 )
                 val currentTime = System.currentTimeMillis()
                 Log.d(TAG, "onSensorChanged: ${acceleration}")
-                if (acceleration > 10.1f && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
+                if (acceleration > 10.4f && currentTime - mLastShakeTime > SHAKE_THRESHOLD) {
                     mLastShakeTime = currentTime
                     WakeupPhone.foundPhone(this@MyServiceNoMicro)
                     unRegisterSensor()
@@ -237,20 +245,28 @@ class MyServiceNoMicro : Service(), SensorEventListener {
 
 private fun unRegisterSensor(){
     if (proximitySensor != null) {
+        Log.d(TAG, "unRegisterSensor: proximitySensor")
         mSensorManager.unregisterListener(this, proximitySensor)
     }
     if (mAccelerometer != null) {
+        Log.d(TAG, "unRegisterSensor: mAccelerometer")
+
         mSensorManager.unregisterListener(this, mAccelerometer)
     }
     if (lightSensor != null) {
+        Log.d(TAG, "unRegisterSensor: lightSensor")
+
         mSensorManager.unregisterListener(this, lightSensor)
     }
 }
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy: ")
+        Log.d(TAG, "===================================>onDestroy: ")
+        if (isWaited()) {
+            setIsWaited(false)
+        }
         SharePreferenceUtils.setRunningService("")
-        SharePreferenceUtils.setIsOnService(false)
+        setIsOnService(false)
         unRegisterSensor()
         WakeupPhone.turnOffEffects()
         MyNotification.updateOffNotification(this)

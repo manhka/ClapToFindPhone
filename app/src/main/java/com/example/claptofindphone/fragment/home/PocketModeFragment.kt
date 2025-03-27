@@ -1,8 +1,10 @@
 package com.example.claptofindphone.fragment.home
 
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +21,7 @@ import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
+import com.example.claptofindphone.utils.SharePreferenceUtils.isOnService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isShowPocketModeDialog
 import com.example.claptofindphone.utils.SharePreferenceUtils.isWaited
 import com.example.claptofindphone.utils.SharePreferenceUtils.setIsNavigateFromSplash
@@ -49,87 +52,78 @@ class PocketModeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupAnimation()
-        setupClickListeners()
+        binding!!.pocketModeButton.setOnClickListener { v -> handlePocketModeClick() }
     }
 
     override fun onResume() {
         super.onResume()
-        handleNavigationFromSplash()
-        handlePocketModeService()
-        showFirstTimeDialog()
+        if (isNavigateFromSplash()) {
+            setIsNavigateFromSplash(false)
+            if (checkPermission()) {
+                onService(Constant.Service.POCKET_MODE_RUNNING)
+            } else {
+                requestPermission()
+            }
+        } else {
+            handlePocketModeService()
+            showFirstTimeDialog()
+        }
+
     }
 
-    private fun setupClickListeners() {
-        binding!!.pocketModeButton.setOnClickListener { v ->
-            setOpenHomeFragment(Constant.Service.POCKET_MODE)
-            val runningService = getRunningService()
-            if (runningService.isEmpty()) {
-                checkPermissionToRun()
-            } else if (runningService != Constant.Service.POCKET_MODE_RUNNING) {
-                Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
-                    .show()
+    private fun handlePocketModeClick() {
+        setOpenHomeFragment(Constant.Service.POCKET_MODE)
+        val runningService = getRunningService()
+        if (runningService == "") {
+            if (checkPermission()) {
+                onService(Constant.Service.POCKET_MODE_RUNNING)
             } else {
-                stopPocketModeService()
+                requestPermission()
             }
+        } else if (runningService != Constant.Service.POCKET_MODE_RUNNING) {
+            Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
+                .show()
+        } else {
+            stopService()
         }
     }
 
-    private fun stopPocketModeService() {
+    private fun stopService() {
         binding!!.txtActionStatus.setText(R.string.tap_to_active)
         binding!!.handIc.visibility = View.VISIBLE
         binding!!.round2.setImageResource(R.drawable.round2_passive)
         setRunningService("")
         binding!!.handIc.startAnimation(anim)
-        setIsWaited(false)
         requireContext().stopService(Intent(requireContext(), MyServiceNoMicro::class.java))
-    }
-
-    private fun handleNavigationFromSplash() {
-        if (isNavigateFromSplash()) {
-            setIsNavigateFromSplash(false)
-            checkPermissionToRun()
-        }
     }
 
     private fun handlePocketModeService() {
         val isOnPocketModeService = getRunningService()
-        if (isOnPocketModeService.isEmpty()) {
+        if (isOnPocketModeService == "") {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.POCKET_MODE)
         } else if (isOnPocketModeService == Constant.Service.POCKET_MODE_RUNNING) {
-            startPocketModeService(Constant.Service.POCKET_MODE_RUNNING)
+            if (checkPermission()) {
+                onService(Constant.Service.POCKET_MODE_RUNNING)
+            } else {
+                if (isOnService()) {
+                    stopService()
+                }
+            }
         } else {
             binding!!.handIc.startAnimation(anim)
         }
     }
 
-    private fun showFirstTimeDialog() {
-        if (isShowPocketModeDialog()) {
-            val dialogBinding = DialogPocketModeBinding.inflate(
-                layoutInflater
-            )
-            val customDialog = AlertDialog.Builder(requireActivity())
-                .setView(dialogBinding.root)
-                .setCancelable(true)
-                .create()
-            customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-            customDialog.show()
-            setIsShowPocketModeDialog(false)
-            dialogBinding.yesButton.setOnClickListener { v -> customDialog.dismiss() }
-        }
-    }
 
-    private fun startPocketModeService(runningService: String) {
+    private fun onService(runningService: String) {
         stopAnimation()
         binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
         binding!!.handIc.visibility = View.GONE
         binding!!.round2.setImageResource(R.drawable.round2_active)
-
-
-
-
-        if (isWaited()) {
-            setIsWaited(false)
+        if (!isWaited()) {
+            setRunningService(runningService)
+            setIsWaited(true)
             val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
             intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
             requireContext().startService(intent)
@@ -159,21 +153,33 @@ class PocketModeFragment : Fragment() {
         }
     }
 
-    private fun checkPermissionToRun() {
-        if (permissionController!!.isOverlayPermissionGranted(requireActivity())) {
-            if (!isWaited()) {
-                setIsWaited(true)
-            }
-            setRunningService(Constant.Service.POCKET_MODE_RUNNING)
-            setIsOnNotify(true)
-            startPocketModeService(Constant.Service.POCKET_MODE_RUNNING)
-        } else {
-            permissionController!!.showInitialDialog(
-                requireActivity(),
-                Constant.Permission.OVERLAY_PERMISSION,
-                Constant.Service.POCKET_MODE,
-                Constant.Service.POCKET_MODE_RUNNING
+    private fun checkPermission(): Boolean {
+        return permissionController!!.isOverlayPermissionGranted(requireActivity())
+    }
+
+    private fun requestPermission() {
+        permissionController!!.showInitialDialog(
+            requireActivity(),
+            Constant.Permission.OVERLAY_PERMISSION,
+            Constant.Service.POCKET_MODE,
+            Constant.Service.POCKET_MODE_RUNNING
+        )
+    }
+
+    private fun showFirstTimeDialog() {
+        if (isShowPocketModeDialog()) {
+            val dialogBinding = DialogPocketModeBinding.inflate(
+                layoutInflater
             )
+            val customDialog = AlertDialog.Builder(requireActivity())
+                .setView(dialogBinding.root)
+                .setCancelable(true)
+                .create()
+            customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+            customDialog.show()
+            setIsShowPocketModeDialog(false)
+            dialogBinding.yesButton.setOnClickListener { v -> customDialog.dismiss() }
         }
     }
+
 }

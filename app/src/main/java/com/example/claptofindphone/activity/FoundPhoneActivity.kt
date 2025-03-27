@@ -66,69 +66,38 @@ class FoundPhoneActivity : BaseActivity() {
                 )
             )
             // default theme
-            foundPhoneBinding.round4.visibility = View.VISIBLE
-            foundPhoneBinding.round3.visibility = View.VISIBLE
-            foundPhoneBinding.round2.visibility = View.VISIBLE
-            foundPhoneBinding.roundCenter.visibility = View.VISIBLE
-            foundPhoneBinding.smallLeftDfTheme.visibility = View.VISIBLE
-            foundPhoneBinding.bigLeftDfTheme.visibility = View.VISIBLE
-            foundPhoneBinding.smallRightDfTheme.visibility = View.VISIBLE
-            foundPhoneBinding.bigRightDfTheme.visibility = View.VISIBLE
-            foundPhoneBinding.notifyBell.visibility = View.VISIBLE
+            foundPhoneBinding.txtTitleFoundPhone.visibility=View.VISIBLE
+            foundPhoneBinding.dfThemeLottie.visibility = View.VISIBLE
+            foundPhoneBinding.bellDefaultTheme.visibility = View.VISIBLE
             foundPhoneBinding.iFoundItButton.visibility = View.VISIBLE
 
             // call theme
-            foundPhoneBinding.imgViewCallThemeRound1.visibility = View.GONE
-            foundPhoneBinding.imgViewCallThemeRound2.visibility = View.GONE
-            foundPhoneBinding.imgViewCallThemeProfile.visibility = View.GONE
+            foundPhoneBinding.callThemeLottie.visibility = View.GONE
             foundPhoneBinding.responseButton.visibility = View.GONE
             foundPhoneBinding.rejectButton.visibility = View.GONE
             foundPhoneBinding.txtName.visibility = View.GONE
             foundPhoneBinding.txtPhone.visibility = View.GONE
-
             foundPhoneBinding.activityFoundPhone.setBackgroundResource(defaultTheme.defaultThemeBg)
-            foundPhoneBinding.round4.setImageResource(defaultTheme.defaultThemeRound4)
-            foundPhoneBinding.round3.setImageResource(defaultTheme.defaultThemeRound3)
-            foundPhoneBinding.round2.setImageResource(defaultTheme.defaultThemeRound2)
-            foundPhoneBinding.smallLeftDfTheme.setImageResource(defaultTheme.defaultThemeSmallLeft)
-            foundPhoneBinding.bigLeftDfTheme.setImageResource(defaultTheme.defaultThemeBigLeft)
-            foundPhoneBinding.smallRightDfTheme.setImageResource(defaultTheme.defaultThemeSmallRight)
-            foundPhoneBinding.bigRightDfTheme.setImageResource(defaultTheme.defaultThemeBigRight)
-            foundPhoneBinding.notifyBell.setImageResource(defaultTheme.defaultThemeBell)
-            AnimationUtils.applyWaveAnimation(foundPhoneBinding.round3)
-            foundPhoneBinding.round3.postDelayed({
-                AnimationUtils.applyWaveAnimation(foundPhoneBinding.round4)
-            }, 500)
+            foundPhoneBinding.dfThemeLottie.setAnimation(defaultTheme.defaultThemeLottie)
+            foundPhoneBinding.bellDefaultTheme.setImageResource(defaultTheme.defaultTheme)
 
         } else {
             val callTheme = callThemeList.get(selectedPosition)
-            foundPhoneBinding.txtTitleFoundPhone.setTextColor(
-                ContextCompat.getColor(
-                    this, R.color.white
-                )
-            )
             // default theme
-            foundPhoneBinding.round4.visibility = View.GONE
-            foundPhoneBinding.round3.visibility = View.GONE
-            foundPhoneBinding.round2.visibility = View.GONE
-            foundPhoneBinding.roundCenter.visibility = View.GONE
-            foundPhoneBinding.smallLeftDfTheme.visibility = View.GONE
-            foundPhoneBinding.bigLeftDfTheme.visibility = View.GONE
-            foundPhoneBinding.smallRightDfTheme.visibility = View.GONE
-            foundPhoneBinding.bigRightDfTheme.visibility = View.GONE
-            foundPhoneBinding.notifyBell.visibility = View.GONE
+            foundPhoneBinding.txtTitleFoundPhone.visibility=View.GONE
+            foundPhoneBinding.dfThemeLottie.visibility = View.GONE
+            foundPhoneBinding.dfThemeLottie.visibility = View.GONE
             foundPhoneBinding.iFoundItButton.visibility = View.GONE
 
             // call theme
-            foundPhoneBinding.imgViewCallThemeRound1.visibility = View.VISIBLE
-            foundPhoneBinding.imgViewCallThemeRound2.visibility = View.VISIBLE
-            foundPhoneBinding.imgViewCallThemeProfile.visibility = View.VISIBLE
+            foundPhoneBinding.callThemeLottie.visibility = View.VISIBLE
             foundPhoneBinding.responseButton.visibility = View.VISIBLE
             foundPhoneBinding.rejectButton.visibility = View.VISIBLE
             foundPhoneBinding.txtName.visibility = View.VISIBLE
             foundPhoneBinding.txtPhone.visibility = View.VISIBLE
             foundPhoneBinding.activityFoundPhone.setBackgroundResource(callTheme.callThemeBg)
-            foundPhoneBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
+            foundPhoneBinding.rejectButton.setAnimation(callTheme.callThemeRejectLottie)
+            foundPhoneBinding.responseButton.setAnimation(callTheme.callThemeResponseLottie)
 
             if (name == "") {
                 foundPhoneBinding.txtName.text = getString(R.string.name)
@@ -143,19 +112,11 @@ class FoundPhoneActivity : BaseActivity() {
                 foundPhoneBinding.txtPhone.text = phone
             }
 
-            AnimationUtils.applyWaveAnimation(foundPhoneBinding.imgViewCallThemeRound1)
-            AnimationUtils.applyWaveAnimation(foundPhoneBinding.imgViewCallThemeRound2)
-            AnimationUtils.applyShakeAnimation(foundPhoneBinding.rejectButton)
-            AnimationUtils.applyShakeAnimation(foundPhoneBinding.responseButton)
 
         }
         foundPhoneBinding.rejectButton.setOnClickListener {
             SharePreferenceUtils.setIsFoundPhone(false)
-            AnimationUtils.stopAnimations(foundPhoneBinding.round3)
-            AnimationUtils.stopAnimations(foundPhoneBinding.round4)
-            if (SharePreferenceUtils.isShowRateDialog() == 0) {
-                SharePreferenceUtils.setIsShowRateDialog(1)
-            }
+
             if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService() != Constant.Service.VOICE_PASSCODE_RUNNING) {
                 SharePreferenceUtils.setRunningService("")
                 val startIntent = Intent(this, MyServiceNoMicro::class.java)
@@ -179,11 +140,7 @@ class FoundPhoneActivity : BaseActivity() {
         }
         foundPhoneBinding.responseButton.setOnClickListener {
             SharePreferenceUtils.setIsFoundPhone(false)
-            AnimationUtils.stopAnimations(foundPhoneBinding.round3)
-            AnimationUtils.stopAnimations(foundPhoneBinding.round4)
-            if (SharePreferenceUtils.isShowRateDialog() == 0) {
-                SharePreferenceUtils.setIsShowRateDialog(1)
-            }
+
             if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService() != Constant.Service.VOICE_PASSCODE_RUNNING) {
                 SharePreferenceUtils.setRunningService("")
                 val startIntent = Intent(this, MyServiceNoMicro::class.java)
@@ -208,11 +165,6 @@ class FoundPhoneActivity : BaseActivity() {
 
         foundPhoneBinding.iFoundItButton.setOnClickListener {
             SharePreferenceUtils.setIsFoundPhone(false)
-            AnimationUtils.stopAnimations(foundPhoneBinding.round3)
-            AnimationUtils.stopAnimations(foundPhoneBinding.round4)
-            if (SharePreferenceUtils.isShowRateDialog() == 0) {
-                SharePreferenceUtils.setIsShowRateDialog(1)
-            }
             if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService() != Constant.Service.VOICE_PASSCODE_RUNNING) {
                 SharePreferenceUtils.setRunningService("")
                 val startIntent = Intent(this, MyServiceNoMicro::class.java)

@@ -16,8 +16,9 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class VoicePasscodeActivity : BaseActivity() {
     private lateinit var voicePasscodeBinding: ActivityVoicePasscodeBinding
+   private val permissionController=PermissionController()
     override fun onCreate(savedInstanceState: Bundle?) {
-        val permissionController=PermissionController()
+
         super.onCreate(savedInstanceState)
         changeBackPressCallBack {
             val intent= Intent(this,HomeActivity::class.java)
@@ -35,8 +36,13 @@ class VoicePasscodeActivity : BaseActivity() {
 
         voicePasscodeBinding.voiceButton.setOnClickListener {
             if (permissionController.isInternetAvailable(this)){
-                val intent = Intent(this, SetupVoicePasscodeActivity::class.java)
-                startActivity(intent)
+                if (checkPermission()){
+                    val intent = Intent(this, SetupVoicePasscodeActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    requestPermission()
+                }
+
             }else{
                 Toast.makeText(
                     this,
@@ -65,5 +71,17 @@ class VoicePasscodeActivity : BaseActivity() {
             startActivity(intent)
             finish()
         }
+    }
+    private fun checkPermission(): Boolean {
+        return permissionController.hasAudioPermission(this) &&
+                permissionController.isOverlayPermissionGranted(this)
+    }
+    private fun requestPermission() {
+        permissionController.showInitialDialog(
+            this,
+            Constant.Permission.RECORDING_PERMISSION,
+            Constant.Service.VOICE_PASSCODE,
+            Constant.Service.VOICE_PASSCODE_RUNNING
+        )
     }
 }

@@ -50,20 +50,21 @@ class MyService : Service() {
         val runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE).toString()
         when (runningService) {
             Constant.Service.TURN_OFF_SOUND -> {
-              WakeupPhone.turnOffEffects()
-
-                    MyNotification.updateOnNotification(this,false)
-                    if (isFoundPhone) {
-                        isFoundPhone = false
-                    }
+                WakeupPhone.turnOffEffects()
+                MyNotification.updateOnNotification(this, false)
+                if (isFoundPhone) {
+                    isFoundPhone = false
+                }
 
             }
+
             Constant.Service.CLAP_AND_WHISTLE_RUNNING -> {
                 Log.d(TAG, "onStartCommand:CLAP AND WHISTLE RUNNING")
                 onService()
                 SharePreferenceUtils.setIsOnService(true)
                 clapAndWhistleDetect()
             }
+
             Constant.Service.VOICE_PASSCODE_RUNNING -> {
                 Log.d(TAG, "onStartCommand:VOICE PASSCODE RUNNING")
                 SharePreferenceUtils.setIsOnService(true)
@@ -76,6 +77,7 @@ class MyService : Service() {
         }
         return START_STICKY
     }
+
     private fun onService() {
         val notification = MyNotification.createNotifyOn(this)
         if (buildMinVersion34()) {
@@ -85,6 +87,7 @@ class MyService : Service() {
 
         }
     }
+
     // clap and whistle
     private fun clapAndWhistleDetect() {
         if (!isClapDetectListening) {
@@ -129,6 +132,7 @@ class MyService : Service() {
         audioClassifier = classifier
         audioRecord = record
     }
+
     // voice passcode
     private fun voicePasswordDetect() {
         if (!isVoiceDetectListening) {
@@ -158,12 +162,13 @@ class MyService : Service() {
                 override fun onSpeechResult(result: String) {
                     Log.i(TAG, "result: $result")
                     if (result == passcode) {
+                        Log.d(TAG, "onSpeechResult: ${isFoundPhone}")
                         if (!isFoundPhone) {
                             isFoundPhone = true
                             WakeupPhone.foundPhone(this@MyService)
                         }
                     }
-                        runnable?.let { handler?.postDelayed(it, 1000) }
+                    runnable?.let { handler?.postDelayed(it, 1000) }
                 }
             })
         } catch (exc: SpeechRecognitionNotAvailable) {
@@ -181,11 +186,12 @@ class MyService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-
         SharePreferenceUtils.setRunningService("")
         SharePreferenceUtils.setIsOnService(false)
         WakeupPhone.turnOffEffects()
         if (isClapDetectListening) {
+            Log.d(TAG, "onDestroy: stop clap detect")
+
             handlerClap?.removeCallbacksAndMessages(null)
             try {
                 stopAudioRecording()
@@ -195,6 +201,7 @@ class MyService : Service() {
             }
         }
         if (isVoiceDetectListening) {
+            Log.d(TAG, "onDestroy: stop voice detect")
             isVoiceDetectListening = false
             Speech.getInstance().stopListening()
             Speech.getInstance().shutdown()

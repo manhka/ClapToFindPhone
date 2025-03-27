@@ -1,27 +1,19 @@
 package com.example.claptofindphone.activity
 
+
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputFilter
 import android.text.Spanned
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityEditThemeBinding
 import com.example.claptofindphone.databinding.DialogEditThemeBinding
 import com.example.claptofindphone.model.CallTheme
 import com.example.claptofindphone.model.DefaultTheme
-import com.example.claptofindphone.service.AnimationUtils
 import com.example.claptofindphone.utils.SharePreferenceUtils
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 
 class EditThemeActivity : BaseActivity() {
@@ -29,11 +21,11 @@ class EditThemeActivity : BaseActivity() {
     private lateinit var selectedThemeName:String
     private lateinit var name:String
     private lateinit var phone:String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         editThemeBinding = ActivityEditThemeBinding.inflate(layoutInflater)
         setContentView(editThemeBinding.root)
-
         name=SharePreferenceUtils.getName()
         phone=SharePreferenceUtils.getPhone()
         val defaultTheme = intent.getSerializableExtra("default_theme") as? DefaultTheme
@@ -41,23 +33,14 @@ class EditThemeActivity : BaseActivity() {
             editThemeBinding.callThemeLayout.visibility = View.GONE
             editThemeBinding.editButton.visibility = View.GONE
             editThemeBinding.defaultThemeLayout.visibility = View.VISIBLE
+            editThemeBinding.rejectButton.visibility=View.GONE
+            editThemeBinding.responseButton.visibility=View.GONE
             editThemeBinding.backButton.setImageResource(R.drawable.back_ic)
             editThemeBinding.txtEditTheme.setTextColor(ContextCompat.getColor(this, R.color.black))
             editThemeBinding.activityEditTheme.setBackgroundResource(defaultTheme.defaultThemeBg)
-            editThemeBinding.imgViewRound4.setImageResource(defaultTheme.defaultThemeRound4)
-            editThemeBinding.imgViewRound3.setImageResource(defaultTheme.defaultThemeRound3)
-            editThemeBinding.imgViewRound2.setImageResource(defaultTheme.defaultThemeRound2)
-            editThemeBinding.imgViewRoundCenter.setImageResource(defaultTheme.defaultThemeRoundCenter)
-            editThemeBinding.imgViewBell.setImageResource(defaultTheme.defaultThemeBell)
-            editThemeBinding.imgViewSmallLeft.setImageResource(defaultTheme.defaultThemeSmallLeft)
-            editThemeBinding.imgViewBigLeft.setImageResource(defaultTheme.defaultThemeBigLeft)
-            editThemeBinding.imgViewSmallRight.setImageResource(defaultTheme.defaultThemeSmallRight)
-            editThemeBinding.imgViewBigRight.setImageResource(defaultTheme.defaultThemeBigRight)
+            editThemeBinding.dfThemeLottie.setAnimation(defaultTheme.defaultThemeLottie)
+            editThemeBinding.bellDefaultTheme.setImageResource(defaultTheme.defaultTheme)
             selectedThemeName=defaultTheme.themeName
-            AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewRound3)
-            editThemeBinding.imgViewRound3.postDelayed({
-                AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewRound4)
-            }, 500)
 
         }
         // call theme
@@ -66,15 +49,15 @@ class EditThemeActivity : BaseActivity() {
             editThemeBinding.txtName.isSelected=true
             editThemeBinding.defaultThemeLayout.visibility = View.GONE
             editThemeBinding.callThemeLayout.visibility = View.VISIBLE
+            editThemeBinding.rejectButton.visibility=View.VISIBLE
+            editThemeBinding.responseButton.visibility=View.VISIBLE
             editThemeBinding.editButton.visibility = View.VISIBLE
             editThemeBinding.backButton.setImageResource(R.drawable.back_ic2)
             editThemeBinding.txtEditTheme.setTextColor(ContextCompat.getColor(this, R.color.white))
             editThemeBinding.activityEditTheme.setBackgroundResource(callTheme.callThemeBg)
-            editThemeBinding.imgViewCallThemeRound1.setImageResource(callTheme.callThemeRound1)
-            editThemeBinding.imgViewCallThemeRound2.setImageResource(callTheme.callThemeRound2)
-            editThemeBinding.imgViewCallThemeProfile.setImageResource(callTheme.callThemeProfile)
-            editThemeBinding.rejectButton.setImageResource(callTheme.callThemeReject)
-            editThemeBinding.responseButton.setImageResource(callTheme.callThemeResponse)
+            editThemeBinding.callThemeLottie.setAnimation(callTheme.callThemeLottie)
+            editThemeBinding.rejectButton.setAnimation(callTheme.callThemeRejectLottie)
+            editThemeBinding.responseButton.setAnimation(callTheme.callThemeResponseLottie)
             if (name!=""){
                 editThemeBinding.txtName.text=name
             }
@@ -82,27 +65,14 @@ class EditThemeActivity : BaseActivity() {
                 editThemeBinding.txtPhone.text=phone
             }
             selectedThemeName=callTheme.themeName
-
-            AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewCallThemeRound1)
-            editThemeBinding.imgViewCallThemeRound1.postDelayed({
-                AnimationUtils.applyWaveAnimation(editThemeBinding.imgViewCallThemeRound2)
-            }, 500)
         }
         editThemeBinding.applyButton.setOnClickListener {
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound1)
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound2)
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
             SharePreferenceUtils.setThemeName(selectedThemeName)
             finish()
 
         }
 
         editThemeBinding.backButton.setOnClickListener {
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound1)
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewCallThemeRound2)
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound3)
-            AnimationUtils.stopAnimations(editThemeBinding.imgViewRound4)
             finish()
         }
         editThemeBinding.editButton.setOnClickListener {
@@ -190,5 +160,6 @@ class EditThemeActivity : BaseActivity() {
             }
         }
     }
+
 
 }

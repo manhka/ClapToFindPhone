@@ -14,9 +14,7 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
+
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.SoundAdapter2
@@ -40,8 +38,10 @@ class ChangeSoundActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         changeSoundBinding = ActivityChangeSoundBinding.inflate(layoutInflater)
         setContentView(changeSoundBinding.root)
+
         if (SharePreferenceUtils.getTimeComeHome()==0){
             changeSoundBinding.backButton.visibility=View.GONE
+            changeBackPressCallBack {  }
         }else{
             changeSoundBinding.backButton.visibility=View.VISIBLE
         }

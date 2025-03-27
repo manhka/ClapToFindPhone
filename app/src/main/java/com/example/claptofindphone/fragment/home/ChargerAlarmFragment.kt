@@ -21,6 +21,7 @@ import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isNavigateFromSplash
+import com.example.claptofindphone.utils.SharePreferenceUtils.isOnService
 import com.example.claptofindphone.utils.SharePreferenceUtils.isShowChargerPhoneDialog
 import com.example.claptofindphone.utils.SharePreferenceUtils.isWaited
 import com.example.claptofindphone.utils.SharePreferenceUtils.setIsNavigateFromSplash
@@ -34,7 +35,6 @@ class ChargerAlarmFragment : Fragment() {
     private var binding: FragmentChargerAlarmInHomeBinding? = null
     private var permissionController: PermissionController? = null
     private var anim: ScaleAnimation? = null
-    private var isChargerPhone = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,32 +52,77 @@ class ChargerAlarmFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupAnimation()
-        setupClickListeners()
+        binding!!.chargerAlarmButton.setOnClickListener { v -> handleChargerAlarmButtonClick() }
+    }
+
+    private fun onService(runningService: String) {
+        stopAnimation()
+        binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
+        binding!!.handIc.visibility = View.GONE
+        binding!!.round2.setImageResource(R.drawable.round2_active)
+        if (!isWaited()) {
+            setRunningService(runningService)
+            setIsWaited(true)
+            val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
+            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
+            requireContext().startService(intent)
+            val waitIntent = Intent(
+                requireContext(),
+                WaitActivity::class.java
+            )
+            waitIntent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
+            startActivity(waitIntent)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        handleNavigationFromSplash()
-        handleChargerAlarmService()
-        showFirstTimeDialog()
+        if (isNavigateFromSplash()) {
+            setIsNavigateFromSplash(false)
+            if (checkPermission()) {
+                if (isPlugPhone()) {
+                    onService(Constant.Service.CHARGER_ALARM_RUNNING)
+                } else {
+                    Toast.makeText(requireActivity(), R.string.plug_phone, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                if (isOnService()) {
+                    stopService()
+                }
+                requestPermission()
+            }
+
+        } else {
+            handleChargerAlarmService()
+            showFirstTimeDialog()
+        }
+
     }
 
-    private fun setupClickListeners() {
-        binding!!.chargerAlarmButton.setOnClickListener { v ->
-            val runningService = getRunningService()
-            if (runningService.isEmpty()) {
-                setOpenHomeFragment(Constant.Service.CHARGER_PHONE)
-                checkAndRun()
-            } else if (runningService != Constant.Service.CHARGER_ALARM_RUNNING) {
-                Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
-                    .show()
+    private fun handleChargerAlarmButtonClick() {
+        val runningService = getRunningService()
+        setOpenHomeFragment(Constant.Service.CHARGER_PHONE)
+        if (runningService == "") {
+            if (checkPermission()) {
+                if (isPlugPhone()) {
+                    onService(Constant.Service.CHARGER_ALARM_RUNNING)
+                } else {
+                    Toast.makeText(requireActivity(), R.string.plug_phone, Toast.LENGTH_SHORT)
+                        .show()
+                }
             } else {
-                stopChargerAlarmService()
+                requestPermission()
             }
+        } else if (runningService != Constant.Service.CHARGER_ALARM_RUNNING) {
+            Toast.makeText(requireContext(), R.string.other_service_running, Toast.LENGTH_LONG)
+                .show()
+        } else {
+            stopService()
         }
     }
 
-    private fun stopChargerAlarmService() {
+    private fun stopService() {
         binding!!.txtActionStatus.setText(R.string.tap_to_active)
         binding!!.handIc.visibility = View.VISIBLE
         binding!!.round2.setImageResource(R.drawable.round2_passive)
@@ -87,20 +132,19 @@ class ChargerAlarmFragment : Fragment() {
         requireContext().stopService(Intent(requireContext(), MyServiceNoMicro::class.java))
     }
 
-    private fun handleNavigationFromSplash() {
-        if (isNavigateFromSplash()) {
-            setIsNavigateFromSplash(false)
-            checkAndRun()
-        }
-    }
-
     private fun handleChargerAlarmService() {
         val isOnChargerAlarmService = getRunningService()
         if (isOnChargerAlarmService == "") {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.CHARGER_PHONE)
         } else if (isOnChargerAlarmService == Constant.Service.CHARGER_ALARM_RUNNING) {
-            startChargerAlarmService(Constant.Service.CHARGER_ALARM_RUNNING)
+            if (checkPermission()) {
+                onService(Constant.Service.CHARGER_ALARM_RUNNING)
+            } else {
+                if (isOnService()) {
+                    stopService()
+                }
+            }
         } else {
             binding!!.handIc.startAnimation(anim)
         }
@@ -122,34 +166,16 @@ class ChargerAlarmFragment : Fragment() {
         }
     }
 
-    private fun startChargerAlarmService(runningService: String) {
-        stopAnimation()
-        binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
-        binding!!.handIc.visibility = View.GONE
-        binding!!.round2.setImageResource(R.drawable.round2_active)
-        if (isWaited()) {
-            setIsWaited(false)
-            val intent = Intent(requireContext(), MyServiceNoMicro::class.java)
-            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
-            requireContext().startService(intent)
-            val waitIntent = Intent(
-                requireContext(),
-                WaitActivity::class.java
-            )
-            waitIntent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
-            startActivity(waitIntent)
-        }
-    }
 
     private fun setupAnimation() {
         anim = ScaleAnimation(
             1.0f, 1.3f, 1.0f, 1.3f,
-            Animation.RELATIVE_TO_SELF, 0.5f,
-            Animation.RELATIVE_TO_SELF, 0.5f
+            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
         )
         anim!!.duration = 600
         anim!!.repeatCount = Animation.INFINITE
         anim!!.repeatMode = Animation.REVERSE
+        binding!!.handIc.startAnimation(anim)
     }
 
     private fun stopAnimation() {
@@ -158,35 +184,24 @@ class ChargerAlarmFragment : Fragment() {
         }
     }
 
-    private fun checkAndRun() {
-        if (permissionController!!.isOverlayPermissionGranted(requireActivity())) {
-            if (isPlugPhone()) {
-                if (!isWaited()) {
-                    setIsWaited(true)
-                }
-                setRunningService(Constant.Service.CHARGER_ALARM_RUNNING)
-                setIsOnNotify(true)
-                startChargerAlarmService(Constant.Service.CHARGER_ALARM_RUNNING)
-            } else {
-                setRunningService("")
-                Toast.makeText(requireActivity(), R.string.plug_phone, Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-        } else {
-            permissionController!!.showInitialDialog(
-                requireActivity(),
-                Constant.Permission.OVERLAY_PERMISSION,
-                Constant.Service.CHARGER_PHONE,
-                Constant.Service.CHARGER_ALARM_RUNNING
-            )
-        }
-    }
 
     private fun isPlugPhone(): Boolean {
         val batteryIntent =
             requireActivity().registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-        val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) ?: -1
-        return (status == BatteryManager.BATTERY_PLUGGED_USB)
+        val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+        return (status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL)
+    }
+
+    private fun requestPermission() {
+        permissionController!!.showInitialDialog(
+            requireActivity(),
+            Constant.Permission.OVERLAY_PERMISSION,
+            Constant.Service.CHARGER_PHONE,
+            Constant.Service.CHARGER_ALARM_RUNNING
+        )
+    }
+
+    private fun checkPermission(): Boolean {
+        return permissionController!!.isOverlayPermissionGranted(requireActivity())
     }
 }

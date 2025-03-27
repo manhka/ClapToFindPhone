@@ -35,19 +35,11 @@ class DefaultThemeAdapter(
     override fun getItemCount(): Int {
         return defaultThemeList.size
     }
-
     override fun onBindViewHolder(holder: DefaultThemeViewHolder, position: Int) {
         val defaultThemeItem = defaultThemeList[position]
         holder.defaultThemeItemBinding.bgDfTheme.setBackgroundResource(defaultThemeItem.defaultThemeBg)
-        holder.defaultThemeItemBinding.round4DfTheme.setImageResource(defaultThemeItem.defaultThemeRound4)
-        holder.defaultThemeItemBinding.round3DfTheme.setImageResource(defaultThemeItem.defaultThemeRound3)
-        holder.defaultThemeItemBinding.round2DfTheme.setImageResource(defaultThemeItem.defaultThemeRound2)
-        holder.defaultThemeItemBinding.roundCenterDfTheme.setImageResource(defaultThemeItem.defaultThemeRoundCenter)
-        holder.defaultThemeItemBinding.bellDfTheme.setImageResource(defaultThemeItem.defaultThemeBell)
-        holder.defaultThemeItemBinding.smallLeftDfTheme.setImageResource(defaultThemeItem.defaultThemeSmallLeft)
-        holder.defaultThemeItemBinding.bigLeftDfTheme.setImageResource(defaultThemeItem.defaultThemeBigLeft)
-        holder.defaultThemeItemBinding.smallRightDfTheme.setImageResource(defaultThemeItem.defaultThemeSmallRight)
-        holder.defaultThemeItemBinding.bigRightDfTheme.setImageResource(defaultThemeItem.defaultThemeBigRight)
+        holder.defaultThemeItemBinding.bellDfTheme.setImageResource(defaultThemeItem.defaultTheme)
+        holder.defaultThemeItemBinding.roundCircleDfTheme.setImageResource(defaultThemeItem.defaultThemeRoundCircle)
         holder.defaultThemeItemBinding.activeThemeButton.setImageResource(defaultThemeItem.defaultThemeSelected)
         if (position == selectedPosition) {
             holder.defaultThemeItemBinding.activeThemeButton.setImageResource(R.drawable.active_theme_ic)

@@ -14,22 +14,20 @@ import com.example.claptofindphone.model.Vibrate
 class InstallData {
     companion object {
 
-         fun getFlashlightList(context:Context) :List<Flashlight>{
-             return listOf(
+        fun getFlashlightList(context: Context): List<Flashlight> {
+            return listOf(
                 Flashlight(
                     1,
                     R.drawable.bg_passive_item,
-                    context.getString(Constant.Flashlight.default)
-                    ,
+                    context.getString(Constant.Flashlight.default),
                     0,
                     R.drawable.active_theme_ic,
-                    listOf(200L,200L)
+                    listOf(200L, 200L)
                 ),
                 Flashlight(
                     2,
                     R.drawable.bg_passive_item,
-                    context.getString(Constant.Flashlight.flashlight1)
-                    ,
+                    context.getString(Constant.Flashlight.flashlight1),
                     R.drawable.ic_premium,
                     R.drawable.tick_ic,
                     listOf(300L, 300L)
@@ -117,7 +115,7 @@ class InstallData {
             )
         }
 
-        fun getListSound(context:Context):List<Sound> {
+        fun getListSound(context: Context): List<Sound> {
             return listOf(
                 Sound(
                     1,
@@ -205,13 +203,13 @@ class InstallData {
                 )
             )
         }
-        fun getVibrateList(context: Context):List<Vibrate> {
+
+        fun getVibrateList(context: Context): List<Vibrate> {
             return listOf(
                 Vibrate(
                     1,
                     R.drawable.bg_passive_item,
-                    context.getString(Constant.Vibrate.default)
-                    ,
+                    context.getString(Constant.Vibrate.default),
                     0,
                     R.drawable.active_theme_ic,
                     listOf(0L, 100L)
@@ -307,14 +305,17 @@ class InstallData {
             )
         }
 
-        fun getCallThemeList():List<CallTheme> {
+        fun getCallThemeList(): List<CallTheme> {
             return listOf(
                 CallTheme(
                     Constant.CallTheme.CallTheme1,
                     R.drawable.bg_call_theme1,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call,
+                    R.raw.call_end,
                     R.drawable.call_ic,
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
@@ -324,9 +325,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme2,
                     R.drawable.bg_call_theme2,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_2,
+                    R.raw.call_end2,
                     R.drawable.call_ic,
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
@@ -336,11 +340,15 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme3,
                     R.drawable.bg_call_theme3,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_like,
+                    R.raw.call_end_dislike,
                     R.drawable.like_ic,
                     R.drawable.dislike_ic,
+
                     R.string.name.toString(),
                     R.string.phone.toString(),
                     R.drawable.ic_premium
@@ -348,9 +356,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme4,
                     R.drawable.bg_call_theme4,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_4,
+                    R.raw.call_end_4,
                     R.drawable.call2,
                     R.drawable.call_end2,
                     R.string.name.toString(),
@@ -360,9 +371,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme5,
                     R.drawable.bg_call_theme5,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call,
+                    R.raw.call_end,
                     R.drawable.call_ic,
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
@@ -372,9 +386,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme6,
                     R.drawable.bg_call_theme6,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_2,
+                    R.raw.call_end2,
                     R.drawable.call_ic,
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
@@ -384,9 +401,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme7,
                     R.drawable.bg_call_theme7,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_4,
+                    R.raw.call_end_4,
                     R.drawable.call2,
                     R.drawable.call_end2,
                     R.string.name.toString(),
@@ -396,9 +416,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme8,
                     R.drawable.bg_call_theme8,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_like,
+                    R.raw.call_end_dislike,
                     R.drawable.like_ic,
                     R.drawable.dislike_ic,
                     R.string.name.toString(),
@@ -408,9 +431,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme9,
                     R.drawable.bg_call_theme9,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call,
+                    R.raw.call_end,
                     R.drawable.call_ic,
                     R.drawable.call_end_ic,
                     R.string.name.toString(),
@@ -420,9 +446,12 @@ class InstallData {
                 CallTheme(
                     Constant.CallTheme.CallTheme10,
                     R.drawable.bg_call_theme10,
+                    R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
                     R.drawable.profile_circle,
+                    R.raw.call_4,
+                    R.raw.call_end_4,
                     R.drawable.call2,
                     R.drawable.call_end2,
                     R.string.name.toString(),
@@ -432,51 +461,45 @@ class InstallData {
             )
         }
 
-        fun getDefaultThemeList():List<DefaultTheme> {
+        fun getDefaultThemeList(): List<DefaultTheme> {
             return listOf(
                 DefaultTheme(
                     Constant.DefaultTheme.DefaultTheme1,
                     R.color.bg_df_theme1,
-                    R.drawable.round4_df_theme1,
-                    R.drawable.round3_theme_df1,
-                    R.drawable.round2_theme_df1,
-                    R.drawable.round_center_theme_df1,
-                    R.drawable.small_left_theme_df1,
-                    R.drawable.big_left_theme_df1,
-                    R.drawable.small_right_theme_df1,
-                    R.drawable.big_right_theme_df1,
-                    R.drawable.bell_theme_df1,
+                    R.drawable.round_circle_df_theme1,
+                    R.raw.anim_df_lottie1,
+                    R.drawable.bell_default_theme1,
                     R.drawable.active_theme_ic
                 ), DefaultTheme(
                     Constant.DefaultTheme.DefaultTheme2,
-                    R.color.bg_df_theme2, R.drawable.round4_df_theme2, R.drawable.round3_theme_df2,
-                    R.drawable.round2_theme_df2, R.drawable.round_center_theme_df2,
-                    R.drawable.small_left_theme_df2, R.drawable.big_left_theme_df2,
-                    R.drawable.small_right_theme_df2, R.drawable.big_right_theme_df2,
-                    R.drawable.bell_theme_df2, 0
+                    R.color.bg_df_theme2,
+                    R.drawable.round_circle_df_theme2,
+                    R.raw.anim_df_lottie2,
+                    R.drawable.bell_default_theme2,
+                    0
                 ),
 
                 DefaultTheme(
                     Constant.DefaultTheme.DefaultTheme3,
-                    R.color.bg_df_theme3, R.drawable.round3_theme_df3, R.drawable.round3_theme_df3,
-                    R.drawable.round2_theme_df3, R.drawable.round_center_theme_df3,
-                    R.drawable.small_left_theme_df3, R.drawable.big_left_theme_df3,
-                    R.drawable.small_right_theme_df3, R.drawable.big_right_theme_df3,
-                    R.drawable.bell_theme_df3, 0
+                    R.color.bg_df_theme3,
+
+                    R.drawable.round_circle_df_theme3,
+                    R.raw.anim_df_lottie3,
+                    R.drawable.bell_default_theme3,
+                    0
                 ),
 
                 DefaultTheme(
                     Constant.DefaultTheme.DefaultTheme4,
-                    R.color.bg_df_theme4, R.drawable.round4_df_theme4, R.drawable.round3_theme_df4,
-                    R.drawable.round2_theme_df4, R.drawable.round_center_theme_df4,
-                    R.drawable.small_left_theme_df4, R.drawable.big_left_theme_df4,
-                    R.drawable.small_right_theme_df4, R.drawable.big_right_theme_df4,
-                    R.drawable.bell_theme_df4, 0
+                    R.color.bg_df_theme4,
+                    R.drawable.round_circle_df_theme4,
+                    R.raw.anim_df_lottie4, R.drawable.bell_default_theme4, 0
                 )
             )
 
         }
-        fun getLanguageList():List<Language>{
+
+        fun getLanguageList(): List<Language> {
             return mutableListOf(
                 Language(
                     Constant.Country.ENGLISH,

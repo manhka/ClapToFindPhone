@@ -5,36 +5,33 @@
     android:id="@+id/activity_edit_theme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_call_theme1"
-    tools:context=".activity.EditThemeActivity"
-    android:fitsSystemWindows="true"
-    android:splitMotionEvents="false">
+    android:background="@drawable/bg_call_theme3"
+    android:splitMotionEvents="false"
+    tools:context=".activity.EditThemeActivity">
 
     <ImageView
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/back_ic"
-        android:padding="4dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="35dp"
         android:foreground="@drawable/my_ripple"
-        />
+        android:padding="4dp"
+        android:src="@drawable/back_ic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="12dp"
+        android:foreground="@drawable/my_ripple"
         android:padding="4dp"
         android:src="@drawable/edit_ic"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:foreground="@drawable/my_ripple"
-        />
+        app:layout_constraintTop_toTopOf="@id/back_button" />
 
     <TextView
         android:id="@+id/txt_edit_theme"
@@ -43,12 +40,10 @@
         android:text="@string/edit_theme"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:layout_marginTop="50dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="@id/back_button" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,215 +56,136 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgView_round4"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:src="@drawable/round4_df_theme1"
-
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/df_theme_lottie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_default_theme4"
+            app:lottie_renderMode="hardware"
+            app:lottie_speed="1" />
 
         <ImageView
-            android:id="@+id/imgView_round3"
-            android:layout_width="242dp"
-            android:layout_height="242dp"
-            android:src="@drawable/round3_theme_df1"
+            android:id="@+id/bell_default_theme"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/bell_default_theme1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.9" />
 
-        <ImageView
-            android:id="@+id/imgView_round2"
-            android:layout_width="205dp"
-            android:layout_height="205dp"
-            android:src="@drawable/round2_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView_round_center"
-            android:layout_width="142dp"
-            android:layout_height="142dp"
-            android:src="@drawable/round_center_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView_bell"
-            android:layout_width="67dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/bell_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView_small_left"
-            android:layout_width="12dp"
-            android:layout_height="33dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/small_left_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView_big_left"
-            android:layout_width="14dp"
-            android:layout_height="52dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/big_left_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView_small_right"
-            android:layout_width="11dp"
-            android:layout_height="33dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/small_right_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imgView_big_right"
-            android:layout_width="14dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/big_right_theme_df1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/call_theme_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/txt_edit_theme">
 
-        <ImageView
-            android:id="@+id/imgView_call_theme_round2"
-            android:layout_width="0dp"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/call_theme_lottie"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/call_theme_round2"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:adjustViewBounds="true"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintHeight_percent="0.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.6" />
-
-        <ImageView
-            android:id="@+id/imgView_call_theme_round1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/call_theme_round1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
-
-        <ImageView
-            android:id="@+id/imgView_call_theme_profile"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/profile_circle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_avatar"
+            app:lottie_renderMode="hardware"
+            app:lottie_speed="1" />
 
         <TextView
             android:id="@+id/txt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="36dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:text="@string/name"
             android:textColor="@color/white"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:ellipsize="marquee"
-            android:layout_marginHorizontal="36dp"
-            android:singleLine="true"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            android:marqueeRepeatLimit="marquee_forever"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgView_call_theme_round2" />
+            app:layout_constraintTop_toBottomOf="@id/call_theme_lottie" />
 
         <TextView
             android:id="@+id/txt_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
             android:gravity="center_horizontal"
             android:text="@string/phone"
-            android:layout_marginHorizontal="40dp"
             android:textColor="@color/white"
             android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_name" />
 
-        <ImageView
-            android:id="@+id/reject_button"
-            android:layout_width="83dp"
-            android:layout_height="83dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/call_end_ic"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="28dp"
-            app:layout_constraintTop_toBottomOf="@id/txt_phone" />
 
-        <ImageView
-            android:id="@+id/response_button"
-            android:layout_width="83dp"
-            android:layout_height="83dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/call_ic"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="28dp"
-            app:layout_constraintTop_toBottomOf="@id/txt_phone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/reject_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="80dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/apply_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.3"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/call_end"
+        app:lottie_renderMode="hardware"
+        app:lottie_speed="1" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/response_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="80dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/apply_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.3"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/call"
+        app:lottie_renderMode="hardware"
+        app:lottie_speed="1" />
+
+    <TextView
         android:id="@+id/apply_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:background="@drawable/bg_active_btn"
+        android:foreground="@drawable/my_ripple"
+        android:paddingHorizontal="36dp"
+        android:paddingVertical="12dp"
         android:text="@string/apply_theme"
         android:textColor="@color/white"
         android:textSize="16dp"
@@ -277,7 +193,5 @@
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:foreground="@drawable/my_ripple"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

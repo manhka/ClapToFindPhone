@@ -2,15 +2,9 @@ package com.example.claptofindphone.activity
 
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.HowToUseAdapter
 import com.example.claptofindphone.databinding.ActivityHowToUseBinding
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HowToUseActivity : BaseActivity() {
@@ -36,8 +30,9 @@ class HowToUseActivity : BaseActivity() {
 
         for (i in 0 until tabLayout.tabCount) {
             val tabView = tabLayout.getTabAt(i)?.view
+
             val layoutParams = tabView?.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.setMargins(20, 0, 20, 0)
+            layoutParams.setMargins(15, 0, 15, 0)
             tabView.layoutParams = layoutParams
         }
 

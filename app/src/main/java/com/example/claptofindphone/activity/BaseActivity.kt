@@ -1,12 +1,14 @@
 package com.example.claptofindphone.activity
 
 import android.app.ProgressDialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.IntentFilter
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -22,6 +24,8 @@ import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 
 open class BaseActivity : AppCompatActivity(){
+    private var lastClickTime = 0L
+    private val clickInterval = 400L
     override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
         if (overrideConfiguration != null) {
             val uiMode = overrideConfiguration.uiMode
@@ -61,17 +65,23 @@ open class BaseActivity : AppCompatActivity(){
         } else {
             // Android 9, 10 (API 28-29)
 
-
         }
 
 
     }
 
-//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-//        return if (ev?.pointerCount!! > 1) {
-//            true // chặn sự kiện
-//        } else {
-//            super.dispatchTouchEvent(ev)
-//        }
-//    }
+
+// prevent multiple touch
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val currentTime = SystemClock.elapsedRealtime()
+            if (currentTime - lastClickTime < clickInterval) {
+                // Block multiple touch
+                return true
+            }
+            lastClickTime = currentTime
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
 }

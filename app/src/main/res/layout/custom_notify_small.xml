@@ -20,14 +20,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/voice_noti_ic"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="20dp"
         />
     <ImageView
         android:id="@+id/imgView_touch_phone_noti"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/touch_phone_noti_ic"
-        android:layout_marginStart="25dp"/>
+        android:layout_marginStart="20dp"/>
 
 
     <ImageView
@@ -35,7 +35,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/pocket_mode_noti_ic"
-        android:layout_marginStart="25dp"/>
+        android:layout_marginStart="20dp"/>
 
 
     <ImageView
@@ -43,5 +43,5 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/charger_alarm_noti_ic"
-        android:layout_marginStart="25dp"/>
+        android:layout_marginStart="20dp"/>
 </LinearLayout>

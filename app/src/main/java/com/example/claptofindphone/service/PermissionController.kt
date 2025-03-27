@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +13,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -95,6 +97,10 @@ class PermissionController {
             .setCancelable(true)
             .create()
         customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        customDialog.setOnCancelListener{
+           SharePreferenceUtils.setRunningService("")
+        }
+
         customDialog.show()
 
         dialogBinding.gotItButton.setOnClickListener {
