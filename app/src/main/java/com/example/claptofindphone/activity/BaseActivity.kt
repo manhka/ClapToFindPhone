@@ -19,7 +19,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import com.example.claptofindphone.service.NetworkChangeReceiver
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale
 

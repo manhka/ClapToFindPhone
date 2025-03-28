@@ -24,10 +24,12 @@ object VibrateController {
         val vibrationThread = Thread {
             val vibrationPattern = pattern.toLongArray()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
+                Log.d(TAG, "startPattern: 1")
                 val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, 0) // Repeat indefinitely
                 vibrator.vibrate(vibrationEffect)
             } else {
+                Log.d(TAG, "startPattern: 2")
+
                 @Suppress("DEPRECATION")
                 vibrator.vibrate(vibrationPattern, 0) // Deprecated but works for old devices
             }

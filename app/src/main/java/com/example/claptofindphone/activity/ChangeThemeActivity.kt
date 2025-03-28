@@ -40,10 +40,7 @@ class ChangeThemeActivity : BaseActivity() {
         changeThemeBinding.rcvCallTheme.adapter = callThemeAdapter
         changeThemeBinding.rcvCallTheme.layoutManager = GridLayoutManager(this, 2)
         changeThemeBinding.backButton.setOnClickListener {
-            val intent= Intent(this,HomeActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }
-
 }

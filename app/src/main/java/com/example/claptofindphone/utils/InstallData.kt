@@ -111,7 +111,7 @@ class InstallData {
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(400L, 200L, 600L)
-                ),
+                )
             )
         }
 
@@ -301,7 +301,7 @@ class InstallData {
                     R.drawable.ic_premium,
                     R.drawable.active_theme_ic,
                     listOf(0L, 600L, 200L, 400L, 200L, 300L)
-                ),
+                )
             )
         }
 

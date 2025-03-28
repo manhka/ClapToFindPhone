@@ -236,6 +236,6 @@
   <string name="vibrate9">Vibrate 9</string>  
   <string name="vibrate10">Vibrate 10</string>  
   <string name="vibrate11">Vibrate 11</string>  
-  <string name="internet_disconnected">Internet disconnected</string>
+  <string name="internet_disconnected">No internet</string>
   <string name="internet_connected">Internet connected</string>
 </resources>

@@ -1,21 +1,14 @@
 package com.example.claptofindphone.activity
 
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.VibrateAdapter
 import com.example.claptofindphone.databinding.ActivityChangeVibrateBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Vibrate
 import com.example.claptofindphone.service.VibrateController
 import com.example.claptofindphone.utils.InstallData

@@ -13,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.VoicePasscodeActivity
 import com.example.claptofindphone.databinding.DialogVoicePasscodeBinding
@@ -41,7 +42,6 @@ class VoicePasscodeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         permissionController = PermissionController()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +58,8 @@ class VoicePasscodeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        Log.d(TAG, "onResume: ")
         if (checkPermission()) {
             if (isNavigateFromSplash()) {
                 // have permissions and from navigation
@@ -70,6 +72,7 @@ class VoicePasscodeFragment : Fragment() {
                 }
             } else {
                 // have permissions , but not from navigation
+                
                 handleVoicePasscodeService()
                 showVoicePasscodeDialog()
             }
@@ -135,7 +138,7 @@ class VoicePasscodeFragment : Fragment() {
 
     }
 
-    private fun stopService() {
+     fun stopService() {
         setRunningService("")
         Log.d(TAG, "stopService: ")
         binding!!.txtActionStatus.setText(R.string.tap_to_active)
@@ -150,6 +153,7 @@ class VoicePasscodeFragment : Fragment() {
         if (isOnVoicePasscodeService == "") {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
+            
         } else if (isOnVoicePasscodeService == Constant.Service.VOICE_PASSCODE_RUNNING) {
             if (permissionController!!.isInternetAvailable(requireActivity())) {
                 if (getVoicePasscode() != Constant.DEFAULT_PASSCODE) {
@@ -238,4 +242,5 @@ class VoicePasscodeFragment : Fragment() {
             Toast.LENGTH_SHORT
         ).show()
     }
+
 }

@@ -54,7 +54,8 @@ class PermissionController {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
             intent.data = Uri.parse("package:${activity.packageName}")
-            activity.startActivityForResult(intent, Constant.Permission.OVERLAY_PERMISSION_REQUEST_CODE
+            activity.startActivityForResult(
+                intent, Constant.Permission.OVERLAY_PERMISSION_REQUEST_CODE
             )
         }
     }
@@ -88,7 +89,12 @@ class PermissionController {
     }
 
 
-    fun showInitialDialog(activity: Activity, typeOfPermission: String,typeOfService:String,typeOfRunningService:String) {
+    fun showInitialDialog(
+        activity: Activity,
+        typeOfPermission: String,
+        typeOfService: String,
+        typeOfRunningService: String
+    ) {
         SharePreferenceUtils.setOpenHomeFragment(typeOfService)
         val layoutInflater = LayoutInflater.from(activity)
         val dialogBinding = DialogInitalRequestPermissionBinding.inflate(layoutInflater)
@@ -97,8 +103,8 @@ class PermissionController {
             .setCancelable(true)
             .create()
         customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        customDialog.setOnCancelListener{
-           SharePreferenceUtils.setRunningService("")
+        customDialog.setOnCancelListener {
+            SharePreferenceUtils.setRunningService("")
         }
 
         customDialog.show()
@@ -108,7 +114,7 @@ class PermissionController {
             if (!isOverlayPermissionGranted(activity) || !hasAudioPermission(activity)) {
                 val intent = Intent(activity, GrantPermissionActivity::class.java)
                 intent.putExtra("typeOfPermission", typeOfPermission)
-                intent.putExtra("typeOfRunningService",typeOfRunningService)
+                intent.putExtra("typeOfRunningService", typeOfRunningService)
                 activity.startActivity(intent)
             }
         }
@@ -117,18 +123,13 @@ class PermissionController {
     fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-            return when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork) ?: return false
+        return if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+            true
+        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+            true
         } else {
-            val networkInfo = connectivityManager.activeNetworkInfo
-            return networkInfo != null && networkInfo.isConnected
+            false
         }
     }
 }

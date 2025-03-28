@@ -116,7 +116,6 @@ class FoundPhoneActivity : BaseActivity() {
         }
         foundPhoneBinding.rejectButton.setOnClickListener {
             SharePreferenceUtils.setIsFoundPhone(false)
-
             if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService() != Constant.Service.VOICE_PASSCODE_RUNNING) {
                 SharePreferenceUtils.setRunningService("")
                 val startIntent = Intent(this, MyServiceNoMicro::class.java)
@@ -125,9 +124,9 @@ class FoundPhoneActivity : BaseActivity() {
                 )
                 startService(startIntent)
             } else {
-                if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-                    SharePreferenceUtils.setRunningService("")
-                }
+//                if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+//                    SharePreferenceUtils.setRunningService("")
+//                }
                 val startIntent = Intent(this, MyService::class.java)
                 startIntent.putExtra(
                     Constant.Service.RUNNING_SERVICE, Constant.Service.TURN_OFF_SOUND
@@ -140,7 +139,6 @@ class FoundPhoneActivity : BaseActivity() {
         }
         foundPhoneBinding.responseButton.setOnClickListener {
             SharePreferenceUtils.setIsFoundPhone(false)
-
             if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING && SharePreferenceUtils.getRunningService() != Constant.Service.VOICE_PASSCODE_RUNNING) {
                 SharePreferenceUtils.setRunningService("")
                 val startIntent = Intent(this, MyServiceNoMicro::class.java)
@@ -149,9 +147,9 @@ class FoundPhoneActivity : BaseActivity() {
                 )
                 startService(startIntent)
             } else {
-                if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
-                    SharePreferenceUtils.setRunningService("")
-                }
+//                if (SharePreferenceUtils.getRunningService() != Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+//                    SharePreferenceUtils.setRunningService("")
+//                }
                 val startIntent = Intent(this, MyService::class.java)
                 startIntent.putExtra(
                     Constant.Service.RUNNING_SERVICE, Constant.Service.TURN_OFF_SOUND

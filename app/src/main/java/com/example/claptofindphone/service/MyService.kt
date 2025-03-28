@@ -191,7 +191,6 @@ class MyService : Service() {
         WakeupPhone.turnOffEffects()
         if (isClapDetectListening) {
             Log.d(TAG, "onDestroy: stop clap detect")
-
             handlerClap?.removeCallbacksAndMessages(null)
             try {
                 stopAudioRecording()
@@ -199,13 +198,14 @@ class MyService : Service() {
             } catch (e: Exception) {
                 Log.e(TAG, "Error releasing resources: ${e.message}")
             }
+            isClapDetectListening=false
         }
         if (isVoiceDetectListening) {
             Log.d(TAG, "onDestroy: stop voice detect")
-            isVoiceDetectListening = false
             Speech.getInstance().stopListening()
             Speech.getInstance().shutdown()
             runnable?.let { handler?.removeCallbacks(it) }
+            isVoiceDetectListening = false
         }
         MyNotification.updateOffNotification(this)
     }

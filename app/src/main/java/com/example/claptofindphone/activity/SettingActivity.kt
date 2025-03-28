@@ -14,6 +14,7 @@ import com.example.claptofindphone.databinding.ActivitySettingBinding
 import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.PermissionController
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class SettingActivity : BaseActivity() {
     private lateinit var settingActivityBinding: ActivitySettingBinding
