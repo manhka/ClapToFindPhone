@@ -6,15 +6,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySettingBinding
 import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.PermissionController
-import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class SettingActivity : BaseActivity() {
     private lateinit var settingActivityBinding: ActivitySettingBinding

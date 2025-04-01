@@ -1,19 +1,12 @@
 package com.example.claptofindphone.activity
 
 import android.content.Intent
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityWaitBinding
 import com.example.claptofindphone.model.Constant
-import com.example.claptofindphone.service.MyService
 
 class WaitActivity : BaseActivity() {
     private lateinit var waitBinding: ActivityWaitBinding
@@ -42,6 +35,8 @@ class WaitActivity : BaseActivity() {
                 timeCountDown.text = time.toString();
             }
             override fun onFinish() {
+                val intent = Intent(this@WaitActivity,HomeActivity::class.java)
+                startActivity(intent)
                 finish()
             }
         }.start()

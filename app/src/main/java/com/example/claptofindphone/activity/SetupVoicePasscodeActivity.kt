@@ -1,26 +1,17 @@
 package com.example.claptofindphone.activity
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieDrawable
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivitySetupPasscodeBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
-import com.example.claptofindphone.utils.SharePreferenceUtils.getRunningService
 import net.gotev.speech.GoogleVoiceTypingDisabledException
 import net.gotev.speech.Speech
 import net.gotev.speech.SpeechDelegate

@@ -1,25 +1,16 @@
     package com.example.claptofindphone.activity
 
-    import android.content.ContentValues.TAG
     import android.content.Intent
-    import android.content.SharedPreferences
-    import android.content.res.Configuration
     import android.os.Bundle
-    import android.util.Log
     import android.view.View
-    import androidx.appcompat.app.AppCompatActivity
-    import androidx.core.view.ViewCompat
-    import androidx.core.view.WindowInsetsCompat
     import androidx.recyclerview.widget.LinearLayoutManager
     import com.example.claptofindphone.R
     import com.example.claptofindphone.adapter.LanguageAdapter
     import com.example.claptofindphone.databinding.ActivityLanguageBinding
     import com.example.claptofindphone.model.Constant
     import com.example.claptofindphone.model.Language
-    import com.example.claptofindphone.service.MyService
     import com.example.claptofindphone.utils.InstallData
     import com.example.claptofindphone.utils.SharePreferenceUtils
-    import java.util.Locale
 
     class LanguageActivity : BaseActivity() {
         private lateinit var binding: ActivityLanguageBinding

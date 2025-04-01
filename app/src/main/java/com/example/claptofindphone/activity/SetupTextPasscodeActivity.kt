@@ -1,7 +1,6 @@
 package com.example.claptofindphone.activity
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.Editable
@@ -9,14 +8,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
-import com.example.claptofindphone.databinding.ActivitySetupPasscodeBinding
 import com.example.claptofindphone.databinding.ActivitySetupTextPasscodeBinding
-import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale

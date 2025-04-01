@@ -2,9 +2,16 @@ package com.example.claptofindphone.fragment.home
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.os.Binder
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -37,14 +44,15 @@ class VoicePasscodeFragment : Fragment() {
     private var binding: FragmentVoicePasscodeInHomeBinding? = null
     private var permissionController: PermissionController? = null
     private var anim: ScaleAnimation? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionController = PermissionController()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
+
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentVoicePasscodeInHomeBinding.inflate(inflater, container, false)
@@ -53,11 +61,16 @@ class VoicePasscodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupAnimation()
+        if (SharePreferenceUtils.getRunningService()==Constant.Service.VOICE_PASSCODE_RUNNING){
+            val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+            requireActivity().registerReceiver(networkReceiver, filter)
+        }
         binding!!.voicePasscodeButton.setOnClickListener { v -> handleVoicePasscodeButtonClick() }
     }
 
     override fun onResume() {
         super.onResume()
+        // Register the receiver to listen for network changes
 
         Log.d(TAG, "onResume: ")
         if (checkPermission()) {
@@ -72,7 +85,6 @@ class VoicePasscodeFragment : Fragment() {
                 }
             } else {
                 // have permissions , but not from navigation
-                
                 handleVoicePasscodeService()
                 showVoicePasscodeDialog()
             }
@@ -87,6 +99,8 @@ class VoicePasscodeFragment : Fragment() {
                     } else {
                         showInternetRequiredToast()
                     }
+                }else{
+                    binding!!.handIc.startAnimation(anim)
                 }
             }
         }
@@ -126,6 +140,8 @@ class VoicePasscodeFragment : Fragment() {
     @SuppressLint("NewApi")
     private fun onService(runningService: String) {
         stopAnimation()
+        binding!!.round3.setAnimation(R.raw.anim_home_orange)
+        binding!!.round3.playAnimation()
         binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
         binding!!.handIc.visibility = View.GONE
         binding!!.round2.setImageResource(R.drawable.round2_active)
@@ -138,9 +154,10 @@ class VoicePasscodeFragment : Fragment() {
 
     }
 
-     fun stopService() {
+    fun stopService() {
+        binding!!.round3.setAnimation(R.raw.anim_home)
+        binding!!.round3.playAnimation()
         setRunningService("")
-        Log.d(TAG, "stopService: ")
         binding!!.txtActionStatus.setText(R.string.tap_to_active)
         binding!!.handIc.visibility = View.VISIBLE
         binding!!.round2.setImageResource(R.drawable.round2_passive)
@@ -153,16 +170,16 @@ class VoicePasscodeFragment : Fragment() {
         if (isOnVoicePasscodeService == "") {
             binding!!.handIc.startAnimation(anim)
             setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
-            
+
         } else if (isOnVoicePasscodeService == Constant.Service.VOICE_PASSCODE_RUNNING) {
             if (permissionController!!.isInternetAvailable(requireActivity())) {
                 if (getVoicePasscode() != Constant.DEFAULT_PASSCODE) {
-                    startVoicePasscodeService(Constant.Service.VOICE_PASSCODE_RUNNING)
+                    onService(Constant.Service.VOICE_PASSCODE_RUNNING)
                 } else {
                     navigateToVoicePasscodeActivity()
                 }
             } else {
-                if (isOnService()){
+                if (isOnService()) {
                     stopService()
                 }
             }
@@ -185,20 +202,6 @@ class VoicePasscodeFragment : Fragment() {
         }
     }
 
-    private fun startVoicePasscodeService(runningService: String) {
-        stopAnimation()
-        binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
-        binding!!.handIc.visibility = View.GONE
-        binding!!.round2.setImageResource(R.drawable.round2_active)
-        Log.d(TAG, "startVoicePasscodeService:${getRunningService()} ")
-        if (!isOnService()) {
-            setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
-            val intent = Intent(requireContext(), MyService::class.java)
-            intent.putExtra(Constant.Service.RUNNING_SERVICE, runningService)
-            requireContext().startService(intent)
-        }
-
-    }
 
     private fun setupAnimation() {
         anim = ScaleAnimation(
@@ -243,4 +246,26 @@ class VoicePasscodeFragment : Fragment() {
         ).show()
     }
 
+    private val networkReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val permissionController = PermissionController()
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (!permissionController.isInternetAvailable(requireActivity())){
+                    binding!!.round3.setAnimation(R.raw.anim_home)
+                    binding!!.round3.playAnimation()
+                    binding!!.txtActionStatus.setText(R.string.tap_to_active)
+                    binding!!.handIc.visibility = View.VISIBLE
+                    binding!!.round2.setImageResource(R.drawable.round2_passive)
+                    binding!!.handIc.startAnimation(anim)
+                }
+            },500)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (SharePreferenceUtils.getRunningService()==Constant.Service.VOICE_PASSCODE_RUNNING){
+            requireContext().unregisterReceiver(networkReceiver)
+        }
+    }
 }

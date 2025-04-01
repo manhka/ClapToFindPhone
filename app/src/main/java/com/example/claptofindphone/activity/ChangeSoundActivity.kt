@@ -1,20 +1,13 @@
 package com.example.claptofindphone.activity
-
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.content.SharedPreferences
 import android.database.ContentObserver
 import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.SeekBar
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.SoundAdapter2
@@ -271,6 +264,11 @@ class ChangeSoundActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        SoundController.stopSound()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
         SoundController.stopSound()
     }
 }

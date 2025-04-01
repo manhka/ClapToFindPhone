@@ -109,6 +109,8 @@ class DontTouchMyPhoneFragment : Fragment() {
 
     private fun onService(runningService: String) {
         stopAnimation()
+        binding!!.round3.setAnimation(R.raw.anim_home_orange)
+        binding!!.round3.playAnimation()
         binding!!.txtActionStatus.setText(R.string.tap_to_deactive)
         binding!!.handIc.visibility = View.GONE
         binding!!.round2.setImageResource(R.drawable.round2_active)
@@ -128,6 +130,8 @@ class DontTouchMyPhoneFragment : Fragment() {
     }
 
     private fun stopService() {
+        binding!!.round3.setAnimation(R.raw.anim_home)
+        binding!!.round3.playAnimation()
         binding!!.txtActionStatus.setText(R.string.tap_to_active)
         binding!!.handIc.visibility = View.VISIBLE
         binding!!.round2.setImageResource(R.drawable.round2_passive)

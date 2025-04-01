@@ -1,12 +1,7 @@
 package com.example.claptofindphone.activity
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.claptofindphone.R
 import com.example.claptofindphone.adapter.CallThemeAdapter
 import com.example.claptofindphone.adapter.DefaultThemeAdapter
 import com.example.claptofindphone.databinding.ActivityChangeThemeBinding

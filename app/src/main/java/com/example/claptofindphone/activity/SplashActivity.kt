@@ -2,16 +2,15 @@ package com.example.claptofindphone.activity
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.view.WindowManager
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
@@ -23,6 +22,7 @@ import com.example.claptofindphone.service.MyService
 import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -85,21 +85,36 @@ private var isVoicePasscode=false
         val action = intent.action
         if (action == null) {
             Handler(Looper.getMainLooper()).postDelayed({
-                lifecycleScope.launchWhenResumed {
-                    if (navigateFromOffNoty) {
-                        if (SharePreferenceUtils.isNavigateToChangePasscode() && isVoicePasscode){
-                            if (permissionController.isInternetAvailable(this@SplashActivity) && checkPermission()){
-                                navigateToChangePasscode()
-                            }else{
-                                navigateToHome()
+                lifecycleScope.launch {
+                    lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                        if (navigateFromOffNoty) {
+                            if (SharePreferenceUtils.isNavigateToChangePasscode() && isVoicePasscode) {
+                                if (permissionController.isInternetAvailable(this@SplashActivity) && checkPermission()) {
+                                    navigateToChangePasscode()
+                                } else {
+                                    navigateToHome()
+                                }
+                            } else {
+                                if (modeFromNoty==Constant.Service.DONT_TOUCH_MY_PHONE || modeFromNoty==Constant.Service.POCKET_MODE || modeFromNoty==Constant.Service.CHARGER_PHONE){
+                                    if (permissionController.isOverlayPermissionGranted(this@SplashActivity)){
+                                        navigateToWait()
+                                    }else{
+                                        navigateToHome()
+                                    }
+                                }else{
+                                    navigateToHome()
+                                }
+
                             }
-                        }else{
-                            navigateToHome()
+                        } else {
+                            navigate()
                         }
-                    } else {
-                        navigate()
+
+                        // Nếu bạn chỉ muốn chạy một lần duy nhất khi RESUMED lần đầu, có thể thêm break hoặc return ở đây
+                        // return@repeatOnLifecycle
                     }
                 }
+
             }, 2000)
         } else if (action.toBoolean()) {
                 val intent = Intent(this, FoundPhoneActivity::class.java)
@@ -122,6 +137,17 @@ private var isVoicePasscode=false
 
             }
     }
+
+    private fun navigateToWait() {
+        SharePreferenceUtils.setIsWaited(true)
+        val intentService = Intent(this, MyServiceNoMicro::class.java)
+        intentService.putExtra(Constant.Service.RUNNING_SERVICE, SharePreferenceUtils.getRunningService())
+        startService(intentService)
+        val intentToHome = Intent(this, WaitActivity::class.java)
+        startActivity(intentToHome)
+        finishAffinity()
+    }
+
     private fun navigate() {
         val timeComeToHome = SharePreferenceUtils.getTimeComeHome()
         if (timeComeToHome == 0) {

@@ -1,22 +1,20 @@
 package com.example.claptofindphone.activity
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.BatteryManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityGrantPermissionBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.service.MyService
+import com.example.claptofindphone.service.MyServiceNoMicro
 import com.example.claptofindphone.service.PermissionController
 import com.example.claptofindphone.utils.SharePreferenceUtils
+import com.example.claptofindphone.utils.SharePreferenceUtils.setIsWaited
 
 class GrantPermissionActivity : BaseActivity() {
     private lateinit var grantPermissionBinding: ActivityGrantPermissionBinding
@@ -76,20 +74,61 @@ class GrantPermissionActivity : BaseActivity() {
             }
         }
         grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
-            val typeOfRunningService=intent.getStringExtra("typeOfRunningService")
-             if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING && typeOfRunningService!=""){
-                SharePreferenceUtils.setIsWaited(false)
-            }
+            val typeOfRunningService = intent.getStringExtra("typeOfRunningService")
             SharePreferenceUtils.setRunningService(typeOfRunningService!!)
-            if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING || typeOfRunningService==""){
-                val intent = Intent(this, VoicePasscodeActivity::class.java)
-                startActivity(intent)
-                finish()
-            }else{
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+            if (typeOfRunningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING ) {
+                val intentService = Intent(this, MyService::class.java)
+                intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+                startService(intentService)
+                navigateToHome()
             }
+            if (typeOfRunningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
+                if (SharePreferenceUtils.getVoicePasscode() == Constant.DEFAULT_PASSCODE) {
+                    navigateToChangePasscode()
+                } else {
+                    val intentService = Intent(this, MyService::class.java)
+                    intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+                    startService(intentService)
+                    navigateToHome()
+                }
+            }
+
+            if (typeOfRunningService== Constant.Service.TOUCH_PHONE_RUNNING || typeOfRunningService==Constant.Service.POCKET_MODE_RUNNING ){
+                val intentService = Intent(this, MyServiceNoMicro::class.java)
+                intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+                startService(intentService)
+                navigateToWait()
+            }
+            if ( typeOfRunningService==Constant.Service.CHARGER_ALARM_RUNNING){
+                if (isPlugPhone()){
+                    val intentService = Intent(this, MyServiceNoMicro::class.java)
+                    intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+                    startService(intentService)
+                    navigateToWait()
+                }else{
+                    navigateToHome()
+                }
+            }
+//             if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING && typeOfRunningService!=""){
+//                 setIsWaited(true)
+//                 val intentService = Intent(this, MyServiceNoMicro::class.java)
+//                 intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+//                 startService(intentService)
+//                 val intent = Intent(this, WaitActivity::class.java)
+//                 startActivity(intent)
+//                 finish()
+//            }else{
+//                 if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING && SharePreferenceUtils.getVoicePasscode()==Constant.DEFAULT_PASSCODE){
+//                     val intent = Intent(this, VoicePasscodeActivity::class.java)
+//                     startActivity(intent)
+//                     finish()
+//                 }else{
+//                     val intent = Intent(this, HomeActivity::class.java)
+//                     startActivity(intent)
+//                     finish()
+//                 }
+//             }
+
 
         }
     }
@@ -115,7 +154,7 @@ class GrantPermissionActivity : BaseActivity() {
                             this
                         )
                     }
-                    if (SharePreferenceUtils.getTimeDeniRecordPermission()<2){
+                    if (SharePreferenceUtils.getTimeDeniRecordPermission() < 2) {
                         SharePreferenceUtils.setTimeDeniRecordPermission(SharePreferenceUtils.getTimeDeniRecordPermission() + 1)
                     }
                 }
@@ -123,33 +162,55 @@ class GrantPermissionActivity : BaseActivity() {
 
         }
     }
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
-            if (requestCode == Constant.Permission.OVERLAY_PERMISSION_REQUEST_CODE) {
-                if (Settings.canDrawOverlays(this)) {
-                    grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
-                    grantPermissionBinding.btnAllowOverlayPermission.isEnabled = false
-                }
-            }
-        }
 
-        // check all permission
-        private fun checkAllPermission() {
-            if (permissionController.hasAudioPermission(this)) {
-                grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
-                grantPermissionBinding.btnAllowRecordingPermission.isEnabled = false
-            } else {
-                grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_allow)
-                grantPermissionBinding.btnAllowRecordingPermission.isEnabled = true
-            }
-            if (permissionController.isOverlayPermissionGranted(this)) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constant.Permission.OVERLAY_PERMISSION_REQUEST_CODE) {
+            if (Settings.canDrawOverlays(this)) {
                 grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
                 grantPermissionBinding.btnAllowOverlayPermission.isEnabled = false
-            } else {
-                grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_allow)
-                grantPermissionBinding.btnAllowOverlayPermission.isEnabled = true
             }
         }
-
-
     }
+
+    // check all permission
+    private fun checkAllPermission() {
+        if (permissionController.hasAudioPermission(this)) {
+            grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
+            grantPermissionBinding.btnAllowRecordingPermission.isEnabled = false
+        } else {
+            grantPermissionBinding.btnAllowRecordingPermission.setBackgroundResource(R.drawable.bg_btn_allow)
+            grantPermissionBinding.btnAllowRecordingPermission.isEnabled = true
+        }
+        if (permissionController.isOverlayPermissionGranted(this)) {
+            grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_grey2)
+            grantPermissionBinding.btnAllowOverlayPermission.isEnabled = false
+        } else {
+            grantPermissionBinding.btnAllowOverlayPermission.setBackgroundResource(R.drawable.bg_btn_allow)
+            grantPermissionBinding.btnAllowOverlayPermission.isEnabled = true
+        }
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToChangePasscode() {
+        val intent = Intent(this, VoicePasscodeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToWait() {
+        val intent = Intent(this, WaitActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun isPlugPhone(): Boolean {
+        val batteryIntent =
+            registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+        return (status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL)
+    }
+}

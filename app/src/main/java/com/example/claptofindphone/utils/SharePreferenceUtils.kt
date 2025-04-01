@@ -203,5 +203,7 @@ object SharePreferenceUtils {
     // service
     fun isOnService(): Boolean = getBoolean("isOnService", false)
     fun setIsOnService(value: Boolean) = saveKey("isOnService", value)
-
+// selected tab service
+fun selectedTabIndex(): Int = getInt("selectedTabIndex", 0)
+    fun setSelectedTabIndex(value: Int) = saveKey("selectedTabIndex", value)
 }

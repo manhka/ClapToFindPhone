@@ -2,11 +2,9 @@ package com.example.claptofindphone
 
 import android.app.Application
 import android.content.IntentFilter
-import android.content.res.Configuration
 import android.net.ConnectivityManager
 import com.example.claptofindphone.service.NetworkChangeReceiver
 import com.example.claptofindphone.utils.SharePreferenceUtils
-import java.util.Locale
 
 class MyApplication : Application(){
     private lateinit var networkReceiver: NetworkChangeReceiver
