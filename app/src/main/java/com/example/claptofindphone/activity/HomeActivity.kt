@@ -16,6 +16,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
@@ -54,7 +55,7 @@ class HomeActivity : BaseActivity() {
         R.drawable.ic_charger_alarm,
         R.drawable.touch_phone
     )
-    private var currentTabIndex=SharePreferenceUtils.selectedTabIndex()
+    private var currentTabIndex = SharePreferenceUtils.selectedTabIndex()
     private lateinit var permissionController: PermissionController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +102,6 @@ class HomeActivity : BaseActivity() {
         homeBinding.rcvHomeSound.layoutManager = GridLayoutManager(this, 3)
         homeBinding.rcvHomeSound.adapter = soundAdapter
         // install viewpager and tab layout
-
         homeBinding.tabLayoutHome.addTab(
             homeBinding.tabLayoutHome.newTab().setText(getString(R.string.clap_to_find))
         )
@@ -117,8 +117,6 @@ class HomeActivity : BaseActivity() {
         homeBinding.tabLayoutHome.addTab(
             homeBinding.tabLayoutHome.newTab().setText(getString(R.string.dont_touch_my_phone))
         )
-//        homeTabLayout.getTabAt(0)?.view?.setBackgroundResource(R.drawable.bg_tab_selected)
-//        homeTabLayout.getTabAt(4)?.view?.setBackgroundResource(R.drawable.bg_tab_unselected)
 
         for (i in 0 until homeBinding.tabLayoutHome.tabCount) {
             val tabView = homeBinding.tabLayoutHome.getTabAt(i)?.view
@@ -131,75 +129,7 @@ class HomeActivity : BaseActivity() {
                 tabView.setBackgroundResource(R.drawable.bg_tab_unselected)
             }
         }
-        homeBinding.cardViewChangeTheme.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
-                return@setOnClickListener
-            }
-            mLastClickTime = SystemClock.elapsedRealtime()
-            val intent = Intent(this, ChangeThemeActivity::class.java)
-            startActivity(intent)
-        }
-        homeBinding.cardViewFlashlight.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
-                return@setOnClickListener
-            }
-            mLastClickTime = SystemClock.elapsedRealtime()
-            val intent = Intent(this, ChangeFlashlightActivity::class.java)
-            startActivity(intent)
-        }
-        homeBinding.cardViewVibrate.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
-                return@setOnClickListener
-            }
-            mLastClickTime = SystemClock.elapsedRealtime()
-            val intent = Intent(this, ChangeVibrateActivity::class.java)
-            startActivity(intent)
-        }
-        homeBinding.cardViewHowToUse.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
-                return@setOnClickListener
-            }
-            mLastClickTime = SystemClock.elapsedRealtime()
-            val intent = Intent(this, HowToUseActivity::class.java)
-            startActivity(intent)
-        }
-        homeBinding.settingButton.setOnClickListener {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
-                return@setOnClickListener
-            }
-            mLastClickTime = SystemClock.elapsedRealtime()
-            val intent = Intent(this, SettingActivity::class.java)
-            startActivity(intent)
-        }
 
-
-        homeBinding.changeAudioPasscodeButton.setOnClickListener {
-            val isRunningService = SharePreferenceUtils.getRunningService()
-            if (isRunningService != "") {
-                Toast.makeText(
-                    this,
-                    getString(R.string.deactive_all_feature_before_run),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                if (permissionController.isInternetAvailable(this)) {
-                    if (permissionController.hasAudioPermission(this)) {
-                        val intent = Intent(this, VoicePasscodeActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        permissionController.showInitialDialog(
-                            this,
-                            Constant.Permission.RECORDING_PERMISSION,
-                            Constant.Service.VOICE_PASSCODE,
-                            ""
-                        )
-                    }
-                } else {
-                   toastInternet()
-                }
-
-            }
-        }
 
         // show rate dialog after first time use service
         if (SharePreferenceUtils.isShowRateDialog() == 2) {
@@ -226,45 +156,107 @@ class HomeActivity : BaseActivity() {
             }
 
         }
+        startDiamondAnimation(homeBinding.imgViewDiamond)
+        if (SharePreferenceUtils.isShowNotyWhenComeToHome()) {
+            if (checkNotificationPermission(this)) {
+                SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
+                val intent = Intent(this, MyServiceNoMicro::class.java)
+                intent.putExtra("turnOnNotifyFromHome", true)
+                startService(intent)
+            }else{
+                SharePreferenceUtils.setIsShowNotyWhenComeToHome(true)
+            }
+        }
     }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
 
+        if (hasFocus) {
+            homeBinding.tabLayoutHome.selectTab(
+                homeBinding.tabLayoutHome.getTabAt(
+                    SharePreferenceUtils.selectedTabIndex()
+                )
+            )
+            homeBinding.imgViewIconService.setImageResource(imgService[SharePreferenceUtils.selectedTabIndex()])
+            homeBinding.tabLayoutHome.setScrollPosition(
+                SharePreferenceUtils.selectedTabIndex(),
+                0f,
+                true)
+        }
+    }
     override fun onResume() {
         super.onResume()
-        homeBinding.tabLayoutHome.selectTab(homeBinding.tabLayoutHome.getTabAt(SharePreferenceUtils.selectedTabIndex()))
-        homeBinding.imgViewIconService.setImageResource(imgService[SharePreferenceUtils.selectedTabIndex()])
+
+
+
         // update ui after destroy and come back
-        if (SharePreferenceUtils.getRunningService()==Constant.Service.CLAP_AND_WHISTLE_RUNNING){
-            if (permissionController.hasAudioPermission(this) && permissionController.isOverlayPermissionGranted(this)){
+        if (SharePreferenceUtils.getRunningService() == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+            if (permissionController.hasAudioPermission(this) && permissionController.isOverlayPermissionGranted(
+                    this
+                )
+            ) {
+                if (SharePreferenceUtils.isNavigateFromSplash()) {
+                    startMicService(SharePreferenceUtils.getRunningService())
+                }
                 updateUiOnService()
-            }else{
-                stopMicService()
-            }
-        }else if (SharePreferenceUtils.getRunningService()==Constant.Service.VOICE_PASSCODE_RUNNING){
-            if (permissionController.isInternetAvailable(this)){
-                if (permissionController.hasAudioPermission(this) && permissionController.isOverlayPermissionGranted(this)){
-                    updateUiOnService()
-                }else{
+            } else {
+                if (SharePreferenceUtils.isNavigateFromSplash()) {
+                    SharePreferenceUtils.setRunningService("")
+                    permissionController.showInitialDialog(
+                        this,
+                        Constant.Permission.BOTH_PERMISSION,
+                        Constant.Service.CLAP_TO_FIND_PHONE,
+                        Constant.Service.CLAP_AND_WHISTLE_RUNNING
+                    )
+                } else {
                     stopMicService()
                 }
-            }else{
-                stopMicService()
             }
-        }else if (SharePreferenceUtils.getRunningService()==Constant.Service.POCKET_MODE_RUNNING || SharePreferenceUtils.getRunningService()==Constant.Service.TOUCH_PHONE_RUNNING){
-            if (permissionController.isOverlayPermissionGranted(this)){
+        } else if (SharePreferenceUtils.getRunningService() == Constant.Service.VOICE_PASSCODE_RUNNING) {
+            Log.d(TAG, "internet checking: ${permissionController.isInternetAvailable(this)}")
+            if (permissionController.isInternetAvailable(this)) {
+                if (permissionController.hasAudioPermission(this) && permissionController.isOverlayPermissionGranted(
+                        this
+                    )
+                ) {
+                    if (SharePreferenceUtils.isNavigateFromSplash()) {
+                        startMicService(SharePreferenceUtils.getRunningService())
+                    }
+                    updateUiOnService()
+                } else {
+                    if (SharePreferenceUtils.isNavigateFromSplash()) {
+                        SharePreferenceUtils.setRunningService("")
+                        permissionController.showInitialDialog(
+                            this,
+                            Constant.Permission.BOTH_PERMISSION,
+                            Constant.Service.VOICE_PASSCODE,
+                            Constant.Service.VOICE_PASSCODE_RUNNING
+                        )
+                    } else {
+                        stopMicService()
+                    }
+                }
+            } else {
+                Log.d(TAG, "onResume: ????")
+                SharePreferenceUtils.setRunningService("")
+                toastInternet()
+            }
+        } else if (SharePreferenceUtils.getRunningService() == Constant.Service.POCKET_MODE_RUNNING || SharePreferenceUtils.getRunningService() == Constant.Service.TOUCH_PHONE_RUNNING) {
+            if (permissionController.isOverlayPermissionGranted(this)) {
                 updateUiOnService()
-            }else{
+            } else {
                 stopNoMicService()
             }
-        }else if ( SharePreferenceUtils.getRunningService()==Constant.Service.CHARGER_ALARM_RUNNING ){
-            if (permissionController.isOverlayPermissionGranted(this)){
-                if (isPlugPhone()){
+        } else if (SharePreferenceUtils.getRunningService() == Constant.Service.CHARGER_ALARM_RUNNING) {
+            if (permissionController.isOverlayPermissionGranted(this)) {
+                if (isPlugPhone()) {
                     updateUiOnService()
-                }else{
+                } else {
                     SharePreferenceUtils.setRunningService("")
                     Toast.makeText(this, R.string.plug_phone, Toast.LENGTH_SHORT)
                         .show()
                 }
-            }else{
+            } else {
                 stopNoMicService()
             }
         }
@@ -329,7 +321,7 @@ class HomeActivity : BaseActivity() {
 
                     4 -> {
                         if (SharePreferenceUtils.getRunningService() == Constant.Service.TOUCH_PHONE_RUNNING) {
-                           stopNoMicService()
+                            stopNoMicService()
                         } else {
                             toast()
                         }
@@ -342,7 +334,7 @@ class HomeActivity : BaseActivity() {
         homeBinding.tabLayoutHome.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                currentTabIndex=tab!!.position
+                currentTabIndex = tab!!.position
                 if (tab.text.toString() == getString(R.string.clap_to_find)) {
                     homeBinding.imgViewIconService.setImageResource(R.drawable.hand_clap)
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
@@ -358,7 +350,7 @@ class HomeActivity : BaseActivity() {
                     homeBinding.imgViewIconService.setImageResource(R.drawable.mic_ic)
                     homeBinding.changeAudioPasscodeButton.visibility = View.VISIBLE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.VOICE_PASSCODE_RUNNING) {
-                        SharePreferenceUtils.setSelectedTabIndex(tab!!.position)
+                        SharePreferenceUtils.setSelectedTabIndex(tab.position)
                         if (SharePreferenceUtils.getRunningService() == Constant.Service.VOICE_PASSCODE_RUNNING) {
                             updateUiOnService()
                         }
@@ -369,7 +361,7 @@ class HomeActivity : BaseActivity() {
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     homeBinding.imgViewIconService.setImageResource(R.drawable.pocket_mode)
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.POCKET_MODE_RUNNING) {
-                        SharePreferenceUtils.setSelectedTabIndex(tab!!.position)
+                        SharePreferenceUtils.setSelectedTabIndex(tab.position)
                         if (SharePreferenceUtils.getRunningService() == Constant.Service.POCKET_MODE_RUNNING) {
                             updateUiOnService()
                         }
@@ -381,7 +373,7 @@ class HomeActivity : BaseActivity() {
                     homeBinding.imgViewIconService.setImageResource(R.drawable.ic_charger_alarm)
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.CHARGER_ALARM_RUNNING) {
-                        SharePreferenceUtils.setSelectedTabIndex(tab!!.position)
+                        SharePreferenceUtils.setSelectedTabIndex(tab.position)
                         if (SharePreferenceUtils.getRunningService() == Constant.Service.CHARGER_ALARM_RUNNING) {
                             updateUiOnService()
                         }
@@ -392,7 +384,7 @@ class HomeActivity : BaseActivity() {
                     homeBinding.imgViewIconService.setImageResource(R.drawable.touch_phone)
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.TOUCH_PHONE_RUNNING) {
-                        SharePreferenceUtils.setSelectedTabIndex(tab!!.position)
+                        SharePreferenceUtils.setSelectedTabIndex(tab.position)
                         if (SharePreferenceUtils.getRunningService() == Constant.Service.TOUCH_PHONE_RUNNING) {
                             updateUiOnService()
                         }
@@ -400,8 +392,8 @@ class HomeActivity : BaseActivity() {
                         updateUiOffService()
                     }
                 }
-                tab?.view?.setBackgroundResource(R.drawable.bg_tab_selected)
-                tab?.select()
+                tab.view.setBackgroundResource(R.drawable.bg_tab_selected)
+                tab.select()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -418,16 +410,76 @@ class HomeActivity : BaseActivity() {
 
 
 
-        startDiamondAnimation(homeBinding.imgViewDiamond)
-        if (SharePreferenceUtils.isShowNotyWhenComeToHome()) {
-            if (checkNotificationPermission(this)) {
-                SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
-                val intent = Intent(this, MyServiceNoMicro::class.java)
-                intent.putExtra("turnOnNotifyFromHome", true)
-                startService(intent)
+
+        homeBinding.cardViewChangeTheme.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+                return@setOnClickListener
             }
+            mLastClickTime = SystemClock.elapsedRealtime()
+            val intent = Intent(this, ChangeThemeActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.cardViewFlashlight.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+            val intent = Intent(this, ChangeFlashlightActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.cardViewVibrate.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+            val intent = Intent(this, ChangeVibrateActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.cardViewHowToUse.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+            val intent = Intent(this, HowToUseActivity::class.java)
+            startActivity(intent)
+        }
+        homeBinding.settingButton.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+                return@setOnClickListener
+            }
+            mLastClickTime = SystemClock.elapsedRealtime()
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
         }
 
+
+        homeBinding.changeAudioPasscodeButton.setOnClickListener {
+            val isRunningService = SharePreferenceUtils.getRunningService()
+            if (isRunningService != "") {
+                Toast.makeText(
+                    this,
+                    getString(R.string.deactive_all_feature_before_run),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                if (permissionController.isInternetAvailable(this)) {
+                    if (permissionController.hasAudioPermission(this)) {
+                        val intent = Intent(this, VoicePasscodeActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        permissionController.showInitialDialog(
+                            this,
+                            Constant.Permission.RECORDING_PERMISSION,
+                            Constant.Service.VOICE_PASSCODE,
+                            "CHANGE_PASSCODE"
+                        )
+                    }
+                } else {
+                    toastInternet()
+                }
+
+            }
+        }
     }
 
     private fun checkNotificationPermission(context: Context): Boolean {
@@ -522,34 +574,40 @@ class HomeActivity : BaseActivity() {
 
     private fun onService(runningService: String) {
         // clap and whistle
-           if (runningService==Constant.Service.CLAP_AND_WHISTLE_RUNNING){
-              if (permissionController.isOverlayPermissionGranted(this) && permissionController.hasAudioPermission(this)){
-                  startMicService(runningService)
-                  updateUiOnService()
-              }else{
-                  permissionController.showInitialDialog(
-                      this,
-                      Constant.Permission.BOTH_PERMISSION,
-                      Constant.Service.CLAP_TO_FIND_PHONE,
-                      Constant.Service.CLAP_AND_WHISTLE_RUNNING
-                  )
-              }
+        if (runningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
+            if (permissionController.isOverlayPermissionGranted(this) && permissionController.hasAudioPermission(
+                    this
+                )
+            ) {
+                startMicService(runningService)
+                updateUiOnService()
+            } else {
+                permissionController.showInitialDialog(
+                    this,
+                    Constant.Permission.BOTH_PERMISSION,
+                    Constant.Service.CLAP_TO_FIND_PHONE,
+                    Constant.Service.CLAP_AND_WHISTLE_RUNNING
+                )
+            }
         }
         // voice passcode
-        if (runningService==Constant.Service.VOICE_PASSCODE_RUNNING){
-            if (!permissionController.isInternetAvailable(this)){
+        if (runningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
+            if (!permissionController.isInternetAvailable(this)) {
                 toastInternet()
-            }else{
-                if (permissionController.isOverlayPermissionGranted(this) && permissionController.hasAudioPermission(this)){
+            } else {
+                if (permissionController.isOverlayPermissionGranted(this) && permissionController.hasAudioPermission(
+                        this
+                    )
+                ) {
                     // check passcode
-                    if (SharePreferenceUtils.getVoicePasscode()==Constant.DEFAULT_PASSCODE){
+                    if (SharePreferenceUtils.getVoicePasscode() == Constant.DEFAULT_PASSCODE) {
                         val intent = Intent(this, VoicePasscodeActivity::class.java)
                         startActivity(intent)
-                    }else{
+                    } else {
                         startMicService(runningService)
                         updateUiOnService()
                     }
-                }else{
+                } else {
                     permissionController.showInitialDialog(
                         this,
                         Constant.Permission.BOTH_PERMISSION,
@@ -560,11 +618,11 @@ class HomeActivity : BaseActivity() {
             }
         }
         // touch phone
-        if (runningService==Constant.Service.TOUCH_PHONE_RUNNING){
-            if (permissionController.isOverlayPermissionGranted(this)){
+        if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
+            if (permissionController.isOverlayPermissionGranted(this)) {
                 startNoMicService(runningService)
                 navigateToWait()
-            }else{
+            } else {
                 permissionController.showInitialDialog(
                     this,
                     Constant.Permission.OVERLAY_PERMISSION,
@@ -574,18 +632,17 @@ class HomeActivity : BaseActivity() {
             }
         }
         // charger phone
-        if (runningService==Constant.Service.CHARGER_ALARM_RUNNING){
-            if (permissionController.isOverlayPermissionGranted(this)){
-                Log.d(TAG, "isCharger: ${isPlugPhone()} ")
-                if (isPlugPhone()){
+        if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
+            if (permissionController.isOverlayPermissionGranted(this)) {
+                if (isPlugPhone()) {
                     startNoMicService(runningService)
                     navigateToWait()
-                }else{
+                } else {
                     Toast.makeText(this, R.string.plug_phone, Toast.LENGTH_SHORT)
                         .show()
                 }
 
-            }else{
+            } else {
                 permissionController.showInitialDialog(
                     this,
                     Constant.Permission.OVERLAY_PERMISSION,
@@ -595,11 +652,11 @@ class HomeActivity : BaseActivity() {
             }
         }
         // pocket mode
-        if (runningService==Constant.Service.POCKET_MODE_RUNNING){
-            if (permissionController.isOverlayPermissionGranted(this)){
+        if (runningService == Constant.Service.POCKET_MODE_RUNNING) {
+            if (permissionController.isOverlayPermissionGranted(this)) {
                 startNoMicService(runningService)
                 navigateToWait()
-            }else{
+            } else {
                 permissionController.showInitialDialog(
                     this,
                     Constant.Permission.OVERLAY_PERMISSION,
@@ -611,7 +668,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun navigateToWait() {
-        val intent=Intent(this,WaitActivity::class.java)
+        val intent = Intent(this, WaitActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -639,40 +696,48 @@ class HomeActivity : BaseActivity() {
         )
             .show()
     }
-    private fun toastInternet(){
+
+    private fun toastInternet() {
         Toast.makeText(
             this,
             R.string.connect_internet_to_use_this_feature,
             Toast.LENGTH_SHORT
         ).show()
     }
-    private fun startMicService(service:String){
+
+    private fun startMicService(service: String) {
         SharePreferenceUtils.setRunningService(service)
-        val intentService=Intent(this,MyService::class.java)
+        val intentService = Intent(this, MyService::class.java)
         intentService.putExtra(Constant.Service.RUNNING_SERVICE, service)
         startService(intentService)
     }
-    private fun stopMicService(){
+
+    private fun stopMicService() {
+        SharePreferenceUtils.setRunningService("")
         updateUiOffService()
-        val intentService=Intent(this,MyService::class.java)
+        val intentService = Intent(this, MyService::class.java)
         stopService(intentService)
     }
-    private fun startNoMicService(service:String){
+
+    private fun startNoMicService(service: String) {
         SharePreferenceUtils.setRunningService(service)
-        val intentService=Intent(this,MyServiceNoMicro::class.java)
+        val intentService = Intent(this, MyServiceNoMicro::class.java)
         intentService.putExtra(Constant.Service.RUNNING_SERVICE, service)
         startService(intentService)
     }
-    private fun stopNoMicService(){
+
+    private fun stopNoMicService() {
+        SharePreferenceUtils.setRunningService("")
         updateUiOffService()
-        val intentService=Intent(this,MyServiceNoMicro::class.java)
+        val intentService = Intent(this, MyServiceNoMicro::class.java)
         stopService(intentService)
     }
+
     private fun isPlugPhone(): Boolean {
         val batteryIntent =
             registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
-        return (status == BatteryManager.BATTERY_STATUS_CHARGING )
+        return (status == BatteryManager.BATTERY_STATUS_CHARGING)
     }
 }
 

@@ -29,7 +29,6 @@ class VoicePasscodeActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
 
         voicePasscodeBinding.voiceButton.setOnClickListener {
             if (permissionController.isInternetAvailable(this)){
@@ -78,7 +77,7 @@ class VoicePasscodeActivity : BaseActivity() {
             this,
             Constant.Permission.RECORDING_PERMISSION,
             Constant.Service.VOICE_PASSCODE,
-            Constant.Service.VOICE_PASSCODE_RUNNING
+            "CHANGE VOICE PASSCODE"
         )
     }
 }

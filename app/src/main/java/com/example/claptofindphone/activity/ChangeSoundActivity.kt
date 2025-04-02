@@ -95,6 +95,7 @@ class ChangeSoundActivity : BaseActivity() {
         // back button
         changeSoundBinding.backButton.setOnClickListener {
             SoundController.stopSound()
+
             finish()
         }
         changeSoundBinding.onOffLayout.setOnClickListener {

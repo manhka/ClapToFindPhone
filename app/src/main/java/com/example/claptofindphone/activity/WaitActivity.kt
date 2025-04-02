@@ -1,12 +1,15 @@
 package com.example.claptofindphone.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.TextView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.ActivityWaitBinding
 import com.example.claptofindphone.model.Constant
+import com.example.claptofindphone.utils.SharePreferenceUtils
 
 class WaitActivity : BaseActivity() {
     private lateinit var waitBinding: ActivityWaitBinding
@@ -16,11 +19,13 @@ class WaitActivity : BaseActivity() {
         waitBinding = ActivityWaitBinding.inflate(layoutInflater)
         setContentView(waitBinding.root)
         changeBackPressCallBack {  }
-        runningService = intent?.getStringExtra(Constant.Service.RUNNING_SERVICE)
+
+        runningService =SharePreferenceUtils.getRunningService()
         if (runningService == Constant.Service.TOUCH_PHONE_RUNNING) {
             waitBinding.txtTitleWait.text = getString(R.string.dont_touch_my_phone)
             waitBinding.content.text=getString(R.string.wait_touch_phone_content)
-        } else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
+        }
+        else if (runningService == Constant.Service.CHARGER_ALARM_RUNNING) {
             waitBinding.txtTitleWait.text = getString(R.string.wait_charger_alarm_title)
             waitBinding.content.text=getString(R.string.wait_charger_alarm_content)
         } else if (runningService == Constant.Service.POCKET_MODE_RUNNING) {

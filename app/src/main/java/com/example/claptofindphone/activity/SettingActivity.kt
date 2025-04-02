@@ -38,7 +38,6 @@ class SettingActivity : BaseActivity() {
             if (permissionController.isInternetAvailable(this)){
                 val deviceName = Build.MODEL // returns model name
                 val deviceManufacturer = Build.MANUFACTURER
-
                 val testIntent = Intent(Intent.ACTION_VIEW)
                 val data: Uri = Uri.parse(
                     """mailto:?subject=Clap To Find Phone &body=Device: $deviceManufacturer - $deviceName 

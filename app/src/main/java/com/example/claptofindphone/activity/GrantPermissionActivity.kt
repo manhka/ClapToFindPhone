@@ -42,8 +42,6 @@ class GrantPermissionActivity : BaseActivity() {
         }
         grantPermissionBinding.backBtnInGrantPermission.setOnClickListener {
             SharePreferenceUtils.setRunningService("")
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }
@@ -74,63 +72,66 @@ class GrantPermissionActivity : BaseActivity() {
             }
         }
         grantPermissionBinding.btnContinueInGrantPermission.setOnClickListener {
+
             val typeOfRunningService = intent.getStringExtra("typeOfRunningService")
-            SharePreferenceUtils.setRunningService(typeOfRunningService!!)
-            if (typeOfRunningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING ) {
-                val intentService = Intent(this, MyService::class.java)
-                intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
-                startService(intentService)
-                navigateToHome()
+            if (typeOfRunningService=="CHANGE TEXT PASSCODE"){
+
+                navigateToChangeTextPasscode()
             }
-            if (typeOfRunningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
-                if (SharePreferenceUtils.getVoicePasscode() == Constant.DEFAULT_PASSCODE) {
-                    navigateToChangePasscode()
-                } else {
+           else
+            if (typeOfRunningService == "CHANGE VOICE PASSCODE") {
+                navigateToChangeVoicePasscode()
+            }else
+            if(typeOfRunningService=="CHANGE_PASSCODE"){
+                navigateToChangePasscode()
+            }else{
+                SharePreferenceUtils.setRunningService(typeOfRunningService!!)
+                if (typeOfRunningService == Constant.Service.CLAP_AND_WHISTLE_RUNNING ) {
                     val intentService = Intent(this, MyService::class.java)
                     intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
                     startService(intentService)
                     navigateToHome()
                 }
-            }
+                if (typeOfRunningService == Constant.Service.VOICE_PASSCODE_RUNNING) {
+                    if (SharePreferenceUtils.getVoicePasscode() == Constant.DEFAULT_PASSCODE) {
+                        navigateToChangePasscode()
+                    } else {
+                        val intentService = Intent(this, MyService::class.java)
+                        intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+                        startService(intentService)
+                        navigateToHome()
+                    }
+                }
 
-            if (typeOfRunningService== Constant.Service.TOUCH_PHONE_RUNNING || typeOfRunningService==Constant.Service.POCKET_MODE_RUNNING ){
-                val intentService = Intent(this, MyServiceNoMicro::class.java)
-                intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
-                startService(intentService)
-                navigateToWait()
-            }
-            if ( typeOfRunningService==Constant.Service.CHARGER_ALARM_RUNNING){
-                if (isPlugPhone()){
+                if (typeOfRunningService== Constant.Service.TOUCH_PHONE_RUNNING || typeOfRunningService==Constant.Service.POCKET_MODE_RUNNING ){
                     val intentService = Intent(this, MyServiceNoMicro::class.java)
                     intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
                     startService(intentService)
                     navigateToWait()
-                }else{
-                    navigateToHome()
+                }
+                if ( typeOfRunningService==Constant.Service.CHARGER_ALARM_RUNNING){
+                    if (isPlugPhone()){
+                        val intentService = Intent(this, MyServiceNoMicro::class.java)
+                        intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
+                        startService(intentService)
+                        navigateToWait()
+                    }else{
+                        navigateToHome()
+                    }
                 }
             }
-//             if (typeOfRunningService!=Constant.Service.CLAP_AND_WHISTLE_RUNNING && typeOfRunningService!=Constant.Service.VOICE_PASSCODE_RUNNING && typeOfRunningService!=""){
-//                 setIsWaited(true)
-//                 val intentService = Intent(this, MyServiceNoMicro::class.java)
-//                 intentService.putExtra(Constant.Service.RUNNING_SERVICE, typeOfRunningService)
-//                 startService(intentService)
-//                 val intent = Intent(this, WaitActivity::class.java)
-//                 startActivity(intent)
-//                 finish()
-//            }else{
-//                 if (typeOfRunningService==Constant.Service.VOICE_PASSCODE_RUNNING && SharePreferenceUtils.getVoicePasscode()==Constant.DEFAULT_PASSCODE){
-//                     val intent = Intent(this, VoicePasscodeActivity::class.java)
-//                     startActivity(intent)
-//                     finish()
-//                 }else{
-//                     val intent = Intent(this, HomeActivity::class.java)
-//                     startActivity(intent)
-//                     finish()
-//                 }
-//             }
-
-
         }
+    }
+
+    private fun navigateToChangeVoicePasscode() {
+        val intent = Intent(this, SetupVoicePasscodeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToChangeTextPasscode() {
+        val intent = Intent(this, SetupTextPasscodeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
 

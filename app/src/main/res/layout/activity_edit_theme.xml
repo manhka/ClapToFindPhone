@@ -5,7 +5,7 @@
     android:id="@+id/activity_edit_theme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_call_theme3"
+    android:background="@drawable/bg_call_theme_1"
     android:splitMotionEvents="false"
     tools:context=".activity.EditThemeActivity">
 

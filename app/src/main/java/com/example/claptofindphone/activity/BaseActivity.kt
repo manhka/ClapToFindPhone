@@ -24,7 +24,7 @@ import java.util.Locale
 
 open class BaseActivity : AppCompatActivity(){
     private var lastClickTime = 0L
-    private val clickInterval = 400L
+    private val clickInterval = 300L
     override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
         if (overrideConfiguration != null) {
             val uiMode = overrideConfiguration.uiMode

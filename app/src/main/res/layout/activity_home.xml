@@ -85,9 +85,7 @@
                     android:id="@+id/tab_layout_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
                     android:background="@null"
                     android:padding="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,35 +111,25 @@
                     app:lottie_renderMode="hardware"
                     app:lottie_speed="1" />
                 <ImageView
-                    android:id="@+id/round1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/round1"
-                    app:layout_constraintBottom_toBottomOf="@id/round3"
-                    app:layout_constraintEnd_toEndOf="@id/round3"
-                    app:layout_constraintStart_toStartOf="@id/round3"
-                    app:layout_constraintTop_toTopOf="@id/round3" />
-
-                <ImageView
                     android:id="@+id/imgView_icon_service"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:foreground="@drawable/selected_item"
                     android:padding="10dp"
                     android:src="@drawable/touch_phone"
-                    app:layout_constraintBottom_toBottomOf="@id/round1"
-                    app:layout_constraintEnd_toEndOf="@id/round1"
-                    app:layout_constraintStart_toStartOf="@id/round1"
-                    app:layout_constraintTop_toTopOf="@id/round1" />
+                    app:layout_constraintBottom_toBottomOf="@id/round3"
+                    app:layout_constraintEnd_toEndOf="@id/round3"
+                    app:layout_constraintStart_toStartOf="@id/round3"
+                    app:layout_constraintTop_toTopOf="@id/round3" />
 
                 <ImageView
                     android:id="@+id/hand_ic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="170dp"
+                    android:layout_marginEnd="180dp"
                     android:padding="10dp"
                     android:src="@drawable/hand"
-                    app:layout_constraintTop_toBottomOf="@id/round1"
+                    app:layout_constraintTop_toBottomOf="@id/imgView_icon_service"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -155,7 +143,7 @@
                     android:foreground="@drawable/my_ripple"
                     android:orientation="horizontal"
                     android:padding="15dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/round3">

@@ -23,7 +23,7 @@
             android:id="@+id/bg_call_theme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_call_theme10">
+            android:background="@drawable/bg_call_theme_1">
 
             <ImageView
                 android:id="@+id/premium_button"

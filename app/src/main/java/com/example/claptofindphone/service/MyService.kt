@@ -162,7 +162,6 @@ class MyService : Service() {
                 override fun onSpeechResult(result: String) {
                     Log.i(TAG, "result: $result")
                     if (result == passcode) {
-                        Log.d(TAG, "onSpeechResult: ${isFoundPhone}")
                         if (!isFoundPhone) {
                             isFoundPhone = true
                             WakeupPhone.foundPhone(this@MyService)

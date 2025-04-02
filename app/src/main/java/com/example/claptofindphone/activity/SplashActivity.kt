@@ -2,12 +2,16 @@ package com.example.claptofindphone.activity
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -38,48 +42,48 @@ private var isVoicePasscode=false
             showAlarmNotification()
         }
         val modeFromNoty = intent.getStringExtra("mode")
+
         var navigateFromOffNoty = false
         when (modeFromNoty) {
             Constant.Service.CLAP_TO_FIND_PHONE -> {
                 SharePreferenceUtils.setIsNavigateFromSplash(true)
                 navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.CLAP_AND_WHISTLE_RUNNING)
-                SharePreferenceUtils.setOpenHomeFragment(Constant.Service.CLAP_TO_FIND_PHONE)
+                SharePreferenceUtils.setSelectedTabIndex(0)
             }
 
             Constant.Service.VOICE_PASSCODE -> {
                 isVoicePasscode=true
+                SharePreferenceUtils.setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
                 SharePreferenceUtils.setIsNavigateFromSplash(true)
                 navigateFromOffNoty = true
                 if (SharePreferenceUtils.getVoicePasscode() != Constant.DEFAULT_PASSCODE) {
-                    SharePreferenceUtils.setRunningService(Constant.Service.VOICE_PASSCODE_RUNNING)
                     SharePreferenceUtils.setIsNavigateToChangePasscode(false)
                 } else {
-                    SharePreferenceUtils.setRunningService("")
                     SharePreferenceUtils.setIsNavigateToChangePasscode(true)
                 }
-                SharePreferenceUtils.setOpenHomeFragment(Constant.Service.VOICE_PASSCODE)
+                SharePreferenceUtils.setSelectedTabIndex(1)
             }
 
             Constant.Service.POCKET_MODE -> {
                 SharePreferenceUtils.setIsNavigateFromSplash(true)
                 navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.POCKET_MODE_RUNNING)
-                SharePreferenceUtils.setOpenHomeFragment(Constant.Service.POCKET_MODE)
+                SharePreferenceUtils.setSelectedTabIndex(2)
             }
 
             Constant.Service.DONT_TOUCH_MY_PHONE -> {
                 SharePreferenceUtils.setIsNavigateFromSplash(true)
                 navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.TOUCH_PHONE_RUNNING)
-                SharePreferenceUtils.setOpenHomeFragment(Constant.Service.DONT_TOUCH_MY_PHONE)
+                SharePreferenceUtils.setSelectedTabIndex(4)
             }
 
             Constant.Service.CHARGER_PHONE -> {
                 SharePreferenceUtils.setIsNavigateFromSplash(true)
                 navigateFromOffNoty = true
                 SharePreferenceUtils.setRunningService(Constant.Service.CHARGER_ALARM_RUNNING)
-                SharePreferenceUtils.setOpenHomeFragment(Constant.Service.CHARGER_PHONE)
+                SharePreferenceUtils.setSelectedTabIndex(3)
             }
         }
         val action = intent.action
@@ -89,7 +93,7 @@ private var isVoicePasscode=false
                     lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                         if (navigateFromOffNoty) {
                             if (SharePreferenceUtils.isNavigateToChangePasscode() && isVoicePasscode) {
-                                if (permissionController.isInternetAvailable(this@SplashActivity) && checkPermission()) {
+                                if (permissionController.isInternetAvailable(this@SplashActivity)) {
                                     navigateToChangePasscode()
                                 } else {
                                     navigateToHome()
@@ -97,8 +101,24 @@ private var isVoicePasscode=false
                             } else {
                                 if (modeFromNoty==Constant.Service.DONT_TOUCH_MY_PHONE || modeFromNoty==Constant.Service.POCKET_MODE || modeFromNoty==Constant.Service.CHARGER_PHONE){
                                     if (permissionController.isOverlayPermissionGranted(this@SplashActivity)){
-                                        navigateToWait()
+                                        if (modeFromNoty==Constant.Service.CHARGER_PHONE){
+                                            if(isPlugPhone()){
+                                                val intentService=Intent(this@SplashActivity,MyServiceNoMicro::class.java)
+                                                intentService.putExtra(Constant.Service.RUNNING_SERVICE, Constant.Service.CHARGER_ALARM_RUNNING)
+                                                startService(intentService)
+                                                navigateToWait()
+                                            }else{
+                                                navigateToHome()
+                                            }
+                                        }else{
+                                            val intentService=Intent(this@SplashActivity,MyServiceNoMicro::class.java)
+                                            intentService.putExtra(Constant.Service.RUNNING_SERVICE, SharePreferenceUtils.getRunningService())
+                                            startService(intentService)
+                                            navigateToWait()
+                                        }
+
                                     }else{
+                                        // clap and whistle
                                         navigateToHome()
                                     }
                                 }else{
@@ -245,8 +265,10 @@ private var isVoicePasscode=false
             true
         }
     }
-    private fun checkPermission(): Boolean {
-        return permissionController.hasAudioPermission(this) &&
-                permissionController.isOverlayPermissionGranted(this)
+    private fun isPlugPhone(): Boolean {
+        val batteryIntent =
+            registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+        return (status == BatteryManager.BATTERY_STATUS_CHARGING )
     }
 }

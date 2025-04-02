@@ -7,12 +7,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.claptofindphone.R
 import com.example.claptofindphone.activity.createContext
-import com.example.claptofindphone.fragment.home.VoicePasscodeFragment
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.utils.SharePreferenceUtils
 import java.util.Locale

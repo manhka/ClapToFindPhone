@@ -309,7 +309,7 @@ class InstallData {
             return listOf(
                 CallTheme(
                     Constant.CallTheme.CallTheme1,
-                    R.drawable.bg_call_theme1,
+                    R.drawable.bg_call_theme_1,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -324,7 +324,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme2,
-                    R.drawable.bg_call_theme2,
+                    R.drawable.bg_call_theme_2,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -339,7 +339,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme3,
-                    R.drawable.bg_call_theme3,
+                    R.drawable.bg_call_theme_3,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -355,7 +355,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme4,
-                    R.drawable.bg_call_theme4,
+                    R.drawable.bg_call_theme_4,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -370,7 +370,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme5,
-                    R.drawable.bg_call_theme5,
+                    R.drawable.bg_call_theme_5,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -385,7 +385,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme6,
-                    R.drawable.bg_call_theme6,
+                    R.drawable.bg_call_theme_6,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -400,7 +400,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme7,
-                    R.drawable.bg_call_theme7,
+                    R.drawable.bg_call_theme_7,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -415,7 +415,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme8,
-                    R.drawable.bg_call_theme8,
+                    R.drawable.bg_call_theme_8,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -430,7 +430,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme9,
-                    R.drawable.bg_call_theme9,
+                    R.drawable.bg_call_theme_9,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
@@ -445,7 +445,7 @@ class InstallData {
                 ),
                 CallTheme(
                     Constant.CallTheme.CallTheme10,
-                    R.drawable.bg_call_theme10,
+                    R.drawable.bg_call_theme_10,
                     R.raw.anim_avatar,
                     R.drawable.call_theme_round2,
                     R.drawable.call_theme_round1,
