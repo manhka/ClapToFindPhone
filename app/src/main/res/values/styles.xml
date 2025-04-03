@@ -5,4 +5,12 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="TextSoundActive">
+        <item name="android:textColor">@color/text_sound_color_active</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextSoundDeActive">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

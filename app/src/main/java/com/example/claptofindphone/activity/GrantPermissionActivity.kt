@@ -199,6 +199,7 @@ class GrantPermissionActivity : BaseActivity() {
     }
 
     private fun navigateToChangePasscode() {
+        SharePreferenceUtils.setRunningService("")
         val intent = Intent(this, VoicePasscodeActivity::class.java)
         startActivity(intent)
         finish()

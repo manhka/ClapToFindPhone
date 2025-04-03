@@ -132,7 +132,17 @@
                     app:layout_constraintTop_toBottomOf="@id/imgView_icon_service"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
-
+<TextView
+    android:id="@+id/tap_to_do"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="22dp"
+    android:textColor="@color/black"
+    android:text="@string/tap_to_active"
+    android:textStyle="bold"
+    app:layout_constraintTop_toBottomOf="@id/round3"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
                 <LinearLayout
                     android:id="@+id/change_audio_passcode_button"
                     android:layout_width="match_parent"
@@ -146,7 +156,8 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/round3">
+                    app:layout_constraintTop_toBottomOf="@id/tap_to_do"
+                    android:layout_marginTop="24dp">
 
                     <ImageView
                         android:layout_width="wrap_content"

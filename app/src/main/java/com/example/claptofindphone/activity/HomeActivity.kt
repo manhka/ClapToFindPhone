@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -31,6 +32,7 @@ import com.example.claptofindphone.adapter.SoundAdapter
 import com.example.claptofindphone.databinding.ActivityHomeBinding
 import com.example.claptofindphone.databinding.DialogRateUsBinding
 import com.example.claptofindphone.databinding.ExitDialogBinding
+import com.example.claptofindphone.databinding.ServiceDialogBinding
 import com.example.claptofindphone.model.Constant
 import com.example.claptofindphone.model.Sound
 import com.example.claptofindphone.service.MyService
@@ -130,48 +132,24 @@ class HomeActivity : BaseActivity() {
             }
         }
 
-
-        // show rate dialog after first time use service
-        if (SharePreferenceUtils.isShowRateDialog() == 2) {
-            val dialogBinding = DialogRateUsBinding.inflate(layoutInflater)
-            // Create an AlertDialog with the inflated ViewBinding root
-            val customDialog = AlertDialog.Builder(this)
-                .setView(dialogBinding.root)
-                .setCancelable(false)
-                .create()
-            customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            customDialog.show()
-
-            dialogBinding.yesButton.setOnClickListener {
-                SharePreferenceUtils.setIsShowRateDialog(3)
-                customDialog.dismiss()
-            }
-            dialogBinding.noButton.setOnClickListener {
-                SharePreferenceUtils.setIsShowRateDialog(1)
-                customDialog.dismiss()
-            }
-            dialogBinding.exitButton.setOnClickListener {
-                SharePreferenceUtils.setIsShowRateDialog(1)
-                customDialog.dismiss()
-            }
-
-        }
         startDiamondAnimation(homeBinding.imgViewDiamond)
-        if (SharePreferenceUtils.isShowNotyWhenComeToHome()) {
-            if (checkNotificationPermission(this)) {
-                SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
-                val intent = Intent(this, MyServiceNoMicro::class.java)
-                intent.putExtra("turnOnNotifyFromHome", true)
-                startService(intent)
-            }else{
-                SharePreferenceUtils.setIsShowNotyWhenComeToHome(true)
-            }
-        }
+
     }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-
         if (hasFocus) {
+            // notification
+            if (SharePreferenceUtils.isShowNotyWhenComeToHome()) {
+                if (checkNotificationPermission(this)) {
+                    SharePreferenceUtils.setIsShowNotyWhenComeToHome(false)
+                    val intent = Intent(this, MyServiceNoMicro::class.java)
+                    intent.putExtra("turnOnNotifyFromHome", true)
+                    startService(intent)
+                } else {
+                    SharePreferenceUtils.setIsShowNotyWhenComeToHome(true)
+                }
+            }
             homeBinding.tabLayoutHome.selectTab(
                 homeBinding.tabLayoutHome.getTabAt(
                     SharePreferenceUtils.selectedTabIndex()
@@ -181,12 +159,39 @@ class HomeActivity : BaseActivity() {
             homeBinding.tabLayoutHome.setScrollPosition(
                 SharePreferenceUtils.selectedTabIndex(),
                 0f,
-                true)
+                true
+            )
+
+            // show rate dialog after first time use service
+            if (SharePreferenceUtils.isShowRateDialog() == 2) {
+                val dialogBinding = DialogRateUsBinding.inflate(layoutInflater)
+                // Create an AlertDialog with the inflated ViewBinding root
+                val customDialog = AlertDialog.Builder(this)
+                    .setView(dialogBinding.root)
+                    .setCancelable(false)
+                    .create()
+                customDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                customDialog.show()
+
+                dialogBinding.yesButton.setOnClickListener {
+                    SharePreferenceUtils.setIsShowRateDialog(3)
+                    customDialog.dismiss()
+                }
+                dialogBinding.noButton.setOnClickListener {
+                    SharePreferenceUtils.setIsShowRateDialog(1)
+                    customDialog.dismiss()
+                }
+                dialogBinding.exitButton.setOnClickListener {
+                    SharePreferenceUtils.setIsShowRateDialog(1)
+                    customDialog.dismiss()
+                }
+
+            }
         }
     }
+
     override fun onResume() {
         super.onResume()
-
 
 
         // update ui after destroy and come back
@@ -331,11 +336,16 @@ class HomeActivity : BaseActivity() {
             }
 
         }
+        if (SharePreferenceUtils.isShowClapAndWhistleDialog()){
+            showMyDialog(0)
+            SharePreferenceUtils.setIsShowClapAndWhistleDialog(false)
+        }
         homeBinding.tabLayoutHome.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 currentTabIndex = tab!!.position
                 if (tab.text.toString() == getString(R.string.clap_to_find)) {
+
                     homeBinding.imgViewIconService.setImageResource(R.drawable.hand_clap)
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.CLAP_AND_WHISTLE_RUNNING) {
@@ -347,6 +357,10 @@ class HomeActivity : BaseActivity() {
                         updateUiOffService()
                     }
                 } else if (tab.text.toString() == getString(R.string.voice_passcode)) {
+                    if (SharePreferenceUtils.isShowVoicePasscodeDialog()){
+                        showMyDialog(1)
+                        SharePreferenceUtils.setIsShowVoicePasscodeDialog(false)
+                    }
                     homeBinding.imgViewIconService.setImageResource(R.drawable.mic_ic)
                     homeBinding.changeAudioPasscodeButton.visibility = View.VISIBLE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.VOICE_PASSCODE_RUNNING) {
@@ -358,6 +372,10 @@ class HomeActivity : BaseActivity() {
                         updateUiOffService()
                     }
                 } else if (tab.text.toString() == getString(R.string.pocket_mode)) {
+                    if (SharePreferenceUtils.isShowPocketModeDialog()){
+                        showMyDialog(2)
+                        SharePreferenceUtils.setIsShowPocketModeDialog(false)
+                    }
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     homeBinding.imgViewIconService.setImageResource(R.drawable.pocket_mode)
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.POCKET_MODE_RUNNING) {
@@ -370,6 +388,10 @@ class HomeActivity : BaseActivity() {
                     }
 
                 } else if (tab.text.toString() == getString(R.string.charger_alarm)) {
+                    if (SharePreferenceUtils.isShowChargerPhoneDialog()){
+                        showMyDialog(3)
+                        SharePreferenceUtils.setIsShowChargerPhoneDialog(false)
+                    }
                     homeBinding.imgViewIconService.setImageResource(R.drawable.ic_charger_alarm)
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.CHARGER_ALARM_RUNNING) {
@@ -381,6 +403,10 @@ class HomeActivity : BaseActivity() {
                         updateUiOffService()
                     }
                 } else if (tab?.text.toString() == getString(R.string.dont_touch_my_phone)) {
+                    if (SharePreferenceUtils.isShowTouchPhoneDialog()){
+                        showMyDialog(4)
+                        SharePreferenceUtils.setIsShowTouchPhoneDialog(false)
+                    }
                     homeBinding.imgViewIconService.setImageResource(R.drawable.touch_phone)
                     homeBinding.changeAudioPasscodeButton.visibility = View.GONE
                     if (SharePreferenceUtils.getRunningService() == "" || SharePreferenceUtils.getRunningService() == Constant.Service.TOUCH_PHONE_RUNNING) {
@@ -675,6 +701,7 @@ class HomeActivity : BaseActivity() {
 
 
     private fun updateUiOffService() {
+        homeBinding.tapToDo.text = getString(R.string.tap_to_active)
         homeBinding.round3.setAnimation(R.raw.anim_home)
         homeBinding.round3.playAnimation()
         homeBinding.handIc.visibility = View.VISIBLE
@@ -683,6 +710,7 @@ class HomeActivity : BaseActivity() {
 
     private fun updateUiOnService() {
         stopAnimation()
+        homeBinding.tapToDo.text = getString(R.string.tap_to_deactive)
         homeBinding.handIc.visibility = View.GONE
         homeBinding.round3.setAnimation(R.raw.anim_home_active)
         homeBinding.round3.playAnimation()
@@ -738,6 +766,44 @@ class HomeActivity : BaseActivity() {
             registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
         return (status == BatteryManager.BATTERY_STATUS_CHARGING)
+    }
+
+    private fun showMyDialog(layoutNumber: Int) {
+        val dialogBinding = ServiceDialogBinding.inflate(LayoutInflater.from(this))
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogBinding.root).setCancelable(false)
+        val dialog = builder.create()
+        if (layoutNumber == 0) {
+            dialogBinding.imgIcon.setImageResource(R.drawable.ic_clap_dialog)
+            dialogBinding.txtTitle.text = getString(R.string.dialog_clap_title)
+            dialogBinding.txtContent.text = getString(R.string.dialog_clap_content)
+        }
+        if (layoutNumber == 1) {
+            dialogBinding.imgIcon.setImageResource(R.drawable.ic_voice_passcode_dialog)
+            dialogBinding.txtTitle.text = getString(R.string.dialog_voice_passcode_title)
+            dialogBinding.txtContent.text = getString(R.string.dialog_voice_passcode_content)
+        }
+        if (layoutNumber == 2) {
+            dialogBinding.imgIcon.setImageResource(R.drawable.ic_pocket_mode_dialog)
+            dialogBinding.txtTitle.text = getString(R.string.dialog_pocket_mode_title)
+            dialogBinding.txtContent.text = getString(R.string.dialog_pocket_mode_content)
+        }
+        if (layoutNumber == 3) {
+            dialogBinding.imgIcon.setImageResource(R.drawable.ic_charger_alarm_dialog)
+            dialogBinding.txtTitle.text = getString(R.string.dialog_charger_alarm_title)
+            dialogBinding.txtContent.text = getString(R.string.dialog_charger_alarm_content)
+        }
+        if (layoutNumber == 4) {
+            dialogBinding.imgIcon.setImageResource(R.drawable.ic_touch_phone_dialog)
+            dialogBinding.txtTitle.text = getString(R.string.dialog_touch_phone_title)
+            dialogBinding.txtContent.text = getString(R.string.dialog_touch_phone_content)
+        }
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+        dialogBinding.gotItButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
     }
 }
 

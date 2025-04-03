@@ -1,10 +1,8 @@
 package com.example.claptofindphone.service
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
-import android.util.Log
 import com.example.claptofindphone.activity.FoundPhoneActivity
 import com.example.claptofindphone.model.Flashlight
 import com.example.claptofindphone.model.Sound
@@ -60,7 +58,9 @@ object WakeupPhone {
 
         // Bắt đầu phát âm thanh nếu có
         if (soundStatus && selectedSoundPosition != -1) {
-            setDeviceVolume(context,soundVolume)
+//            setDeviceVolume(context,soundVolume)
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, soundVolume, 0)
             SoundController.playSoundInLoop(
                 soundList[selectedSoundPosition].soundType,
                 soundVolume.toFloat(),

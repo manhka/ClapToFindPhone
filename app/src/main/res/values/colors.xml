@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#57A1E7</color>
+    <color name="text_sound_color_active">#42A3E9</color>
     <color name="grey">#7C7C7C</color>
     <color name="selected_color">#929292</color>
     <color name="start_grey">#F6F6F6</color>

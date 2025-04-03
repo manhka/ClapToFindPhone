@@ -18,44 +18,44 @@
         android:layout_marginBottom="30dp">
 
         <ImageView
-            android:id="@+id/star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_voice_passcode_dialog"
+            android:id="@+id/img_icon"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/ic_clap_dialog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txt_rate_us_title"
+            android:id="@+id/txt_title"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
-            android:text="@string/dialog_voice_passcode_title"
+            android:text="@string/dialog_clap_title"
             android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/star" />
+            app:layout_constraintTop_toBottomOf="@id/img_icon" />
 
         <TextView
-            android:id="@+id/txt_rate_us_content"
+            android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="16dp"
             android:textSize="16dp"
             android:textColor="@color/black"
-            android:layout_marginHorizontal="16dp"
-            android:text="@string/dialog_voice_passcode_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/dialog_clap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_rate_us_title" />
+            app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
         <TextView
-            android:id="@+id/yes_button"
+            android:id="@+id/got_it_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -64,12 +64,12 @@
             android:textSize="16dp"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:backgroundTint="@null"
             android:paddingHorizontal="36dp"
             android:paddingVertical="12dp"
+            app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_rate_us_content"
+            app:layout_constraintTop_toBottomOf="@id/txt_content"
             android:foreground="@drawable/my_ripple"
             />
 

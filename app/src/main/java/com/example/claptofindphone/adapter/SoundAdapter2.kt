@@ -3,6 +3,7 @@ package com.example.claptofindphone.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.claptofindphone.R
 import com.example.claptofindphone.databinding.SoundItemBinding
@@ -38,8 +39,14 @@ class SoundAdapter2(
 
         if (position == selectedPosition) {
             holder.soundItemBinding.customSoundBtn.setBackgroundResource(R.drawable.bg_sound_active)
+            holder.soundItemBinding.txtSoundName.setTextAppearance(holder.itemView.context,R.style.TextSoundActive)
+
+
         } else {
             holder.soundItemBinding.customSoundBtn.setBackgroundResource(R.drawable.bg_sound_passive)
+            holder.soundItemBinding.txtSoundName.setTextAppearance(holder.itemView.context,R.style.TextSoundDeActive)
+
+
 
         }
 

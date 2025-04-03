@@ -32,6 +32,7 @@ class FlashlightAdapter(
     class FlashlightViewHolder(itemFlashlightItemBinding: FlashlightItemBinding) :
         RecyclerView.ViewHolder(itemFlashlightItemBinding.root) {
         val itemFlashlightItemBinding: FlashlightItemBinding = itemFlashlightItemBinding
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlashlightViewHolder {
@@ -45,9 +46,10 @@ class FlashlightAdapter(
     }
 
     override fun onBindViewHolder(holder: FlashlightViewHolder, position: Int) {
+
         val flashlightItem = flashlightList[position]
         val isPremiumVisible = SharePreferenceUtils.isFlashlightPremiumVisible(position)
-
+         holder.itemFlashlightItemBinding.txtFlashlightName.isSelected=true
         holder.itemFlashlightItemBinding.flashlightBg.setBackgroundResource(flashlightItem.flashlightBg)
         holder.itemFlashlightItemBinding.txtFlashlightName.text = flashlightItem.flashlightName
         holder.itemFlashlightItemBinding.selectedIc.setImageResource(flashlightItem.flashlightSelected)
